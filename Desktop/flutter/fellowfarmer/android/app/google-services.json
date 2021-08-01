@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "248436932834",
+    "project_id": "fellowfarmers-aa38c",
+    "storage_bucket": "fellowfarmers-aa38c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248436932834:android:5eb57607c2b9d2230d1ebb",
+        "android_client_info": {
+          "package_name": "com.example.fellowfarmer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248436932834-p3lvuefccps1lrbu484qmvqurcdq652t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdfGykvpfXr7dwaERo2SQWvlXoTyUbUzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248436932834-p3lvuefccps1lrbu484qmvqurcdq652t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
