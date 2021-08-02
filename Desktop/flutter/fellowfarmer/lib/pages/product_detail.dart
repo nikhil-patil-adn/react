@@ -225,7 +225,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: Row(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1,
+                      width: MediaQuery.of(context).size.width * 1.0,
                       height: 50,
                       // decoration: BoxDecoration(
                       //   border: Border.all(),

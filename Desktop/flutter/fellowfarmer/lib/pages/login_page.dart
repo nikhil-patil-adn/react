@@ -2,6 +2,7 @@ import 'package:fellowfarmer/api/api.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
+import 'customer_register.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -113,15 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                     Text('Does not have account?'),
                     ElevatedButton(
                       child: Text(
-                        'Sign in',
+                        'Sign up',
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    MyHomePage(title: 'FellowFarmer')));
+                                builder: (context) => CustomerRegister()));
                       },
                     )
                   ],

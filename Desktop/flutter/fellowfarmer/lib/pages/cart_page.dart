@@ -1,10 +1,8 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:fellowfarmer/api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'review_page.dart';
 import 'otppop.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CartPage extends StatefulWidget {
   final int code;
@@ -22,8 +20,6 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final _formKey = GlobalKey<FormState>();
-  var host = "http://192.168.2.107:8000";
-  var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   List product = [];
   var name = "";
   var image = "";
@@ -34,62 +30,43 @@ class _CartPageState extends State<CartPage> {
   final mobileController = TextEditingController();
   final nameController = TextEditingController();
   final cityController = TextEditingController();
+  String socid = "";
+  String cityid = "";
 
   void initState() {
     super.initState();
     setState(() {
       qty = widget.quantity;
     });
+    var obj = new Api();
 
-    fetchProduct(widget.code);
-  }
+    obj.fetchProductandsetcode(widget.code, widget.quantity).then((value) {
+      setState(() {
+        name = value[0]['name'];
+        image = value[0]['image'];
+        desciption = value[0]['desciption'];
+      });
+    });
 
-  fetchSociety() async {
-    String token = tokennew;
-    String basicAuth = 'Token ' + token;
-    var url = host + "/api/location/getsociety/" + locationController.text;
-    var response = await http.get(Uri.parse(url),
-        headers: <String, String>{'authorization': basicAuth});
-    var society = json.decode(response.body);
+    obj.getLoggedincustomerdata().then((value) {
+      setState(() {
+        mobileController.text = value[0]['mobile'];
+        nameController.text = value[0]['name'];
+      });
 
-    if (society.length > 0) {
-      return society[0]['name'];
-    } else {
-      return null;
-    }
-  }
+      socid = value[0]['society'].toString();
+      obj.fetchSocietyid(socid).then((value) {
+        setState(() {
+          locationController.text = value;
+        });
+      });
 
-  checkregister() async {
-    String token = tokennew;
-    String basicAuth = 'Token ' + token;
-    var url = host + "/api/customers/checkregister/" + mobileController.text;
-    var response = await http.get(Uri.parse(url),
-        headers: <String, String>{'authorization': basicAuth});
-    var customer = json.decode(response.body);
-
-    if (customer.length > 0) {
-      return customer[0]['name'];
-    } else {
-      return null;
-    }
-  }
-
-  fetchProduct(int code) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('selectedproductcode', widget.code);
-    prefs.setString('selectedqty', widget.quantity);
-
-    String token = tokennew;
-    String basicAuth = 'Token ' + token;
-    var url = host + "/api/products/details/" + code.toString();
-    var response = await http.get(Uri.parse(url),
-        headers: <String, String>{'authorization': basicAuth});
-    product = json.decode(response.body);
-
-    setState(() {
-      name = product[0]['name'];
-      image = product[0]['image'];
-      desciption = product[0]['desciption'];
+      cityid = value[0]['city'].toString();
+      obj.fetchCityid(cityid).then((value) {
+        setState(() {
+          cityController.text = value;
+        });
+      });
     });
   }
 
@@ -101,7 +78,7 @@ class _CartPageState extends State<CartPage> {
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 1,
+            width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
@@ -121,7 +98,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 1,
+            width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
@@ -140,7 +117,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 1,
+            width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
@@ -159,7 +136,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 1,
+            width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
@@ -178,7 +155,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 1,
+            width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
@@ -201,7 +178,8 @@ class _CartPageState extends State<CartPage> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                fetchSociety().then((value) {
+                var obj = new Api();
+                obj.fetchSociety(locationController.text).then((value) {
                   if (value == "" || value == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -209,7 +187,7 @@ class _CartPageState extends State<CartPage> {
                               Text('We are not deliver product this Society ')),
                     );
                   } else {
-                    checkregister().then((cust) {
+                    obj.checkregister(mobileController.text).then((cust) {
                       var custdata = [];
                       var custdatalist = {
                         'mobile': mobileController.text,

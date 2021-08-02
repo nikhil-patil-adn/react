@@ -6,6 +6,97 @@ class Api {
   var host = "http://192.168.2.107:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
 
+  fetchProductandsetcode(int code, qty) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('selectedproductcode', code);
+    prefs.setString('selectedqty', qty);
+
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/products/details/" + code.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    List product = json.decode(response.body);
+
+    return product;
+  }
+
+  fetchSociety(String location) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/location/getsociety/" + location;
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var society = json.decode(response.body);
+
+    if (society.length > 0) {
+      return society[0]['name'];
+    } else {
+      return null;
+    }
+  }
+
+  fetchSocietyid(String id) async {
+    print("in func");
+    print(id);
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/location/getsocietybyid/" + id;
+    print(url);
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var society = json.decode(response.body);
+    print(society);
+
+    if (society.length > 0) {
+      return society[0]['name'];
+    } else {
+      return null;
+    }
+  }
+
+  fetchCityid(String id) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/city/getcitybyid/" + id;
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var society = json.decode(response.body);
+
+    if (society.length > 0) {
+      return society[0]['name'];
+    } else {
+      return null;
+    }
+  }
+
+  registercustomer(List custdata) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/customers/customerregisterwithuserpass/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body: jsonEncode(<String, String>{
+        'username': custdata[0]['username'],
+        'password': custdata[0]['password'],
+        'name': custdata[0]['name'],
+        'email': custdata[0]['email'],
+        'mobile': custdata[0]['mobile'],
+        'city': custdata[0]['city'],
+        'society': custdata[0]['society'],
+        'address': custdata[0]['address'],
+      }),
+    );
+    var cust = json.decode(response.body);
+
+    if (cust.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   insertcustomer(List custdata) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -100,6 +191,21 @@ class Api {
     return products;
   }
 
+  checkregister(String mobile) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/customers/checkregister/" + mobile;
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var customer = json.decode(response.body);
+
+    if (customer.length > 0) {
+      return customer[0]['name'];
+    } else {
+      return null;
+    }
+  }
+
   login({mobile, password}) async {
     List customers = [];
     String token = tokennew;
@@ -120,5 +226,27 @@ class Api {
       prefs.setString('custmobile', customers[0]['mobile']);
     }
     return customers;
+  }
+
+  getLoggedincustomerdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var isLogin = prefs.getString('isLogin');
+    var custmob = prefs.getString('custmobile');
+    if (isLogin == '1' && custmob != "") {
+      String token = tokennew;
+      String basicAuth = 'Token ' + token;
+      var url = host + "/api/customers/checkregister/" + custmob.toString();
+      var response = await http.get(Uri.parse(url),
+          headers: <String, String>{'authorization': basicAuth});
+      var customer = json.decode(response.body);
+
+      if (customer.length > 0) {
+        return customer;
+      } else {
+        return null;
+      }
+    } else {
+      return [];
+    }
   }
 }
