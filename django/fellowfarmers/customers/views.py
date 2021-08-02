@@ -32,7 +32,7 @@ class customerregister(APIView):
         else:
             soc=SocietyMaster.objects.get(name__iexact=customer_data['society'])
             city=CityMaster.objects.get(name__iexact=customer_data['city'])
-            sv=Customer(name=customer_data['name'],mobile=customer_data['mobile'],
+            sv=Customer(name=customer_data['name'],username=customer_data['mobile'],password=customer_data['mobile'],mobile=customer_data['mobile'],
             city=city,
             society=soc)
             sv.save()

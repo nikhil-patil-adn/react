@@ -23,7 +23,7 @@ apply_active.short_description = 'Active/Deactive'
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display=['name','mobile','society','city','active','action']
+    list_display=['name','username','password','mobile','society','city','active','action']
     actions=[apply_active,]
 
     def action(self,obj):
@@ -31,7 +31,7 @@ class CustomerAdmin(admin.ModelAdmin):
         viewsuburl="/admin/subscriptions/subscription/?id={}".format(obj.id)
         vieworderurl="/admin/orders/order/?id={}".format(obj.id)
         editurl="/admin/customers/customer/{}/change/".format(obj.id)
-        return mark_safe('<a href="{}">view Subscription | </a> <a href="{}">view order | </a> <a class="changelink" href=""></a>'.format(viewsuburl,vieworderurl,editurl))
+        return mark_safe('<a href="{}">view Subscription | </a> <a href="{}">view order | </a> <a class="changelink" href="{}"></a>'.format(viewsuburl,vieworderurl,editurl))
         
 
 

@@ -9,6 +9,8 @@ from django.utils.html import mark_safe
 
 class Customer(models.Model):
     name=models.CharField(max_length=200)
+    username=models.CharField(max_length=200,default="")
+    password=models.CharField(max_length=200,default="")
     email=models.CharField(max_length=200)
     mobile=models.CharField(max_length=15)
     address=models.TextField()
