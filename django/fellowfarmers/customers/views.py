@@ -19,6 +19,20 @@ class checkregister(APIView):
         cust=CustomerSerializer(queryset,context={'request':request},many=True)
         return JsonResponse(cust.data,safe=False)
 
+class checklogin(APIView):
+    permission_class=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication]
+    def post(self,request):
+        customer_data = JSONParser().parse(request)
+        print(customer_data)
+        queryset=Customer.objects.filter(mobile__iexact=customer_data['mobile'],password__iexact=customer_data['password'])
+        print(queryset)
+        cust=CustomerSerializer(queryset,context={'request':request},many=True)
+        return JsonResponse(cust.data,safe=False)
+        
+
+            
+
 
 class customerregister(APIView):
     permission_class=[IsAuthenticated]
