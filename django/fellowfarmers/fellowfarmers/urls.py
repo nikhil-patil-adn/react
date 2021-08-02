@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/customers/',include('customers.urls')),
     path('api/coupons/',include('coupons.urls')),
     path('api/orders/',include('orders.urls')),
+    path('api/city/',include('othermasters.urls')),
     path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
 ]
 

@@ -6,4 +6,5 @@ urlpatterns = [
     path('checkregister/<str:mob>',checkregister.as_view()),
     path('customerregister/',customerregister.as_view()),
     path('checklogin/',checklogin.as_view()),
+    path('customerregisterwithuserpass/',customerregisterwithuserpass.as_view()),
 ]
