@@ -27,7 +27,7 @@ class insertorder(APIView):
         quantity=customer_data['quantity'],
         order_type='buynow',
         order_amount=customer_data['prize'],
-        order_status='delivery_scheduled',
+        order_status='delivery scheduled',
         payment_status='Paid')
         sv.save()
         orderdata = Order.objects.values().latest('id')
