@@ -42,6 +42,17 @@ class Api {
     return product;
   }
 
+  checklogin() async {
+    var ismobile = "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var islogin = prefs.getString('isLogin');
+    print(islogin);
+    if (islogin == '1') {
+      ismobile = prefs.getString('custmobile')!;
+    }
+    return ismobile;
+  }
+
   insertorder(custdata) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var selectedproductcode = prefs.getInt('selectedproductcode');
@@ -76,5 +87,38 @@ class Api {
         headers: <String, String>{'authorization': basicAuth});
     coupons = json.decode(response.body);
     return coupons;
+  }
+
+  fetchProductList() async {
+    List products = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/products/fetch_products/";
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    products = json.decode(response.body);
+    return products;
+  }
+
+  login({mobile, password}) async {
+    List customers = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/customers/checklogin/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body: jsonEncode(<String, String>{
+        'password': password,
+        'mobile': mobile,
+      }),
+    );
+    customers = json.decode(response.body);
+    if (customers.length > 0) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('isLogin', '1');
+      prefs.setString('custmobile', customers[0]['mobile']);
+    }
+    return customers;
   }
 }

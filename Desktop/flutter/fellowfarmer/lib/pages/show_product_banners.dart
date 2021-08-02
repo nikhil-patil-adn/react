@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fellowfarmer/api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,14 +17,16 @@ class _ShowProductBannerState extends State<ShowProductBanner> {
   var products = [];
   void initState() {
     super.initState();
-    fetchProduct();
+    print("fetch product list");
+    var obj = new Api();
+    obj.fetchProductList().then((value) {
+      setState(() {
+        products = value;
+      });
+    });
   }
 
-  fetchProduct() async {
-    var url = "http://192.168.2.107:8000/api/products/fetch_products/";
-    var response = await http.get(Uri.parse(url));
-    products = json.decode(response.body);
-  }
+  //fetchProductList() async {}
 
   @override
   Widget build(BuildContext context) {

@@ -148,20 +148,42 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Product List"),
-        ),
-        body: ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final items = products[index];
-              return ListTile(
-                  title: Text(
-                    items['name'],
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: buildText(items['desciption'], index),
+      appBar: AppBar(
+        title: Text("Product List"),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.home),
+            title: new Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.mail),
+            title: new Text('Messages'),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), title: Text('Profile'))
+        ],
+      ),
+      body: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final items = products[index];
+            return ListTile(
+                title: Text(
+                  items['name'],
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                subtitle: buildText(items['desciption'], index),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductDetail(
+                              code: items['code'],
+                              quantity: myController[index].text)));
+                },
+                leading: InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -170,26 +192,17 @@ class _ProductListState extends State<ProductList> {
                                 code: items['code'],
                                 quantity: myController[index].text)));
                   },
-                  leading: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductDetail(
-                                  code: items['code'],
-                                  quantity: myController[index].text)));
-                    },
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: 100,
-                        minHeight: 100,
-                        maxWidth: 100,
-                        maxHeight: 100,
-                      ),
-                      child:
-                          Image.network(items['image_url'], fit: BoxFit.fill),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: 100,
+                      minHeight: 100,
+                      maxWidth: 100,
+                      maxHeight: 100,
                     ),
-                  ));
-            }));
+                    child: Image.network(items['image_url'], fit: BoxFit.fill),
+                  ),
+                ));
+          }),
+    );
   }
 }

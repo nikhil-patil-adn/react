@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
+import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'api/api.dart';
 import 'pages/product_list.dart';
 import 'pages/show_product_banners.dart';
 
@@ -108,6 +111,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var host = "http://192.168.2.107:8000";
   var product = [];
+  bool isLogin = false;
   var name = "";
   var image = "";
   var desciption = "";
@@ -155,6 +159,20 @@ class _MyHomePageState extends State<MyHomePage> {
             });
       }
     });
+
+    var obj = new Api();
+    obj.checklogin().then((value) {
+      if (value == "") {
+        setState(() {
+          isLogin = false;
+        });
+      } else {
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+
     fetchBanner();
   }
 
@@ -169,6 +187,15 @@ class _MyHomePageState extends State<MyHomePage> {
   //     tokennew = json.decode(response.body)['token'];
   //   });
   // }
+  logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('isLogin', '0');
+    prefs.setString('custmobile', '');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyHomePage(title: 'FellowFarmer')));
+  }
 
   showNotification() async {
     String token = tokennew;
@@ -216,8 +243,22 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Text('Drawer Header'),
           ),
+          if (!isLogin)
+            ListTile(
+              title: const Text('Login'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ));
+              },
+            ),
           ListTile(
-            title: const Text('Item 1'),
+            title: const Text('Home'),
             onTap: () {
               // Update the state of the app
               // ...
@@ -225,6 +266,13 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pop(context);
             },
           ),
+          if (isLogin)
+            ListTile(
+              title: const Text('Logout'),
+              onTap: () {
+                logout();
+              },
+            ),
         ],
       ),
     );
