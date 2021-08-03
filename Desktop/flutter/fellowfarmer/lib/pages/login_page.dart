@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/forget_password.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -71,7 +72,10 @@ class _LoginPageState extends State<LoginPage> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    //forgot password screen
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgetPassword()));
                   },
                   child: Text(
                     'Forgot Password',

@@ -6,6 +6,23 @@ class Api {
   var host = "http://192.168.2.107:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
 
+  updatepasswordcustomer(mobile, password) async {
+    print(mobile);
+    print(password);
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/customers/updatepassword/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body:
+          jsonEncode(<String, String>{'mobile': mobile, 'password': password}),
+    );
+    List customers = json.decode(response.body);
+
+    return customers;
+  }
+
   fetchProductandsetcode(int code, qty) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('selectedproductcode', code);

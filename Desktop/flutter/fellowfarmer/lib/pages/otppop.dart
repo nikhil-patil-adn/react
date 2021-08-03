@@ -1,3 +1,4 @@
+import 'package:fellowfarmer/pages/change_password.dart';
 import 'package:flutter/material.dart';
 
 import 'review_page.dart';
@@ -78,7 +79,7 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(width: 2, color: Colors.deepPurple),
+              borderSide: BorderSide(width: 2, color: Colors.amber),
             ),
           ),
         ),
@@ -93,7 +94,9 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ReviewPage(customerdata: widget.custdata)));
+              builder: (context) => widget.buttontext == 'change_password'
+                  ? ChangePassword(customerdata: widget.custdata)
+                  : ReviewPage(customerdata: widget.custdata)));
       // return true;
     } else {
       return false;
@@ -112,7 +115,7 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
           ),
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
-              color: Color(0xFFC5D6FD),
+              color: Color(0xFFFFFFFF),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(17),
               boxShadow: [

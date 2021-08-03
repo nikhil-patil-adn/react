@@ -33,7 +33,6 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       }
     ];
     obj.registercustomer(custdata).then((value) {
-      print(value);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Successfully register!!!'),
