@@ -7,4 +7,5 @@ urlpatterns = [
     path('customerregister/',customerregister.as_view()),
     path('checklogin/',checklogin.as_view()),
     path('customerregisterwithuserpass/',customerregisterwithuserpass.as_view()),
+    path('updatepassword/',updatepassword.as_view()),
 ]
