@@ -1,5 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/forget_password.dart';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text('Login Page'),
         ),
+        endDrawer: MyaccountPage(),
         body: Padding(
             padding: EdgeInsets.all(10),
             child: ListView(

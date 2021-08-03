@@ -1,6 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'order_page.dart';
 
 class ReviewPage extends StatefulWidget {
@@ -202,6 +202,7 @@ class _ReviewPageState extends State<ReviewPage> {
       appBar: AppBar(
         title: Text("Review Order"),
       ),
+      endDrawer: MyaccountPage(),
       body: Container(
         child: SingleChildScrollView(
           child: Column(

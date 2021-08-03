@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:readmore/readmore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -133,6 +134,7 @@ class _ProductDetailState extends State<ProductDetail> {
         appBar: AppBar(
           title: Text("Product Detail"),
         ),
+        endDrawer: MyaccountPage(),
         body: Builder(builder: (BuildContext context) {
           return SingleChildScrollView(
             child:

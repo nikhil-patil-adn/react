@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
@@ -151,6 +152,7 @@ class _ProductListState extends State<ProductList> {
       appBar: AppBar(
         title: Text("Product List"),
       ),
+      endDrawer: MyaccountPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

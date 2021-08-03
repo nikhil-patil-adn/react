@@ -54,17 +54,12 @@ class Api {
   }
 
   fetchSocietyid(String id) async {
-    print("in func");
-    print(id);
     String token = tokennew;
     String basicAuth = 'Token ' + token;
     var url = host + "/api/location/getsocietybyid/" + id;
-    print(url);
     var response = await http.get(Uri.parse(url),
         headers: <String, String>{'authorization': basicAuth});
     var society = json.decode(response.body);
-    print(society);
-
     if (society.length > 0) {
       return society[0]['name'];
     } else {
@@ -103,6 +98,8 @@ class Api {
         'city': custdata[0]['city'],
         'society': custdata[0]['society'],
         'address': custdata[0]['address'],
+        'update': custdata[0]['update'] == '1' ? custdata[0]['update'] : '0',
+        'id': custdata[0]['id'].toString() != '' ? custdata[0]['id'] : '0',
       }),
     );
     var cust = json.decode(response.body);
@@ -152,13 +149,17 @@ class Api {
 
   checklogin() async {
     var ismobile = "";
+    var custname = "";
+    List custdata = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var islogin = prefs.getString('isLogin');
-    print(islogin);
     if (islogin == '1') {
       ismobile = prefs.getString('custmobile')!;
+      custname =
+          prefs.containsKey('custname') ? prefs.getString('custname')! : "";
+      custdata = [ismobile, custname];
     }
-    return ismobile;
+    return custdata;
   }
 
   insertorder(custdata) async {
@@ -241,6 +242,7 @@ class Api {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('isLogin', '1');
       prefs.setString('custmobile', customers[0]['mobile']);
+      prefs.setString('custname', customers[0]['name']);
     }
     return customers;
   }

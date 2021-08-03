@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'api/api.dart';
 import 'pages/product_list.dart';
 import 'pages/show_product_banners.dart';
 
@@ -158,20 +157,6 @@ class _MyHomePageState extends State<MyHomePage> {
             });
       }
     });
-
-    var obj = new Api();
-    obj.checklogin().then((value) {
-      if (value == "") {
-        setState(() {
-          isLogin = false;
-        });
-      } else {
-        setState(() {
-          isLogin = true;
-        });
-      }
-    });
-
     fetchBanner();
   }
 

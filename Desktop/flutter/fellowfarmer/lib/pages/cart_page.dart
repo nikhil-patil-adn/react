@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'review_page.dart';
@@ -237,6 +238,7 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         title: Text("Cart Page"),
       ),
+      endDrawer: MyaccountPage(),
       body: ListView(
         shrinkWrap: true,
         children: [

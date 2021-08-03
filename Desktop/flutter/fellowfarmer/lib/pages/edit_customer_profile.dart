@@ -1,14 +1,15 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/main.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
-class CustomerRegister extends StatefulWidget {
+class CustomerEditProfile extends StatefulWidget {
   @override
-  _CustomerRegisterState createState() => _CustomerRegisterState();
+  _CustomerEditProfileState createState() => _CustomerEditProfileState();
 }
 
-class _CustomerRegisterState extends State<CustomerRegister> {
+class _CustomerEditProfileState extends State<CustomerEditProfile> {
   final formKey = new GlobalKey<FormState>();
   final usernamecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
@@ -18,6 +19,44 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   final citycontroller = TextEditingController();
   final societycontroller = TextEditingController();
   final addresscontroller = TextEditingController();
+  String socid = "";
+  String cityid = "";
+  int id = 0;
+
+  void initState() {
+    super.initState();
+    var obj = new Api();
+    obj.getLoggedincustomerdata().then((value) {
+      setState(() {
+        print(value);
+        mobilecontroller.text = value[0]['mobile'];
+        namecontroller.text = value[0]['name'];
+        passwordcontroller.text =
+            value[0]['password'] == null ? "" : value[0]['password'].toString();
+        usernamecontroller.text =
+            value[0]['username'] == null ? "" : value[0]['username'].toString();
+        emailcontroller.text =
+            value[0]['email'] == null ? "" : value[0]['email'].toString();
+        addresscontroller.text =
+            value[0]['address'] == null ? "" : value[0]['address'].toString();
+        id = value[0]['id'];
+      });
+
+      socid = value[0]['society'].toString();
+      obj.fetchSocietyid(socid).then((value) {
+        setState(() {
+          societycontroller.text = value;
+        });
+      });
+
+      cityid = value[0]['city'].toString();
+      obj.fetchCityid(cityid).then((value) {
+        setState(() {
+          citycontroller.text = value;
+        });
+      });
+    });
+  }
 
   doregister() {
     var obj = new Api();
@@ -31,16 +70,20 @@ class _CustomerRegisterState extends State<CustomerRegister> {
         'city': citycontroller.text,
         'society': societycontroller.text,
         'address': addresscontroller.text,
+        'update': '1',
+        'id': id.toString(),
       }
     ];
     obj.registercustomer(custdata).then((value) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Successfully register!!!'),
+          content: const Text('Successfully update!!!'),
         ),
       );
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage(title: 'FellowFarmer')));
     });
   }
 
@@ -162,7 +205,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Register"),
+          title: Text("Edit Profile"),
         ),
         endDrawer: MyaccountPage(),
         body: SingleChildScrollView(

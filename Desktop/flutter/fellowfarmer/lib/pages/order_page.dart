@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
 class OrderPage extends StatefulWidget {
@@ -273,6 +274,7 @@ class _OrderPageState extends State<OrderPage> {
       appBar: AppBar(
         title: Text("Order Confirmation"),
       ),
+      endDrawer: MyaccountPage(),
       body: Container(
         child: SingleChildScrollView(
           child: Column(
