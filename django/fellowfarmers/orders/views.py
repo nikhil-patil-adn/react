@@ -22,13 +22,17 @@ class insertorder(APIView):
         print(customer_data)
         sv=Order(
         customer=Customer.objects.get(mobile=customer_data['mobile']),
-        delivery_address=customer_data['society']+","+customer_data['city'],
+        delivery_address=customer_data['address']+","+customer_data['society']+","+customer_data['city'],
         product=Product.objects.get(id=customer_data['selectedproductcode']),
         quantity=customer_data['quantity'],
-        order_type='buynow',
+        order_type=customer_data['btntype'],
         order_amount=customer_data['prize'],
         order_status='delivery scheduled',
-        payment_status='Paid')
+        payment_status='Paid',
+        subscription_type=customer_data['subscriptiontype'],
+        subscription_payment_type=customer_data['subscriptionpaymenttype'],
+        prepaid_option=customer_data['prepaidoption'],
+        schedule_delivery_date=customer_data['selecteddate'])
         sv.save()
         orderdata = Order.objects.values().latest('id')
         return JsonResponse(orderdata,safe=False)

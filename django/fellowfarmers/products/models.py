@@ -1,3 +1,4 @@
+from category.models import CategoryMaster
 from django.db import models
 from othermasters.models import CityMaster
 from societymasters.models import SocietyMaster
@@ -7,6 +8,7 @@ from django.utils.html import mark_safe
 
 class Product(models.Model):
     code=models.IntegerField()
+    category=models.ForeignKey(CategoryMaster,on_delete=models.CASCADE,null=True,blank=True )
     name=models.CharField(max_length=200)
     image=models.ImageField(upload_to='images/')
     desciption=models.TextField(default="Desciption")
