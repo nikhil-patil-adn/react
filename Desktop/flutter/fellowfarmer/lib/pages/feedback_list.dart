@@ -12,7 +12,17 @@ class _FeedbackListState extends State<FeedbackList> {
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
+  var datastyle = TextStyle(
+    fontSize: 18,
+  );
   String id = '0';
+  int _initialval = 0;
+  String feedbackdata = "";
+  String question = "";
+  String details = "";
+  String status = "";
+  int datalength = 0;
+  List data = [];
   void initState() {
     super.initState();
     var obj = new Api();
@@ -22,8 +32,35 @@ class _FeedbackListState extends State<FeedbackList> {
       });
 
       obj.fetchfeedbackbycustomer(id).then((value) {
-        print(value);
+        setState(() {
+          datalength = value.length - 1;
+          data = value;
+          feedbackdata = value[_initialval]['feedback_date'].toString();
+          question = value[_initialval]['type'].toString();
+          details = value[_initialval]['details'].toString();
+          status = value[_initialval]['status'].toString();
+        });
       });
+    });
+  }
+
+  _nextfeedback() {
+    setState(() {
+      _initialval = _initialval + 1;
+      feedbackdata = data[_initialval]['feedback_date'].toString();
+      question = data[_initialval]['type'].toString();
+      details = data[_initialval]['details'].toString();
+      status = data[_initialval]['status'].toString();
+    });
+  }
+
+  _previousfeedback() {
+    setState(() {
+      _initialval = _initialval - 1;
+      feedbackdata = data[_initialval]['feedback_date'].toString();
+      question = data[_initialval]['type'].toString();
+      details = data[_initialval]['details'].toString();
+      status = data[_initialval]['status'].toString();
     });
   }
 
@@ -41,35 +78,119 @@ class _FeedbackListState extends State<FeedbackList> {
         ),
         endDrawer: MyaccountPage(),
         body: Container(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20),
           child: Column(
             children: [
               Container(
-                // decoration: BoxDecoration(
-                //   border: Border.all(),
-                // ),
                 child: Row(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(),
-                      // ),
                       child: Text(
-                        "Feedback date:",
+                        "Feedback date :",
                         style: headerstyle,
                       ),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(),
-                      // ),
-                      child: Text("Feedback date:"),
+                      child: Text(
+                        feedbackdata,
+                        style: datastyle,
+                      ),
                     )
                   ],
                 ),
-              )
+              ),
+              SizedBox(height: 30),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        "Question :",
+                        style: headerstyle,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        question,
+                        style: datastyle,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        "Comments :",
+                        style: headerstyle,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        details,
+                        style: datastyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        "Status :",
+                        style: headerstyle,
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        status,
+                        style: datastyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                padding: const EdgeInsets.all(30.0),
+                child: Row(
+                  children: [
+                    if (_initialval > 0)
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              _previousfeedback();
+                            },
+                            child: Text("Previous")),
+                      ),
+                    SizedBox(width: 20),
+                    if (_initialval < datalength)
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              _nextfeedback();
+                            },
+                            child: Text("Next")),
+                      ),
+                  ],
+                ),
+              ),
             ],
           ),
         ));
