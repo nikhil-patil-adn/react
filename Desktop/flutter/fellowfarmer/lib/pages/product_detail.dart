@@ -133,6 +133,12 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Product Detail"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          automaticallyImplyLeading: true,
+          centerTitle: true,
         ),
         endDrawer: MyaccountPage(),
         body: Builder(builder: (BuildContext context) {

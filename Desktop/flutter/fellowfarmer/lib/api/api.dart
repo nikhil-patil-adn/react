@@ -82,6 +82,16 @@ class Api {
     }
   }
 
+  fetchfeedbackbycustomer(String id) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/feedbacks/fetchfeedbackbycustomer/" + id.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var feedbacks = json.decode(response.body);
+    return feedbacks;
+  }
+
   registercustomer(List custdata) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -134,6 +144,28 @@ class Api {
     }
   }
 
+  insertfeedback(List custdata) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/feedbacks/insertfeedback/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body: jsonEncode(<String, String>{
+        'email': custdata[0]['email'],
+        'mobile': custdata[0]['mobile'],
+        'type': custdata[0]['type'],
+        'comment': custdata[0]['comment'],
+      }),
+    );
+    var cust = json.decode(response.body);
+    if (cust.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<List> fetchProduct() async {
     List product = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -178,8 +210,15 @@ class Api {
         'society': custdata[0]['location'],
         'prize': custdata[0]['prize'],
         'quantity': custdata[0]['quantity'],
+        'address': custdata[0]['address'],
         'fetchorder': '1',
-        'selectedproductcode': selectedproductcode.toString()
+        'btntype': custdata[0]['btntype'],
+        'selecteddate': custdata[0]['selecteddate'].toString(),
+        'subscriptiontype': custdata[0]['subscriptiontype'].toString(),
+        'subscriptionpaymenttype':
+            custdata[0]['subscriptionpaymenttype'].toString(),
+        'prepaidoption': custdata[0]['prepaidoption'].toString(),
+        'selectedproductcode': selectedproductcode.toString(),
       }),
     );
     var orders = json.decode(response.body);

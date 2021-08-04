@@ -1,6 +1,8 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/main.dart';
 import 'package:fellowfarmer/pages/edit_customer_profile.dart';
+import 'package:fellowfarmer/pages/feedback_list.dart';
+import 'package:fellowfarmer/pages/feedback_page.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -95,6 +97,22 @@ class _MyaccountPageState extends State<MyaccountPage> {
                         builder: (context) => CustomerEditProfile()));
               },
             ),
+          if (isLogin)
+            ListTile(
+              title: const Text('Add feedback'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddFeedback()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My Feedback"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FeedbackList()));
+              },
+            )
         ],
       ),
     );

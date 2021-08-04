@@ -153,20 +153,20 @@ class _ProductListState extends State<ProductList> {
         title: Text("Product List"),
       ),
       endDrawer: MyaccountPage(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.mail),
-            title: new Text('Messages'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), title: Text('Profile'))
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: new Icon(Icons.home),
+      //       title: new Text('Home'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: new Icon(Icons.mail),
+      //       title: new Text('Messages'),
+      //     ),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.person), title: Text('Profile'))
+      //   ],
+      // ),
       body: ListView.builder(
           itemCount: products.length,
           itemBuilder: (context, index) {

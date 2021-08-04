@@ -20,25 +20,43 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  var keytxtstyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  var datatxtstyle = TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
   final _formKey = GlobalKey<FormState>();
-  List product = [];
   var name = "";
   var image = "";
   var desciption = "";
   var qty = "";
-
+  var btntype = "";
   final locationController = TextEditingController();
   final mobileController = TextEditingController();
   final nameController = TextEditingController();
   final cityController = TextEditingController();
+  late DateTime selecteddate = DateTime.now();
   String socid = "";
   String cityid = "";
+  bool _dailyPressed = false;
+  bool _alernatePressed = false;
+  ButtonStyle _alternatebtnstyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+  );
+  ButtonStyle _dailybtnstyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+  );
+  final ButtonStyle _selectedbtnstyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
+  );
+  String _pressval = "";
+  String addresstxt = "";
 
   void initState() {
     super.initState();
     setState(() {
       qty = widget.quantity;
+      btntype = widget.btntype;
     });
+    print(btntype);
     var obj = new Api();
 
     obj.fetchProductandsetcode(widget.code, widget.quantity).then((value) {
@@ -53,6 +71,7 @@ class _CartPageState extends State<CartPage> {
       setState(() {
         mobileController.text = value[0]['mobile'];
         nameController.text = value[0]['name'];
+        addresstxt = value[0]['address'];
       });
 
       socid = value[0]['society'].toString();
@@ -70,8 +89,6 @@ class _CartPageState extends State<CartPage> {
       });
     });
   }
-
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   Widget formCart() {
     return Form(
@@ -155,30 +172,84 @@ class _CartPageState extends State<CartPage> {
               },
             ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+          if (btntype == "subscription")
+            Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+              ),
+              child: DateTimeFormField(
+                decoration: const InputDecoration(
+                    hintStyle: TextStyle(color: Colors.black45),
+                    errorStyle: TextStyle(color: Colors.redAccent),
+                    //border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.event_note),
+                    labelText: "Select Date"),
+                autovalidateMode: AutovalidateMode.always,
+                validator: (e) =>
+                    (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                onDateSelected: (DateTime value) {
+                  print(value);
+                  setState(() {
+                    selecteddate = value;
+                  });
+                },
+              ),
             ),
-            child: DateTimeFormField(
-              decoration: const InputDecoration(
-                  hintStyle: TextStyle(color: Colors.black45),
-                  errorStyle: TextStyle(color: Colors.redAccent),
-                  //border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.event_note),
-                  labelText: "Select Date"),
-              autovalidateMode: AutovalidateMode.always,
-              validator: (e) =>
-                  (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
-              onDateSelected: (DateTime value) {
-                print(value);
-              },
+          SizedBox(
+            height: 20.0,
+          ),
+          if (btntype == "subscription")
+            Container(
+              padding: const EdgeInsets.only(left: 80),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    style: _dailyPressed ? _selectedbtnstyle : _dailybtnstyle,
+                    child: new Text(
+                      'Daily',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () => {
+                      setState(() {
+                        _dailyPressed = !_dailyPressed;
+                        _alernatePressed = false;
+                        _pressval = 'daily';
+                      })
+                    },
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  ElevatedButton(
+                    style: _alernatePressed
+                        ? _selectedbtnstyle
+                        : _alternatebtnstyle,
+                    child: new Text('Alternate',
+                        style: TextStyle(color: Colors.black)),
+                    onPressed: () => {
+                      setState(() {
+                        _alernatePressed = !_alernatePressed;
+                        _dailyPressed = false;
+                        _pressval = 'alternate';
+                      })
+                    },
+                  )
+                ],
+              ),
             ),
+          Divider(
+            color: Colors.black,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
+                print("checkbtn");
+                print(_pressval);
+                print("date==");
+                print(selecteddate);
                 var obj = new Api();
                 obj.fetchSociety(locationController.text).then((value) {
                   if (value == "" || value == null) {
@@ -195,7 +266,11 @@ class _CartPageState extends State<CartPage> {
                         'name': nameController.text,
                         'city': cityController.text,
                         'location': locationController.text,
-                        'quantity': qty
+                        'quantity': qty,
+                        'address': addresstxt,
+                        'btntype': btntype,
+                        'subscriptiontype': _pressval,
+                        'selecteddate': selecteddate
                       };
                       custdata.add(custdatalist);
                       if (cust == null) {
@@ -232,88 +307,60 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    var keytxtstyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-    var datatxtstyle = TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        automaticallyImplyLeading: true,
+        centerTitle: true,
         title: Text("Cart Page"),
       ),
       endDrawer: MyaccountPage(),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            // decoration: BoxDecoration(
-            //   border: Border.all(),
-            // ),
-            child: Row(
-              children: [
-                Text(capitalize("Product Name"), style: keytxtstyle),
-                Text(
-                  " :",
-                  style: keytxtstyle,
-                  textAlign: TextAlign.right,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text("Product Name:", style: keytxtstyle),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(name, style: datatxtstyle),
+                    )
+                  ],
                 ),
-                Container(
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(),
-                  // ),
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    capitalize(name),
-                    style: datatxtstyle,
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            // decoration: BoxDecoration(
-            //   border: Border.all(),
-            // ),
-            child: Row(
-              children: [
-                Text(capitalize("Quantiy"), style: keytxtstyle),
-                Text(
-                  " :",
-                  style: keytxtstyle,
-                  textAlign: TextAlign.right,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text("Quantity:", style: keytxtstyle),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(qty, style: datatxtstyle),
+                    )
+                  ],
                 ),
-                Container(
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(),
-                  // ),
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    qty,
-                    style: datatxtstyle,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Divider(color: Colors.black),
+              Container(
+                padding: const EdgeInsets.all(20),
+                child: formCart(),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 1.0,
-              // decoration: BoxDecoration(
-              //   border: Border.all(),
-              // ),
-              child: formCart(),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

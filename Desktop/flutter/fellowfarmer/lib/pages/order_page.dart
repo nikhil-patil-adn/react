@@ -43,9 +43,7 @@ class _OrderPageState extends State<OrderPage> {
         qty = value['quantity'].toString();
         order_amount = value['order_amount'];
         custname = widget.customerdata[0]['name'];
-        custaddress = widget.customerdata[0]['location'] +
-            ", " +
-            widget.customerdata[0]['city'];
+        custaddress = value['delivery_address'];
         custmobile = widget.customerdata[0]['mobile'];
       });
       print(value);
