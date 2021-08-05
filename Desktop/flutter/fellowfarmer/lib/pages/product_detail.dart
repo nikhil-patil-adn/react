@@ -24,6 +24,7 @@ class _ProductDetailState extends State<ProductDetail> {
   var name = "";
   var image = "";
   var desciption = "";
+  bool issubscribed = true;
   TextEditingController qtyController = TextEditingController();
 
   void initState() {
@@ -39,10 +40,12 @@ class _ProductDetailState extends State<ProductDetail> {
     var response = await http.get(Uri.parse(url),
         headers: <String, String>{'authorization': basicAuth});
     product = json.decode(response.body);
+    print(product);
     setState(() {
       name = product[0]['name'];
       image = product[0]['image'];
       desciption = product[0]['desciption'];
+      issubscribed = product[0]['issubscribed'];
     });
   }
 
@@ -256,17 +259,18 @@ class _ProductDetailState extends State<ProductDetail> {
                     SizedBox(
                       width: 60,
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartPage(
-                                      code: widget.code,
-                                      btntype: 'buynow',
-                                      quantity: qtyController.text)));
-                        },
-                        child: Text("Buy Now")),
+                    if (issubscribed)
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CartPage(
+                                        code: widget.code,
+                                        btntype: 'buynow',
+                                        quantity: qtyController.text)));
+                          },
+                          child: Text("Buy Now")),
                     SizedBox(
                       width: 80,
                     ),

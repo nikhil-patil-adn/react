@@ -1,4 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/api/cityclass.dart';
+import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
@@ -33,6 +35,7 @@ class _CartPageState extends State<CartPage> {
   final mobileController = TextEditingController();
   final nameController = TextEditingController();
   final cityController = TextEditingController();
+  final pincodeController = TextEditingController();
   late DateTime selecteddate = DateTime.now();
   String socid = "";
   String cityid = "";
@@ -49,6 +52,9 @@ class _CartPageState extends State<CartPage> {
   );
   String _pressval = "";
   String addresstxt = "";
+  List<Location> _locationOptions = [];
+  List<City> _cityOptions = [];
+  String intiallocationval = "";
 
   void initState() {
     super.initState();
@@ -68,26 +74,151 @@ class _CartPageState extends State<CartPage> {
     });
 
     obj.getLoggedincustomerdata().then((value) {
-      setState(() {
-        mobileController.text = value[0]['mobile'];
-        nameController.text = value[0]['name'];
-        addresstxt = value[0]['address'];
-      });
-
-      socid = value[0]['society'].toString();
-      obj.fetchSocietyid(socid).then((value) {
+      print(value);
+      if (value.length > 0) {
         setState(() {
-          locationController.text = value;
+          mobileController.text = value[0]['mobile'];
+          nameController.text = value[0]['name'];
+          addresstxt = value[0]['address'];
+          pincodeController.text = value[0]['pincode'].toString();
         });
-      });
 
-      cityid = value[0]['city'].toString();
-      obj.fetchCityid(cityid).then((value) {
-        setState(() {
-          cityController.text = value;
+        socid = value[0]['society'].toString();
+        obj.fetchSocietyid(socid).then((value) {
+          setState(() {
+            print("check beforwe");
+            locationController.text = value.toString();
+            intiallocationval = value.toString();
+            print(locationController.text);
+          });
         });
-      });
+
+        cityid = value[0]['city'].toString();
+        obj.fetchCityid(cityid).then((value) {
+          setState(() {
+            cityController.text = value.toString();
+          });
+        });
+      }
     });
+
+    obj.fetchAllSociety().then((val) {
+      print("inside society");
+      for (int i = 0; i < val.length; i++) {
+        print(val[i]['name']);
+        setState(() {
+          _locationOptions.add(Location(name: val[i]['name']));
+        });
+      }
+    });
+
+    obj.fetchAllCity().then((val) {
+      print("inside society");
+      for (int i = 0; i < val.length; i++) {
+        print(val[i]['name']);
+        setState(() {
+          _cityOptions.add(City(name: val[i]['name']));
+        });
+      }
+    });
+  }
+
+  // static const List<Location> _locationOptions =  newlocation;
+  static String _displayStringForOptioncity(City option) => option.name;
+  static String _displayStringForOption(Location option) => option.name;
+
+  Widget cityfield() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10.0,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          // ),
+          child: Text(
+            "City",
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Autocomplete<City>(
+          displayStringForOption: _displayStringForOptioncity,
+          fieldViewBuilder:
+              (context, textEditingController, focusNode, onFieldSubmitted) {
+            textEditingController.text = cityController.text.toString();
+
+            return TextFormField(
+              focusNode: focusNode,
+              controller: textEditingController,
+            );
+          },
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            cityController.text = textEditingValue.text;
+            if (textEditingValue.text == '') {
+              return const Iterable<City>.empty();
+            }
+            return _cityOptions.where((City option) {
+              return option
+                  .toString()
+                  .contains(textEditingValue.text.toLowerCase());
+            });
+          },
+          onSelected: (City selection) {
+            cityController.text = selection.toString();
+            print(
+                'You just selected ${_displayStringForOptioncity(selection)}');
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget locationfield() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10.0,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          // ),
+          child: Text(
+            "Society",
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Autocomplete<Location>(
+          displayStringForOption: _displayStringForOption,
+          fieldViewBuilder:
+              (context, textEditingController, focusNode, onFieldSubmitted) {
+            textEditingController.text = locationController.text.toString();
+
+            return TextFormField(
+              focusNode: focusNode,
+              controller: textEditingController,
+            );
+          },
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            locationController.text = textEditingValue.text;
+            if (textEditingValue.text == '') {
+              return const Iterable<Location>.empty();
+            }
+            return _locationOptions.where((Location option) {
+              return option
+                  .toString()
+                  .contains(textEditingValue.text.toLowerCase());
+            });
+          },
+          onSelected: (Location selection) {
+            locationController.text = selection.toString();
+          },
+        ),
+      ],
+    );
   }
 
   Widget formCart() {
@@ -139,19 +270,40 @@ class _CartPageState extends State<CartPage> {
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
-            child: TextFormField(
-              controller: cityController,
-              decoration: InputDecoration(
-                  labelText: "City",
-                  border: InputBorder.none,
-                  labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please Enter City';
-                }
-                return null;
-              },
+            child: cityfield(),
+            // child: TextFormField(
+            //   controller: cityController,
+            //   decoration: InputDecoration(
+            //       labelText: "City",
+            //       border: InputBorder.none,
+            //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please Enter City';
+            //     }
+            //     return null;
+            //   },
+            // ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 1.0,
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
+            child: locationfield(),
+            // child: TextFormField(
+            //   controller: locationController,
+            //   decoration: InputDecoration(
+            //       labelText: "Location",
+            //       border: InputBorder.none,
+            //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please Enter Location';
+            //     }
+            //     return null;
+            //   },
+            // ),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 1.0,
@@ -159,17 +311,18 @@ class _CartPageState extends State<CartPage> {
               border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
             ),
             child: TextFormField(
-              controller: locationController,
+              controller: pincodeController,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  labelText: "Location",
+                  labelText: "Pincode",
                   border: InputBorder.none,
                   labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please Enter Location';
-                }
-                return null;
-              },
+              // validator: (value) {
+              //   if (value.length == 0 || value.isEmpty) {
+              //     return 'Please Enter Pincode';
+              //   }
+              //   return null;
+              // },
             ),
           ),
           if (btntype == "subscription")
@@ -180,12 +333,13 @@ class _CartPageState extends State<CartPage> {
                     Border(bottom: BorderSide(color: Colors.blue, width: 2)),
               ),
               child: DateTimeFormField(
+                mode: DateTimeFieldPickerMode.date,
                 decoration: const InputDecoration(
                     hintStyle: TextStyle(color: Colors.black45),
                     errorStyle: TextStyle(color: Colors.redAccent),
                     //border: OutlineInputBorder(),
                     suffixIcon: Icon(Icons.event_note),
-                    labelText: "Select Date"),
+                    labelText: "Subscription Start Date"),
                 autovalidateMode: AutovalidateMode.always,
                 validator: (e) =>
                     (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
@@ -249,48 +403,55 @@ class _CartPageState extends State<CartPage> {
                 print("checkbtn");
                 print(_pressval);
                 print("date==");
-                print(selecteddate);
+                print(locationController.text);
+                print("city==");
+                print(cityController.text);
                 var obj = new Api();
-                obj.fetchSociety(locationController.text).then((value) {
-                  if (value == "" || value == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content:
-                              Text('We are not deliver product this Society ')),
-                    );
-                  } else {
-                    obj.checkregister(mobileController.text).then((cust) {
-                      var custdata = [];
-                      var custdatalist = {
-                        'mobile': mobileController.text,
-                        'name': nameController.text,
-                        'city': cityController.text,
-                        'location': locationController.text,
-                        'quantity': qty,
-                        'address': addresstxt,
-                        'btntype': btntype,
-                        'subscriptiontype': _pressval,
-                        'selecteddate': selecteddate
-                      };
-                      custdata.add(custdatalist);
-                      if (cust == null) {
-                        showDialog(
-                            context: context,
-                            builder: (context) => NewCustomDialog(
-                                title: "Enter OTP",
-                                description: "asdasdasd",
-                                buttontext: "buttontext",
-                                custdata: custdata));
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ReviewPage(customerdata: custdata)));
-                      }
-                    });
-                  }
-                });
+                if (locationController.text != "")
+                  obj.fetchSociety(locationController.text).then((value) {
+                    if (value == "" || value == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'We currently do not serve your society. Someone from our customer support team will get in touch with you soon')),
+                      );
+                    } else {
+                      if (mobileController.text != "")
+                        obj.checkregister(mobileController.text).then((cust) {
+                          var custdata = [];
+                          var custdatalist = {
+                            'mobile': mobileController.text,
+                            'name': nameController.text,
+                            'city': cityController.text,
+                            'location': locationController.text,
+                            'pincode': pincodeController.text,
+                            'quantity': qty,
+                            'address': addresstxt,
+                            'btntype': btntype,
+                            'subscriptiontype': _pressval,
+                            'selecteddate': selecteddate
+                          };
+
+                          custdata.add(custdatalist);
+                          print(custdata);
+                          if (cust == null) {
+                            showDialog(
+                                context: context,
+                                builder: (context) => NewCustomDialog(
+                                    title: "Enter OTP",
+                                    description: "asdasdasd",
+                                    buttontext: "buttontext",
+                                    custdata: custdata));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReviewPage(customerdata: custdata)));
+                          }
+                        });
+                    }
+                  });
                 if (_formKey.currentState!.validate()) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data')),

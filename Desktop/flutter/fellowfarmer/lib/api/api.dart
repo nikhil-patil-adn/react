@@ -132,7 +132,8 @@ class Api {
         'name': custdata[0]['name'],
         'mobile': custdata[0]['mobile'],
         'city': custdata[0]['city'],
-        'society': custdata[0]['location']
+        'society': custdata[0]['location'],
+        'pincode': custdata[0]['pincode']
       }),
     );
     var cust = json.decode(response.body);
@@ -179,6 +180,28 @@ class Api {
     return product;
   }
 
+  fetchAllSociety() async {
+    List society = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/location/allsociety/";
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    society = json.decode(response.body);
+    return society;
+  }
+
+  fetchAllCity() async {
+    List city = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/city/allcity/";
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    city = json.decode(response.body);
+    return city;
+  }
+
   checklogin() async {
     var ismobile = "";
     var custname = "";
@@ -211,6 +234,7 @@ class Api {
         'prize': custdata[0]['prize'],
         'quantity': custdata[0]['quantity'],
         'address': custdata[0]['address'],
+        'pincode': custdata[0]['pincode'],
         'fetchorder': '1',
         'btntype': custdata[0]['btntype'],
         'selecteddate': custdata[0]['selecteddate'].toString(),

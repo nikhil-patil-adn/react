@@ -14,6 +14,7 @@ class _ReviewPageState extends State<ReviewPage> {
   final _couponformKey = GlobalKey<FormState>();
   final coupontextcontroller = TextEditingController();
   final addresscontroller = TextEditingController();
+  final prepaidamtController = TextEditingController();
   var focusNode = FocusNode();
   final List customerdata = [];
   List product = [];
@@ -135,7 +136,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.5,
-                    child: Text("Prize:", style: headerstyle),
+                    child: Text("Price:", style: headerstyle),
                   ),
                   Container(
                       child: Text(
@@ -168,7 +169,13 @@ class _ReviewPageState extends State<ReviewPage> {
                       _prepaidvalue = value.toString();
                     });
                   }),
-            )
+            ),
+          TextField(
+            controller: prepaidamtController,
+            decoration: InputDecoration(
+              labelText: "Amount",
+            ),
+          ),
         ],
       ),
     );
@@ -272,9 +279,6 @@ class _ReviewPageState extends State<ReviewPage> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      print(_prepaidvalue);
-                      print(_pressval);
-                      // Validate returns true if the form is valid, or false otherwise.
                       if (_couponformKey.currentState!.validate()) {
                         List custdata = widget.customerdata;
                         custdata[0]['prize'] = finalamount;
@@ -286,7 +290,7 @@ class _ReviewPageState extends State<ReviewPage> {
                         } else {
                           custdata[0]['prepaidoption'] = '0';
                         }
-                        print(custdata);
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
