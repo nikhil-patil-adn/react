@@ -3,5 +3,6 @@ from .views import *
 
 urlpatterns = [
     path('getcitybyid/<str:cityid>',getcitybyid.as_view()),
+    path('allcity/',allCity.as_view()),
     
 ]

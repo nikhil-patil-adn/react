@@ -11,6 +11,7 @@ class Product(models.Model):
     category=models.ForeignKey(CategoryMaster,on_delete=models.CASCADE,null=True,blank=True )
     name=models.CharField(max_length=200)
     image=models.ImageField(upload_to='images/')
+    issubscribed=models.BooleanField(default=True)
     desciption=models.TextField(default="Desciption")
     city=models.ForeignKey(CityMaster,on_delete=models.CASCADE)
     society=models.ForeignKey(SocietyMaster,on_delete=models.CASCADE,null=True)

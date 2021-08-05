@@ -35,8 +35,9 @@ class MyDeliveryAdmin(OrderAdmin):
 
     def get_queryset(self, request):
         todaytime = datetime.now()
-        nextday = datetime.now()
-        nextday += timedelta(days=1)
+        todaytime = str(todaytime).split(" ")
+        todaytime=todaytime[0]+" 00:00:00"
+        nextday = datetime.strptime(todaytime,'%Y-%m-%d %H:%M:%S')+timedelta(days=1)
         return Order.objects.filter(schedule_delivery_date__gte=todaytime,schedule_delivery_date__lte=nextday) 
 
     def delivery_Date(self,obj):

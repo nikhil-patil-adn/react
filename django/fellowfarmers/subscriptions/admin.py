@@ -6,7 +6,7 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display=['id','subscription_end','customer','subscription_type','sales_person','delivery_guy'] 
+    list_display=['id','subscription_start','subscription_end','customer','subscription_type','frequency_type','sales_person','delivery_guy'] 
 
 
     def delivery_guy(self,obj):

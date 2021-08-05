@@ -20,3 +20,13 @@ class getcitybyid(APIView):
         print(queryset)
         soc=CitySerializer(queryset,context={'request':request},many=True)
         return JsonResponse(soc.data,safe=False)
+
+
+class allCity(APIView):
+
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        queryset=CityMaster.objects.all()
+        soc=CitySerializer(queryset,context={'request':request},many=True)
+        return JsonResponse(soc.data,safe=False)           

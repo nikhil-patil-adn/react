@@ -19,7 +19,14 @@ class getAllSociety(APIView):
 
 
 
-      
+class allSociety(APIView):
+
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+    def get(self,request):
+        queryset=SocietyMaster.objects.all()
+        soc=SocietySerializer(queryset,context={'request':request},many=True)
+        return JsonResponse(soc.data,safe=False)      
 
 class getsocietybyid(APIView):
 

@@ -6,7 +6,7 @@ class ProductSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField('get_photo_url')
     class Meta:
         model=Product
-        fields=['id','code','name','image','image_url','desciption',]
+        fields='__all__'
 
     def get_photo_url(self, obj):
         request = self.context.get('request')

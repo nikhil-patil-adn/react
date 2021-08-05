@@ -5,6 +5,6 @@ from .models import SocietyMaster
 class SocietySerializer(serializers.ModelSerializer):
     class Meta:
         model=SocietyMaster
-        fields=['id','sales','code','name','assign_sale_person','active',]
+        fields='__all__'
 
 
