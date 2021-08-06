@@ -7,7 +7,7 @@ from datetime import timedelta,datetime
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id','order_number','order_date','customer','schedule_shipping_date','order_type','order_amount','sales_person','delivery_guy','order_status','payment_status'] 
-    list_filter=['delivery_staff','schedule_delivery_date']
+    list_filter=['delivery_staff','schedule_delivery_date','customer',]
 
     def order_number(self,obj):
         return obj.id

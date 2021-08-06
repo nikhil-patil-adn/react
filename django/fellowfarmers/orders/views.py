@@ -1,4 +1,5 @@
-from django.http.response import JsonResponse
+from django.db.models.query import QuerySet
+from django.http.response import JsonResponse,HttpResponse
 import datetime
 
 from rest_framework.permissions import IsAuthenticated 
@@ -11,8 +12,29 @@ from .models import Order
 from .serializers import OrderSerializer
 from rest_framework.views import APIView
 import json
+import requests
 
 # Create your views here.
+
+def testorder(request):
+    #url='http://192.168.2.107:8000/api/order/getordersbycust/8'
+    url='http://127.0.0.1:8000/api/orders/getordersbycust/8'
+    headers = {'Authorization': 'Token 8334d1d63c97cc583ac50fc034afaf5f57833251'}
+    r = requests.get(url, headers=headers)
+    print(r)
+    return HttpResponse("hi")
+
+
+class getordersbycust(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
+
+    def get(self,request,custid):
+        QuerySet=Order.objects.filter(customer=custid)
+        orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
+        return JsonResponse(orderdata.data,safe=False)
+
+
 
 
 class insertorder(APIView):
@@ -25,13 +47,16 @@ class insertorder(APIView):
         prd=Product.objects.get(id=customer_data['selectedproductcode'])
         deliveryaddress=customer_data['address']+","+customer_data['society']+","+customer_data['city']+","+customer_data['pincode']
         if customer_data['btntype'] == 'subscription':
-            diffday=1    
-            if customer_data['prepaidoption'] == '1':
-                daysrange=31
-            elif customer_data['prepaidoption'] == '2':
-                daysrange=61
-            elif customer_data['prepaidoption'] == '3':
-                daysrange=91    
+            diffday=1 
+
+            # if customer_data['prepaidoption'] == '1':
+            #     daysrange=31
+            # elif customer_data['prepaidoption'] == '2':
+            #     daysrange=61
+            # elif customer_data['prepaidoption'] == '3':
+            #     daysrange=91 
+            if customer_data['prepaidoption'] > '1':
+                daysrange=int(customer_data['prepaidoption'])+int(1)  
             elif customer_data['subscriptionpaymenttype'] == 'postpaid':
                 daysrange=16  
                 

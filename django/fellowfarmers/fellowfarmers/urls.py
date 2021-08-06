@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/orders/',include('orders.urls')),
     path('api/city/',include('othermasters.urls')),
     path('api/feedbacks/',include('feedbacks.urls')),
+    path('api/frequency/',include('frequencymasters.urls')),
     path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
 ]
 
