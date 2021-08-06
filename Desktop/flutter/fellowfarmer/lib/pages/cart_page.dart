@@ -36,9 +36,12 @@ class _CartPageState extends State<CartPage> {
   final nameController = TextEditingController();
   final cityController = TextEditingController();
   final pincodeController = TextEditingController();
+  final _soctextEditingController = TextEditingController();
+  final _citytextEditingController = TextEditingController();
   late DateTime selecteddate = DateTime.now();
   String socid = "";
   String cityid = "";
+  String price = '00.00';
   bool _dailyPressed = false;
   bool _alernatePressed = false;
   ButtonStyle _alternatebtnstyle = ButtonStyle(
@@ -62,7 +65,6 @@ class _CartPageState extends State<CartPage> {
       qty = widget.quantity;
       btntype = widget.btntype;
     });
-    print(btntype);
     var obj = new Api();
 
     obj.fetchProductandsetcode(widget.code, widget.quantity).then((value) {
@@ -70,11 +72,11 @@ class _CartPageState extends State<CartPage> {
         name = value[0]['name'];
         image = value[0]['image'];
         desciption = value[0]['desciption'];
+        price = value[0]['price'];
       });
     });
 
     obj.getLoggedincustomerdata().then((value) {
-      print(value);
       if (value.length > 0) {
         setState(() {
           mobileController.text = value[0]['mobile'];
@@ -86,10 +88,9 @@ class _CartPageState extends State<CartPage> {
         socid = value[0]['society'].toString();
         obj.fetchSocietyid(socid).then((value) {
           setState(() {
-            print("check beforwe");
             locationController.text = value.toString();
             intiallocationval = value.toString();
-            print(locationController.text);
+            _soctextEditingController.text = value.toString();
           });
         });
 
@@ -97,15 +98,14 @@ class _CartPageState extends State<CartPage> {
         obj.fetchCityid(cityid).then((value) {
           setState(() {
             cityController.text = value.toString();
+            _citytextEditingController.text = value.toString();
           });
         });
       }
     });
 
     obj.fetchAllSociety().then((val) {
-      print("inside society");
       for (int i = 0; i < val.length; i++) {
-        print(val[i]['name']);
         setState(() {
           _locationOptions.add(Location(name: val[i]['name']));
         });
@@ -113,9 +113,7 @@ class _CartPageState extends State<CartPage> {
     });
 
     obj.fetchAllCity().then((val) {
-      print("inside society");
       for (int i = 0; i < val.length; i++) {
-        print(val[i]['name']);
         setState(() {
           _cityOptions.add(City(name: val[i]['name']));
         });
@@ -147,16 +145,16 @@ class _CartPageState extends State<CartPage> {
           displayStringForOption: _displayStringForOptioncity,
           fieldViewBuilder:
               (context, textEditingController, focusNode, onFieldSubmitted) {
-            textEditingController.text = cityController.text.toString();
+            //textEditingController.text = cityController.text.toString();
 
             return TextFormField(
               focusNode: focusNode,
-              controller: textEditingController,
+              controller: _citytextEditingController,
             );
           },
           optionsBuilder: (TextEditingValue textEditingValue) {
-            cityController.text = textEditingValue.text;
-            if (textEditingValue.text == '') {
+            cityController.text = textEditingValue.text.toString();
+            if (textEditingValue.text.toString() == '') {
               return const Iterable<City>.empty();
             }
             return _cityOptions.where((City option) {
@@ -167,8 +165,6 @@ class _CartPageState extends State<CartPage> {
           },
           onSelected: (City selection) {
             cityController.text = selection.toString();
-            print(
-                'You just selected ${_displayStringForOptioncity(selection)}');
           },
         ),
       ],
@@ -195,16 +191,16 @@ class _CartPageState extends State<CartPage> {
           displayStringForOption: _displayStringForOption,
           fieldViewBuilder:
               (context, textEditingController, focusNode, onFieldSubmitted) {
-            textEditingController.text = locationController.text.toString();
+            //textEditingController.text = locationController.text.toString();
 
             return TextFormField(
               focusNode: focusNode,
-              controller: textEditingController,
+              controller: _soctextEditingController,
             );
           },
           optionsBuilder: (TextEditingValue textEditingValue) {
-            locationController.text = textEditingValue.text;
-            if (textEditingValue.text == '') {
+            locationController.text = textEditingValue.text.toString();
+            if (textEditingValue.text.toString() == '') {
               return const Iterable<Location>.empty();
             }
             return _locationOptions.where((Location option) {
@@ -265,46 +261,50 @@ class _CartPageState extends State<CartPage> {
               },
             ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+          if (_cityOptions.length > 0)
+            Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+              ),
+              child: cityfield(),
+              // child: TextFormField(
+              //   controller: cityController,
+              //   decoration: InputDecoration(
+              //       labelText: "City",
+              //       border: InputBorder.none,
+              //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please Enter City';
+              //     }
+              //     return null;
+              //   },
+              // ),
             ),
-            child: cityfield(),
-            // child: TextFormField(
-            //   controller: cityController,
-            //   decoration: InputDecoration(
-            //       labelText: "City",
-            //       border: InputBorder.none,
-            //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please Enter City';
-            //     }
-            //     return null;
-            //   },
-            // ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 1.0,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+          if (_locationOptions.length > 0)
+            Container(
+              width: MediaQuery.of(context).size.width * 1.0,
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+              ),
+              child: locationfield(),
+              // child: TextFormField(
+              //   controller: locationController,
+              //   decoration: InputDecoration(
+              //       labelText: "Location",
+              //       border: InputBorder.none,
+              //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please Enter Location';
+              //     }
+              //     return null;
+              //   },
+              // ),
             ),
-            child: locationfield(),
-            // child: TextFormField(
-            //   controller: locationController,
-            //   decoration: InputDecoration(
-            //       labelText: "Location",
-            //       border: InputBorder.none,
-            //       labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please Enter Location';
-            //     }
-            //     return null;
-            //   },
-            // ),
-          ),
           Container(
             width: MediaQuery.of(context).size.width * 1.0,
             decoration: BoxDecoration(
@@ -344,7 +344,6 @@ class _CartPageState extends State<CartPage> {
                 validator: (e) =>
                     (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
                 onDateSelected: (DateTime value) {
-                  print(value);
                   setState(() {
                     selecteddate = value;
                   });
@@ -400,12 +399,6 @@ class _CartPageState extends State<CartPage> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                print("checkbtn");
-                print(_pressval);
-                print("date==");
-                print(locationController.text);
-                print("city==");
-                print(cityController.text);
                 var obj = new Api();
                 if (locationController.text != "")
                   obj.fetchSociety(locationController.text).then((value) {
@@ -433,7 +426,6 @@ class _CartPageState extends State<CartPage> {
                           };
 
                           custdata.add(custdatalist);
-                          print(custdata);
                           if (cust == null) {
                             showDialog(
                                 context: context,
@@ -510,6 +502,21 @@ class _CartPageState extends State<CartPage> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: Text(qty, style: datatxtstyle),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text("Price:", style: keytxtstyle),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(price, style: datatxtstyle),
                     )
                   ],
                 ),

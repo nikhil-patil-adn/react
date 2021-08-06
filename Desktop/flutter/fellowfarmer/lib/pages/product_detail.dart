@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:ui';
+import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:readmore/readmore.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'cart_page.dart';
 
@@ -18,8 +17,6 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  var host = "http://192.168.2.107:8000";
-  var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   var product = [];
   var name = "";
   var image = "";
@@ -33,19 +30,15 @@ class _ProductDetailState extends State<ProductDetail> {
     qtyController.text = widget.quantity;
   }
 
-  fetchProduct(int code) async {
-    String token = tokennew;
-    String basicAuth = 'Token ' + token;
-    var url = host + "/api/products/details/" + code.toString();
-    var response = await http.get(Uri.parse(url),
-        headers: <String, String>{'authorization': basicAuth});
-    product = json.decode(response.body);
-    print(product);
-    setState(() {
-      name = product[0]['name'];
-      image = product[0]['image'];
-      desciption = product[0]['desciption'];
-      issubscribed = product[0]['issubscribed'];
+  fetchProduct(int code) {
+    var obj = new Api();
+    obj.fetchProductdetail(code).then((val) {
+      setState(() {
+        name = val[0]['name'];
+        image = val[0]['image'];
+        desciption = val[0]['desciption'];
+        issubscribed = val[0]['issubscribed'];
+      });
     });
   }
 
@@ -82,7 +75,10 @@ class _ProductDetailState extends State<ProductDetail> {
                   onPressed: () {
                     setState(() {
                       int qty = int.parse(qtyController.text);
-                      qty--;
+                      if (qty > 0) {
+                        qty--;
+                      }
+
                       qtyController.text = qty.toString();
                     });
                   },
@@ -262,13 +258,20 @@ class _ProductDetailState extends State<ProductDetail> {
                     if (issubscribed)
                       ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CartPage(
-                                        code: widget.code,
-                                        btntype: 'buynow',
-                                        quantity: qtyController.text)));
+                            if (int.parse(qtyController.text) > 0) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CartPage(
+                                          code: widget.code,
+                                          btntype: 'buynow',
+                                          quantity: qtyController.text)));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Please enter quantity')),
+                              );
+                            }
                           },
                           child: Text("Buy Now")),
                     SizedBox(
@@ -276,13 +279,20 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartPage(
-                                      code: widget.code,
-                                      btntype: 'subscription',
-                                      quantity: qtyController.text)));
+                          if (int.parse(qtyController.text) > 0) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CartPage(
+                                        code: widget.code,
+                                        btntype: 'subscription',
+                                        quantity: qtyController.text)));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Please enter quantity')),
+                            );
+                          }
                         },
                         child: Text("SubScription")),
                   ],

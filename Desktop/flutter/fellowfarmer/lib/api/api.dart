@@ -38,6 +38,17 @@ class Api {
     return product;
   }
 
+  fetchProductdetail(int code) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/products/details/" + code.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    List product = json.decode(response.body);
+
+    return product;
+  }
+
   fetchSociety(String location) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -167,6 +178,16 @@ class Api {
     }
   }
 
+  frequencyprepaidbyproduct(id) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/frequency/fetchfrquencybyproduct/" + id.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var frequency = json.decode(response.body);
+    return frequency;
+  }
+
   Future<List> fetchProduct() async {
     List product = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -248,6 +269,17 @@ class Api {
     var orders = json.decode(response.body);
     print(orders);
     return orders;
+  }
+
+  getdelivery(custid) async {
+    List delivery = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/orders/getordersbycust/" + custid.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    delivery = json.decode(response.body);
+    return delivery;
   }
 
   checkouponavailable(String coupon) async {

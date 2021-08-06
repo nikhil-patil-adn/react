@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class City {
   const City({
     required this.name,

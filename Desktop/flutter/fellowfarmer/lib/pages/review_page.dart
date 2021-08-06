@@ -15,6 +15,7 @@ class _ReviewPageState extends State<ReviewPage> {
   final coupontextcontroller = TextEditingController();
   final addresscontroller = TextEditingController();
   final prepaidamtController = TextEditingController();
+  String payamount = "00.00";
   var focusNode = FocusNode();
   final List customerdata = [];
   List product = [];
@@ -23,9 +24,8 @@ class _ReviewPageState extends State<ReviewPage> {
   var desciption = "";
   var qty = "";
   int discountval = 0;
-  String finalamount = "0";
+  String finalamount = "00.00";
   var btntype = "";
-  double prize = double.parse('100');
   bool _showprepaid = false;
   bool _prepaidPressed = false;
   bool _postpaidPressed = false;
@@ -40,8 +40,10 @@ class _ReviewPageState extends State<ReviewPage> {
     backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
   );
 
-  List prepaidoption = ['1', '2', '3'];
+  List prepaidoption = [];
   String _prepaidvalue = '1';
+  String id = '0';
+  List freq = [];
 
   void initState() {
     print("instde order");
@@ -56,11 +58,23 @@ class _ReviewPageState extends State<ReviewPage> {
     var obj = new Api();
     obj.insertcustomer(widget.customerdata);
     obj.fetchProduct().then((value) {
+      print(value);
       setState(() {
         name = value[0]['name'];
+        id = value[0]['id'].toString();
         image = value[0]['image'];
         desciption = value[0]['desciption'];
-        finalamount = prize.toString();
+        finalamount = value[0]['price'].toString();
+        payamount = finalamount;
+      });
+
+      obj.frequencyprepaidbyproduct(id).then((val) {
+        print(val);
+        if (val.length > 0) {
+          setState(() {
+            prepaidoption = val;
+          });
+        }
       });
     });
   }
@@ -68,23 +82,30 @@ class _ReviewPageState extends State<ReviewPage> {
   _checkcoupon() {
     print(coupontextcontroller.text);
     var obj = new Api();
-    obj.checkouponavailable(coupontextcontroller.text).then((value) {
-      if (value.length > 0) {
-        discountval = value[0]['dis_count_per'];
-        double decimalval = double.parse('124') / value[0]['dis_count_per'];
-        double sum = prize - decimalval;
-        setState(() {
-          finalamount = sum.toString();
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Coupon Accepted!!!')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Coupon not accepted!!!')),
-        );
-      }
-    });
+    if (coupontextcontroller.text == "") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter coupon!!!')),
+      );
+    } else {
+      obj.checkouponavailable(coupontextcontroller.text).then((value) {
+        if (value.length > 0) {
+          discountval = value[0]['dis_count_per'];
+          double decimalval =
+              double.parse(finalamount) / value[0]['dis_count_per'];
+          double sum = double.parse(finalamount) - decimalval;
+          setState(() {
+            payamount = sum.toStringAsFixed(2);
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Coupon Accepted!!!')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Coupon not accepted!!!')),
+          );
+        }
+      });
+    }
   }
 
   Widget _productdetail() {
@@ -100,7 +121,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.5,
-                    child: Text("Product Name:", style: headerstyle),
+                    child: Text("Product :", style: headerstyle),
                   ),
                   Container(
                       child: Text(
@@ -159,23 +180,26 @@ class _ReviewPageState extends State<ReviewPage> {
           for (int i = 0; i < prepaidoption.length; i++)
             ListTile(
               title: Text(
-                prepaidoption[i] + " Month",
+                prepaidoption[i]['label_name'] +
+                    ' (' +
+                    prepaidoption[i]['number_of_days'] +
+                    ' days) ',
               ),
               leading: Radio(
-                  value: prepaidoption[i].toString(),
+                  value: prepaidoption[i]['number_of_days'].toString(),
                   groupValue: _prepaidvalue.toString(),
                   onChanged: (value) {
                     setState(() {
                       _prepaidvalue = value.toString();
+                      print("preselectedval");
+                      print(_prepaidvalue);
+                      double tempval =
+                          double.parse(payamount) * double.parse(_prepaidvalue);
+                      print(tempval);
+                      payamount = tempval.toStringAsFixed(2);
                     });
                   }),
             ),
-          TextField(
-            controller: prepaidamtController,
-            decoration: InputDecoration(
-              labelText: "Amount",
-            ),
-          ),
         ],
       ),
     );
@@ -194,18 +218,15 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: TextFormField(
                     controller: coupontextcontroller,
                     decoration: InputDecoration(
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: InkWell(
-                            onTap: () => _checkcoupon(),
-                            child: Image(
-                              image: AssetImage("assets/images/add_to_fav.jpg"),
-                              width: 2,
-                              height: 2,
-                              fit: BoxFit.fill,
+                        suffixIcon: TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.pink,
                             ),
-                          ),
-                        ),
+                            onPressed: _checkcoupon,
+                            child: Text(
+                              "Apply Coupon",
+                              style: TextStyle(fontSize: 15.0),
+                            )),
                         border: UnderlineInputBorder(),
                         labelText: "Add Coupon"),
                     validator: (value) {
@@ -275,13 +296,37 @@ class _ReviewPageState extends State<ReviewPage> {
                     ),
                   ),
                 if (_showprepaid) _prepaidform(),
+                SizedBox(height: 20),
+                Container(
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Text(
+                          "Pay Now:",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          payamount,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_couponformKey.currentState!.validate()) {
                         List custdata = widget.customerdata;
-                        custdata[0]['prize'] = finalamount;
+                        custdata[0]['prize'] = payamount;
                         custdata[0]['address'] = addresscontroller.text;
                         custdata[0]['subscriptionpaymenttype'] = _pressval;
                         if (btntype == 'subscription' &&
@@ -291,6 +336,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           custdata[0]['prepaidoption'] = '0';
                         }
 
+                        print(custdata);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
