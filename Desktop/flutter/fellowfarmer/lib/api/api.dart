@@ -103,6 +103,16 @@ class Api {
     return feedbacks;
   }
 
+  fetchholidaybycustomer(String id) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/myholidays/fetchholidaybycustomer/" + id.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var holidays = json.decode(response.body);
+    return holidays;
+  }
+
   registercustomer(List custdata) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -282,6 +292,19 @@ class Api {
     return delivery;
   }
 
+  fetchsubscriptionbycustomer(custid) async {
+    List sub = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host +
+        "/api/subscriptions/fetchsubscriptionbycustomer/" +
+        custid.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    sub = json.decode(response.body);
+    return sub;
+  }
+
   checkouponavailable(String coupon) async {
     List coupons = [];
     String token = tokennew;
@@ -291,6 +314,22 @@ class Api {
         headers: <String, String>{'authorization': basicAuth});
     coupons = json.decode(response.body);
     return coupons;
+  }
+
+  insertholiday(holidaydata) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/myholidays/insertholidays/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body: jsonEncode(<String, String>{
+        'custid': holidaydata[0]['custid'].toString(),
+        'startdate': holidaydata[0]['startdate'].toString(),
+        'enddate': holidaydata[0]['enddate'].toString()
+      }),
+    );
+    return holidaydata;
   }
 
   fetchProductList() async {

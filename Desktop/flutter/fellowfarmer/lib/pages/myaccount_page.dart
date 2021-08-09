@@ -5,6 +5,8 @@ import 'package:fellowfarmer/pages/edit_customer_profile.dart';
 import 'package:fellowfarmer/pages/feedback_list.dart';
 import 'package:fellowfarmer/pages/feedback_page.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
+import 'package:fellowfarmer/pages/myholidays.dart';
+import 'package:fellowfarmer/pages/subscriptionlist.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -120,6 +122,24 @@ class _MyaccountPageState extends State<MyaccountPage> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CalenderPage()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My Plan"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyHoliday()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My Subscription"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SubscriptionList()));
               },
             ),
         ],

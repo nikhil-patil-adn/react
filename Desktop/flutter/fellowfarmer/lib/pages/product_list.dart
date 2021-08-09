@@ -1,6 +1,6 @@
-import 'dart:convert';
+import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'product_detail.dart';
@@ -21,19 +21,26 @@ class _ProductListState extends State<ProductList> {
     // qtyController.text = qtyval.toString();
   }
 
-  fetchProductlist() async {
-    var url = "http://192.168.2.107:8000/api/products/fetch_products/";
-    var response = await http.get(Uri.parse(url));
-    var product = json.decode(response.body);
-    for (var i = 0; i < product.length; i++) {
-      myController.add(TextEditingController());
+  fetchProductlist() {
+    var obj = new Api();
+    obj.fetchProductList().then((val) {
+      print(val);
+      print("val");
       setState(() {
-        myController[i].text = '0';
+        products = val;
       });
-    }
-    setState(() {
-      products = product;
+
+      if (val.length > 0) {
+        print("inside product");
+        for (var i = 0; i < val.length; i++) {
+          myController.add(TextEditingController());
+          setState(() {
+            myController[i].text = '0';
+          });
+        }
+      }
     });
+    print(products);
   }
 
   Widget qtyTextField(int index) {
@@ -95,7 +102,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  Widget buildText(String text, int index) {
+  Widget buildText(String text, int index, int code) {
     final styleButton =
         TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold);
 
@@ -139,11 +146,60 @@ class _ProductListState extends State<ProductList> {
               //decoration: BoxDecoration(
               // border: Border.all(),
               // ),
-              child:
-                  ElevatedButton(onPressed: () {}, child: Text("Add to Cart")))
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductDetail(
+                                code: code,
+                                quantity: myController[index].text)));
+                  },
+                  child: Text("Add to Cart")))
         ],
       ),
     );
+  }
+
+  Widget _displaylist() {
+    return ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final items = products[index];
+          return ListTile(
+              title: Text(
+                items['name'],
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              subtitle: buildText(items['desciption'], index, items['code']),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProductDetail(
+                            code: items['code'],
+                            quantity: myController[index].text)));
+              },
+              leading: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProductDetail(
+                              code: items['code'],
+                              quantity: myController[index].text)));
+                },
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: 100,
+                    minHeight: 100,
+                    maxWidth: 100,
+                    maxHeight: 100,
+                  ),
+                  child: Image.network(items['image_url'], fit: BoxFit.fill),
+                ),
+              ));
+        });
   }
 
   @override
@@ -167,44 +223,7 @@ class _ProductListState extends State<ProductList> {
       //         icon: Icon(Icons.person), title: Text('Profile'))
       //   ],
       // ),
-      body: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            final items = products[index];
-            return ListTile(
-                title: Text(
-                  items['name'],
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                subtitle: buildText(items['desciption'], index),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProductDetail(
-                              code: items['code'],
-                              quantity: myController[index].text)));
-                },
-                leading: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductDetail(
-                                code: items['code'],
-                                quantity: myController[index].text)));
-                  },
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: 100,
-                      minHeight: 100,
-                      maxWidth: 100,
-                      maxHeight: 100,
-                    ),
-                    child: Image.network(items['image_url'], fit: BoxFit.fill),
-                  ),
-                ));
-          }),
+      body: products.length > 0 ? _displaylist() : HomeLoader(),
     );
   }
 }

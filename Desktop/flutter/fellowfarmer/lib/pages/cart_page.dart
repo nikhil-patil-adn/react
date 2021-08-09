@@ -341,8 +341,8 @@ class _CartPageState extends State<CartPage> {
                     suffixIcon: Icon(Icons.event_note),
                     labelText: "Subscription Start Date"),
                 autovalidateMode: AutovalidateMode.always,
-                validator: (e) =>
-                    (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
+                // validator: (e) =>
+                //   (e?.day ?? 0) == 1 ? 'Please not the first day' : null,
                 onDateSelected: (DateTime value) {
                   setState(() {
                     selecteddate = value;

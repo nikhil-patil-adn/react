@@ -19,9 +19,9 @@ class _OrderPageState extends State<OrderPage> {
     fontSize: 18,
   );
   List product = [];
-  var order_status = "";
-  var payment_status = "";
-  var order_amount = "";
+  var orderstatus = "";
+  var paymentstatus = "";
+  var orderamount = "";
   var productname = "";
   var image = "";
   var desciption = "";
@@ -36,12 +36,12 @@ class _OrderPageState extends State<OrderPage> {
     print(widget.customerdata);
     obj.insertorder(widget.customerdata).then((value) {
       setState(() {
-        order_status = capitalize(value['order_status'].replaceAll('_', " "));
-        payment_status =
+        orderstatus = capitalize(value['order_status'].replaceAll('_', " "));
+        paymentstatus =
             capitalize(value['payment_status'].replaceAll('_', " "));
         productname = capitalize(value['product']);
         qty = value['quantity'].toString();
-        order_amount = value['order_amount'];
+        orderamount = value['order_amount'];
         custname = widget.customerdata[0]['name'];
         custaddress = value['delivery_address'];
         custmobile = widget.customerdata[0]['mobile'];
@@ -80,7 +80,7 @@ class _OrderPageState extends State<OrderPage> {
                       child: Text("Order Status :", style: statusheaderstyle),
                     ),
                     Container(
-                      child: Text(order_status,
+                      child: Text('',
                           style: TextStyle(
                             fontSize: 20.0,
                             color: successcolor,
@@ -99,7 +99,7 @@ class _OrderPageState extends State<OrderPage> {
                       child: Text("Payment Status :", style: statusheaderstyle),
                     ),
                     Container(
-                      child: Text(payment_status,
+                      child: Text('',
                           style: TextStyle(
                             fontSize: 20.0,
                             color: successcolor,
@@ -179,7 +179,7 @@ class _OrderPageState extends State<OrderPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: Text(
-                      order_amount,
+                      orderamount,
                       style: productheaderstyle,
                     ),
                   ),

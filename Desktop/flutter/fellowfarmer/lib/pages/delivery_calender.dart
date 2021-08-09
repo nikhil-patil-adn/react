@@ -9,7 +9,7 @@ class CalenderPage extends StatefulWidget {
 }
 
 class _CalenderPageState extends State<CalenderPage> {
-  DateTime date_dry = DateTime.now();
+  DateTime datedry = DateTime.now();
   List meetings = [];
   String custid = "";
   List newdata = [];
@@ -65,11 +65,11 @@ List<Appointment> getAppointments(List newdeliverydata) {
   List<Appointment> meetings = <Appointment>[];
 
   for (int i = 0; i < newdeliverydata.length; i++) {
-    final date_dry =
+    final datedry =
         DateTime.tryParse(newdeliverydata[i]['schedule_delivery_date'])!;
 
     final startTime =
-        DateTime(date_dry.year, date_dry.month, date_dry.day, 9, 0, 0);
+        DateTime(datedry.year, datedry.month, datedry.day, 9, 0, 0);
 
     final DateTime endTime = startTime.add(const Duration(hours: 2));
     meetings.add(Appointment(
