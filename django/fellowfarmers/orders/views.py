@@ -18,12 +18,11 @@ import requests
 
 def testorder(request):
     #url='http://192.168.2.107:8000/api/order/getordersbycust/8'
-    url='http://127.0.0.1:8000/api/orders/getordersbycust/8'
+    url='http://127.0.0.1:8000/api/orders/fetchsubscriptiobycustomer/8'
     headers = {'Authorization': 'Token 8334d1d63c97cc583ac50fc034afaf5f57833251'}
     r = requests.get(url, headers=headers)
     print(r)
     return HttpResponse("hi")
-
 
 class getordersbycust(APIView):
     permission_classes=[IsAuthenticated,]

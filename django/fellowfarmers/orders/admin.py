@@ -2,12 +2,13 @@ from django.contrib import admin
 from .models import Order
 from django.utils.safestring import mark_safe 
 from datetime import timedelta,datetime
+from rangefilter.filters import DateRangeFilter
 # Register your models here.
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id','order_number','order_date','customer','schedule_shipping_date','order_type','order_amount','sales_person','delivery_guy','order_status','payment_status'] 
-    list_filter=['delivery_staff','schedule_delivery_date','customer',]
+    list_filter=['delivery_staff','schedule_delivery_date','customer',('schedule_delivery_date',DateRangeFilter),]
 
     def order_number(self,obj):
         return obj.id
@@ -38,7 +39,7 @@ class MyDeliveryAdmin(OrderAdmin):
         todaytime = str(todaytime).split(" ")
         todaytime=todaytime[0]+" 00:00:00"
         nextday = datetime.strptime(todaytime,'%Y-%m-%d %H:%M:%S')+timedelta(days=1)
-        return Order.objects.filter(schedule_delivery_date__gte=todaytime,schedule_delivery_date__lte=nextday) 
+        return Order.objects.filter(schedule_delivery_date__gte=todaytime)#,schedule_delivery_date__lte=nextday) 
 
     def delivery_Date(self,obj):
         return obj.schedule_delivery_date    
