@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'othermasters',
     'subscriptions','orders','products','societymasters','coupons','deliverystaffroster',
     'feedbacks','notifications','commissions','banners',
-    'category','frequencymasters','myholidays',
+    'category','frequencymasters','myholidays','sendsmsemails',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +148,15 @@ MEDIA_DIRS=BASE_DIR /'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+
+#SMS Configuration for Twilio
+TWILIO_ACCOUNT_SID = 'ACd865785fa965d15c97a07c2b6b216fec'
+TWILIO_AUTH_TOKEN = '912e2d82dc19ea4eec536477b179b792'
+TWILIO_NUMBER='+16677715669'

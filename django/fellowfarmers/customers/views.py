@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from othermasters.models import CityMaster
 from societymasters.models import SocietyMaster
 from django.http.response import JsonResponse
@@ -85,6 +86,16 @@ class customerregisterwithuserpass(APIView):
             return JsonResponse(customer_data,safe=False)    
 
 
+class checkmobile(APIView):
+    permission_class=[IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+    def get(self,request,mob):
+        QuerySet=Customer.objects.filter(mobile=mob)
+        customer_data=CustomerSerializer(QuerySet,context={'request':request},many=True)
+        return JsonResponse(customer_data.data,safe=False)
+
+
 
 
 class customerregister(APIView):
@@ -92,13 +103,19 @@ class customerregister(APIView):
     authentication_classes=[TokenAuthentication]
     def post(self,request):
         customer_data = JSONParser().parse(request)
-        custobj=Customer.objects.filter(mobile__iexact=customer_data['mobile'])
+        custobj=Customer.objects.filter(mobile=customer_data['mobile'])
+        print(custobj)
         if custobj:
+            print("mobile present")
             return JsonResponse(customer_data,safe=False)
         else:
             soc=SocietyMaster.objects.get(name__iexact=customer_data['society'])
             city=CityMaster.objects.get(name__iexact=customer_data['city'])
-            sv=Customer(name=customer_data['name'],username=customer_data['mobile'],password=customer_data['mobile'],mobile=customer_data['mobile'],
+            sv=Customer(name=customer_data['name'],
+            username=customer_data['mobile'],
+            password=customer_data['mobile'],
+            mobile=customer_data['mobile'],
+            email=customer_data['email'],
             city=city,
             society=soc,
             pincode=customer_data['pincode'])

@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 from django.http.response import JsonResponse,HttpResponse
 import datetime
-
+from sendsmsemails.views import sendemailcommon,sendsmscommon
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser 
@@ -24,14 +24,24 @@ def testorder(request):
     print(r)
     return HttpResponse("hi")
 
+class fetchbuynowbycustomer(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
+
+    def get(self,request,custid):
+        QuerySet=Order.objects.filter(customer=custid,order_type='buynow')
+        orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
+        return JsonResponse(orderdata.data,safe=False)    
+
 class getordersbycust(APIView):
     permission_classes=[IsAuthenticated,]
     authentication_classes=[TokenAuthentication,]
 
     def get(self,request,custid):
         QuerySet=Order.objects.filter(customer=custid)
-        orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
+        orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)   
         return JsonResponse(orderdata.data,safe=False)
+
 
 
 
@@ -96,6 +106,15 @@ class insertorder(APIView):
                 schedule_delivery_date=newshipdate)
                 sv.save()
             orderdata = Order.objects.values().latest('id')
+            msg="Congratulation your order is confirm."\
+                +"product name : {}".format(prd)\
+                +"quantity : {}".format(customer_data['quantity'])
+            subject="Order Placed"    
+            data={'message':msg,'subject':subject,
+            'to':[customer_data['email']]}
+            sendemailcommon(data) 
+            data={'body':'test nikhil','to':customer_data['mobile']}
+            sendsmscommon(data)
             return JsonResponse(orderdata,safe=False)
         else:
             sv=Order(
@@ -113,6 +132,15 @@ class insertorder(APIView):
             schedule_delivery_date=customer_data['selecteddate'])
             sv.save()
             orderdata = Order.objects.values().latest('id')
+            msg="Congratulation your order is confirm."\
+                +"product name : {}".format(prd)\
+                +"quantity : {}".format(customer_data['quantity'])
+            subject="Order Placed"    
+            data={'message':msg,'subject':subject,
+            'to':[customer_data['email']]}
+            sendemailcommon(data) 
+            data={'body':'order confirmed','to':customer_data['mobile']}
+            sendsmscommon(data)
             return JsonResponse(orderdata,safe=False)
 
 

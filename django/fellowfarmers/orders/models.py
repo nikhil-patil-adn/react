@@ -12,7 +12,7 @@ class Order(models.Model):
     order_date=models.DateTimeField(default=datetime.now)
     schedule_delivery_date=models.DateTimeField(default=datetime.now)
     shipping_date=models.DateTimeField(default=datetime.now)
-    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)#never put on delete models cascade
     delivery_address=models.TextField()
     product=models.CharField(max_length=200)
     quantity=models.IntegerField()

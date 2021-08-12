@@ -32,6 +32,7 @@ urlpatterns = [
     path('api/feedbacks/',include('feedbacks.urls')),
     path('api/frequency/',include('frequencymasters.urls')),
     path('api/myholidays/',include('myholidays.urls')),
+    path('api/sendsmsemails/',include('sendsmsemails.urls')),
     path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
 ]
 

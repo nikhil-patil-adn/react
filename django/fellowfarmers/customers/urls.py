@@ -8,4 +8,5 @@ urlpatterns = [
     path('checklogin/',checklogin.as_view()),
     path('customerregisterwithuserpass/',customerregisterwithuserpass.as_view()),
     path('updatepassword/',updatepassword.as_view()),
+    path('checkmobile/<str:mob>',checkmobile.as_view()),
 ]
