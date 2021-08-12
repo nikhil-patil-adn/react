@@ -1,5 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/main.dart';
+import 'package:fellowfarmer/pages/buynowlist.dart';
 import 'package:fellowfarmer/pages/delivery_calender.dart';
 import 'package:fellowfarmer/pages/edit_customer_profile.dart';
 import 'package:fellowfarmer/pages/feedback_list.dart';
@@ -56,7 +57,7 @@ class _MyaccountPageState extends State<MyaccountPage> {
               height: 100,
               child: DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.cyan,
                 ),
                 child: Text('Welcome ' + customername,
                     style: TextStyle(
@@ -100,22 +101,22 @@ class _MyaccountPageState extends State<MyaccountPage> {
                         builder: (context) => CustomerEditProfile()));
               },
             ),
-          if (isLogin)
-            ListTile(
-              title: const Text('Add feedback'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddFeedback()));
-              },
-            ),
-          if (isLogin)
-            ListTile(
-              title: const Text("My Feedback"),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FeedbackList()));
-              },
-            ),
+          // if (isLogin)
+          //   ListTile(
+          //     title: const Text('Add feedback'),
+          //     onTap: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => AddFeedback()));
+          //     },
+          //   ),
+          // if (isLogin)
+          //   ListTile(
+          //     title: const Text("My Feedback"),
+          //     onTap: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => FeedbackList()));
+          //     },
+          //   ),
           if (isLogin)
             ListTile(
               title: const Text("My Calender"),
@@ -124,14 +125,14 @@ class _MyaccountPageState extends State<MyaccountPage> {
                     MaterialPageRoute(builder: (context) => CalenderPage()));
               },
             ),
-          if (isLogin)
-            ListTile(
-              title: const Text("My Plan"),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyHoliday()));
-              },
-            ),
+          // if (isLogin)
+          //   ListTile(
+          //     title: const Text("My Plan"),
+          //     onTap: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => MyHoliday()));
+          //     },
+          //   ),
           if (isLogin)
             ListTile(
               title: const Text("My Subscription"),
@@ -140,6 +141,16 @@ class _MyaccountPageState extends State<MyaccountPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SubscriptionList()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My regular order"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegularOrderList()));
               },
             ),
         ],

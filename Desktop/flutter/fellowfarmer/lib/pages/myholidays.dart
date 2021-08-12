@@ -100,8 +100,9 @@ class _MyHolidayState extends State<MyHoliday> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.cyan.shade50,
         appBar: AppBar(
-          title: Text("My Holiday"),
+          title: Text("My plan"),
         ),
         endDrawer: MyaccountPage(),
         body: SingleChildScrollView(

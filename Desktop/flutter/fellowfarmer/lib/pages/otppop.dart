@@ -1,3 +1,4 @@
+import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/change_password.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,8 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
 
   void initState() {
     super.initState();
+    var obj = new Api();
+    obj.sendotp(widget.custdata);
   }
 
   @override
@@ -85,22 +88,6 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
         ),
       ),
     );
-  }
-
-  _checkOTP() async {
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    //var setotp = prefs.getString("otp_" + widget.mobilenumber);
-    if (newotp == '1234') {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => widget.buttontext == 'change_password'
-                  ? ChangePassword(customerdata: widget.custdata)
-                  : ReviewPage(customerdata: widget.custdata)));
-      // return true;
-    } else {
-      return false;
-    }
   }
 
   dialogueContent(BuildContext context) {
@@ -168,18 +155,26 @@ class _NewCustomDialogState extends State<NewCustomDialog> {
                 child: ElevatedButton(
                     onPressed: (() {
                       setState(() {
-                        _checkOTP();
-                        //.then((value) {
-                        //   if (value == true) {
-                        //     Navigator.pop(context);
-                        //   } else {
-                        //     final snackBar = SnackBar(
-                        //         content: Text('Wrong otp',
-                        //             style: TextStyle(color: Colors.white)));
-                        //     ScaffoldMessenger.of(context)
-                        //         .showSnackBar(snackBar);
-                        //   }
-                        // });
+                        var obj = new Api();
+                        obj.checkOTP(widget.custdata, newotp).then((value) {
+                          if (value == true) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => widget.buttontext ==
+                                            'change_password'
+                                        ? ChangePassword(
+                                            customerdata: widget.custdata)
+                                        : ReviewPage(
+                                            customerdata: widget.custdata)));
+                          } else {
+                            final snackBar = SnackBar(
+                                content: Text('Wrong otp',
+                                    style: TextStyle(color: Colors.white)));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
+                        });
                       });
                     }),
                     child: Text(

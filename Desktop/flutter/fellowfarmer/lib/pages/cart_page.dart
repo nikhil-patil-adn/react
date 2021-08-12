@@ -36,6 +36,7 @@ class _CartPageState extends State<CartPage> {
   final nameController = TextEditingController();
   final cityController = TextEditingController();
   final pincodeController = TextEditingController();
+  final emailController = TextEditingController();
   final _soctextEditingController = TextEditingController();
   final _citytextEditingController = TextEditingController();
   late DateTime selecteddate = DateTime.now();
@@ -58,6 +59,7 @@ class _CartPageState extends State<CartPage> {
   List<Location> _locationOptions = [];
   List<City> _cityOptions = [];
   String intiallocationval = "";
+  bool islogin = false;
 
   void initState() {
     super.initState();
@@ -79,7 +81,9 @@ class _CartPageState extends State<CartPage> {
     obj.getLoggedincustomerdata().then((value) {
       if (value.length > 0) {
         setState(() {
+          islogin = true;
           mobileController.text = value[0]['mobile'];
+          emailController.text = value[0]['email'].toString();
           nameController.text = value[0]['name'];
           addresstxt = value[0]['address'];
           pincodeController.text = value[0]['pincode'].toString();
@@ -91,6 +95,7 @@ class _CartPageState extends State<CartPage> {
             locationController.text = value.toString();
             intiallocationval = value.toString();
             _soctextEditingController.text = value.toString();
+            print(_soctextEditingController.text);
           });
         });
 
@@ -143,15 +148,15 @@ class _CartPageState extends State<CartPage> {
         ),
         Autocomplete<City>(
           displayStringForOption: _displayStringForOptioncity,
-          fieldViewBuilder:
-              (context, textEditingController, focusNode, onFieldSubmitted) {
-            //textEditingController.text = cityController.text.toString();
+          // fieldViewBuilder:
+          //     (context, textEditingController, focusNode, onFieldSubmitted) {
+          //   //textEditingController.text = cityController.text.toString();
 
-            return TextFormField(
-              focusNode: focusNode,
-              controller: _citytextEditingController,
-            );
-          },
+          //   return TextFormField(
+          //     focusNode: focusNode,
+          //     controller: _citytextEditingController,
+          //   );
+          // },
           optionsBuilder: (TextEditingValue textEditingValue) {
             cityController.text = textEditingValue.text.toString();
             if (textEditingValue.text.toString() == '') {
@@ -189,12 +194,12 @@ class _CartPageState extends State<CartPage> {
         ),
         Autocomplete<Location>(
           displayStringForOption: _displayStringForOption,
-          fieldViewBuilder:
-              (context, textEditingController, focusNode, onFieldSubmitted) {
+          fieldViewBuilder: (BuildContext context, _soctextEditingController,
+              FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) {
             //textEditingController.text = locationController.text.toString();
 
             return TextFormField(
-              focusNode: focusNode,
+              focusNode: fieldFocusNode,
               controller: _soctextEditingController,
             );
           },
@@ -257,6 +262,32 @@ class _CartPageState extends State<CartPage> {
                 if (value == null || value.isEmpty) {
                   return 'Please Enter Mobile Number';
                 }
+                if (value.length != 10) {
+                  return 'Please Enter 10 digit Mobile Number';
+                }
+                return null;
+              },
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 1.0,
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.blue, width: 2)),
+            ),
+            child: TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                  labelText: "Email id",
+                  border: InputBorder.none,
+                  labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter email';
+                }
+                if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                    .hasMatch(value)) {
+                  return 'Please a valid Email';
+                }
                 return null;
               },
             ),
@@ -317,12 +348,12 @@ class _CartPageState extends State<CartPage> {
                   labelText: "Pincode",
                   border: InputBorder.none,
                   labelStyle: TextStyle(fontSize: 20, color: Colors.black)),
-              // validator: (value) {
-              //   if (value.length == 0 || value.isEmpty) {
-              //     return 'Please Enter Pincode';
-              //   }
-              //   return null;
-              // },
+              validator: (value) {
+                if (value!.length == 0 || value.isEmpty) {
+                  return 'Please Enter Pincode';
+                }
+                return null;
+              },
             ),
           ),
           if (btntype == "subscription")
@@ -399,52 +430,64 @@ class _CartPageState extends State<CartPage> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                var obj = new Api();
-                if (locationController.text != "")
-                  obj.fetchSociety(locationController.text).then((value) {
-                    if (value == "" || value == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text(
-                                'We currently do not serve your society. Someone from our customer support team will get in touch with you soon')),
-                      );
-                    } else {
-                      if (mobileController.text != "")
-                        obj.checkregister(mobileController.text).then((cust) {
-                          var custdata = [];
-                          var custdatalist = {
-                            'mobile': mobileController.text,
-                            'name': nameController.text,
-                            'city': cityController.text,
-                            'location': locationController.text,
-                            'pincode': pincodeController.text,
-                            'quantity': qty,
-                            'address': addresstxt,
-                            'btntype': btntype,
-                            'subscriptiontype': _pressval,
-                            'selecteddate': selecteddate
-                          };
-
-                          custdata.add(custdatalist);
-                          if (cust == null) {
-                            showDialog(
-                                context: context,
-                                builder: (context) => NewCustomDialog(
-                                    title: "Enter OTP",
-                                    description: "asdasdasd",
-                                    buttontext: "buttontext",
-                                    custdata: custdata));
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReviewPage(customerdata: custdata)));
-                          }
-                        });
-                    }
-                  });
                 if (_formKey.currentState!.validate()) {
+                  var obj = new Api();
+                  if (locationController.text != "")
+                    obj.fetchSociety(locationController.text).then((value) {
+                      if (value == "" || value == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'We currently do not serve your society. Someone from our customer support team will get in touch with you soon')),
+                        );
+                      } else {
+                        if (mobileController.text != "")
+                          obj.checkregister(mobileController.text).then((cust) {
+                            var custdata = [];
+                            var custdatalist = {
+                              'mobile': mobileController.text,
+                              'email': emailController.text,
+                              'name': nameController.text,
+                              'city': cityController.text,
+                              'location': locationController.text,
+                              'pincode': pincodeController.text,
+                              'quantity': qty,
+                              'address': addresstxt,
+                              'btntype': btntype,
+                              'subscriptiontype': _pressval,
+                              'selecteddate': selecteddate
+                            };
+
+                            custdata.add(custdatalist);
+                            if (cust == null) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => NewCustomDialog(
+                                      title: "Enter OTP",
+                                      description: "asdasdasd",
+                                      buttontext: "buttontext",
+                                      custdata: custdata));
+                            } else {
+                              if (islogin == false) {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => NewCustomDialog(
+                                        title: "Enter OTP",
+                                        description: "asdasdasd",
+                                        buttontext: "buttontext",
+                                        custdata: custdata));
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ReviewPage(
+                                            customerdata: custdata)));
+                              }
+                            }
+                          });
+                      }
+                    });
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing Data')),
                   );

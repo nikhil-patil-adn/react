@@ -1,10 +1,52 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math';
 
 class Api {
   var host = "http://192.168.2.107:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
+
+  sendotp(cust) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Random random = new Random();
+    int randomNumber = random.nextInt(10000);
+    print(randomNumber);
+
+    prefs.setString("otp_" + cust[0]['mobile'], randomNumber.toString());
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/sendsmsemails/sendsmsapi/";
+    var response = await http.post(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth},
+        body: jsonEncode(<String, String>{
+          'mobile': cust[0]['mobile'].toString(),
+          'otp': randomNumber.toString()
+        }));
+    var sms = json.decode(response.body);
+    print(sms);
+
+    return sms;
+  }
+
+  checkOTP(cust, newotp) async {
+    print("insode api");
+    print(cust);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var setotp = prefs.getString(
+      "otp_" + cust[0]['mobile'],
+    );
+    print("setotp");
+    print(setotp);
+    print("newotp");
+    print(newotp);
+
+    if (newotp == setotp) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   updatepasswordcustomer(mobile, password) async {
     print(mobile);
@@ -152,18 +194,54 @@ class Api {
       body: jsonEncode(<String, String>{
         'name': custdata[0]['name'],
         'mobile': custdata[0]['mobile'],
+        'email': custdata[0]['email'],
         'city': custdata[0]['city'],
         'society': custdata[0]['location'],
         'pincode': custdata[0]['pincode']
       }),
     );
     var cust = json.decode(response.body);
+    print(cust);
 
     if (cust.length > 0) {
       return true;
     } else {
       return false;
     }
+  }
+
+  checkmobile(mob) {
+    bool ischeckmobile = false;
+    checklogin().then((val) {
+      print("check login");
+      print(val);
+      if (val.length > 0) {
+        // setState(() {
+        //   ischeckmobile = true;
+        // });
+        return true;
+      } else {
+        ismobileregister(mob).then((custval) {
+          print("in return custdata");
+          print(custval);
+          if (custval.length > 0) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+      }
+    });
+  }
+
+  ismobileregister(mob) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/customers/checkmobile/" + mob.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var mobile = json.decode(response.body);
+    return mobile;
   }
 
   insertfeedback(List custdata) async {
@@ -260,6 +338,7 @@ class Api {
       body: jsonEncode(<String, String>{
         'name': custdata[0]['name'],
         'mobile': custdata[0]['mobile'],
+        'email': custdata[0]['email'].toString(),
         'city': custdata[0]['city'],
         'society': custdata[0]['location'],
         'prize': custdata[0]['prize'],
@@ -299,6 +378,17 @@ class Api {
     var url = host +
         "/api/subscriptions/fetchsubscriptionbycustomer/" +
         custid.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    sub = json.decode(response.body);
+    return sub;
+  }
+
+  fetchbuynowbycustomer(custid) async {
+    List sub = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/orders/fetchbuynowbycustomer/" + custid.toString();
     var response = await http.get(Uri.parse(url),
         headers: <String, String>{'authorization': basicAuth});
     sub = json.decode(response.body);

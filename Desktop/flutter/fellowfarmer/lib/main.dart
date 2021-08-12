@@ -90,7 +90,7 @@ class _FellowFarmerState extends State<FellowFarmer> {
     return MaterialApp(
       title: 'FellowFarmer',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
       ),
       home: loading == true ? HomeLoader() : MyHomePage(title: "Fellow Farmer"),
     );

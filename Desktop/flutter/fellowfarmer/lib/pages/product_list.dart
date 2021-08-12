@@ -24,14 +24,11 @@ class _ProductListState extends State<ProductList> {
   fetchProductlist() {
     var obj = new Api();
     obj.fetchProductList().then((val) {
-      print(val);
-      print("val");
       setState(() {
         products = val;
       });
 
       if (val.length > 0) {
-        print("inside product");
         for (var i = 0; i < val.length; i++) {
           myController.add(TextEditingController());
           setState(() {
@@ -102,7 +99,7 @@ class _ProductListState extends State<ProductList> {
     );
   }
 
-  Widget buildText(String text, int index, int code) {
+  Widget buildText(String text, int index, int code, String amt) {
     final styleButton =
         TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold);
 
@@ -127,6 +124,21 @@ class _ProductListState extends State<ProductList> {
               ),
             ),
           ),
+          // Container(
+          //   padding: const EdgeInsets.all(10),
+          //   child: Row(
+          //     children: [
+          //       Container(
+          //         width: MediaQuery.of(context).size.width * 0.1,
+          //         child: Text("Price:"),
+          //       ),
+          //       Container(
+          //         width: MediaQuery.of(context).size.width * 0.1,
+          //         child: Text(amt),
+          //       )
+          //     ],
+          //   ),
+          // ),
           Center(
             child: Row(
               children: [
@@ -171,7 +183,8 @@ class _ProductListState extends State<ProductList> {
                 items['name'],
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
-              subtitle: buildText(items['desciption'], index, items['code']),
+              subtitle: buildText(
+                  items['desciption'], index, items['code'], items['price']),
               onTap: () {
                 Navigator.push(
                     context,

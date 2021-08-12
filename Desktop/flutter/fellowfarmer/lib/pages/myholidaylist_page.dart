@@ -177,7 +177,7 @@ class _MyHolidayListState extends State<MyHolidayList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("My Feedback"),
+          title: Text("My plan"),
           // leading: IconButton(
           //     onPressed: () {},
           //     icon: Image.asset(

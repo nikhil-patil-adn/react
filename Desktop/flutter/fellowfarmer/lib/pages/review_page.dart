@@ -46,7 +46,6 @@ class _ReviewPageState extends State<ReviewPage> {
   List freq = [];
 
   void initState() {
-    print("instde order");
     super.initState();
     focusNode.addListener(() {
       print(focusNode.hasFocus);
@@ -58,7 +57,6 @@ class _ReviewPageState extends State<ReviewPage> {
     var obj = new Api();
     obj.insertcustomer(widget.customerdata);
     obj.fetchProduct().then((value) {
-      print(value);
       setState(() {
         name = value[0]['name'];
         id = value[0]['id'].toString();
@@ -69,7 +67,6 @@ class _ReviewPageState extends State<ReviewPage> {
       });
 
       obj.frequencyprepaidbyproduct(id).then((val) {
-        print(val);
         if (val.length > 0) {
           setState(() {
             prepaidoption = val;
@@ -80,7 +77,6 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   _checkcoupon() {
-    print(coupontextcontroller.text);
     var obj = new Api();
     if (coupontextcontroller.text == "") {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -191,11 +187,8 @@ class _ReviewPageState extends State<ReviewPage> {
                   onChanged: (value) {
                     setState(() {
                       _prepaidvalue = value.toString();
-                      print("preselectedval");
-                      print(_prepaidvalue);
                       double tempval =
                           double.parse(payamount) * double.parse(_prepaidvalue);
-                      print(tempval);
                       payamount = tempval.toStringAsFixed(2);
                     });
                   }),
@@ -335,8 +328,9 @@ class _ReviewPageState extends State<ReviewPage> {
                         } else {
                           custdata[0]['prepaidoption'] = '0';
                         }
-
+                        print("review");
                         print(custdata);
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
