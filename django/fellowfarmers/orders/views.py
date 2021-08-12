@@ -1,3 +1,5 @@
+from customers.serializers import CustomerSerializer
+from staffpersons.models import StaffPerson
 from django.db.models.query import QuerySet
 from django.http.response import JsonResponse,HttpResponse
 import datetime
@@ -31,7 +33,17 @@ class fetchbuynowbycustomer(APIView):
     def get(self,request,custid):
         QuerySet=Order.objects.filter(customer=custid,order_type='buynow')
         orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
-        return JsonResponse(orderdata.data,safe=False)    
+        return JsonResponse(orderdata.data,safe=False)  
+
+class deliveryguyorders(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
+
+    def get(self,request,custid):
+        staffobj=StaffPerson.objects.get(id=custid)
+        QuerySet=Order.objects.filter(delivery_staff=staffobj)
+        orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
+        return JsonResponse(orderdata.data,safe=False)            
 
 class getordersbycust(APIView):
     permission_classes=[IsAuthenticated,]
@@ -40,6 +52,21 @@ class getordersbycust(APIView):
     def get(self,request,custid):
         QuerySet=Order.objects.filter(customer=custid)
         orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)   
+        return JsonResponse(orderdata.data,safe=False)
+
+
+class updatestatus(APIView):
+
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
+    def get(self,request,orderid,status):
+        Order.objects.filter(id=orderid).update(order_status=status)
+        queryset=Order.objects.filter(id=orderid)
+        orderdata=OrderSerializer(queryset,context={'request':request},many=True)
+        custquery=Customer.objects.filter(id=orderdata.data[0]['customer']['id'])
+        cust=CustomerSerializer(custquery,many=True)
+        smsdata={'body':'your order status is '+status.replace('_', ' ').lower(),'to':cust.data[0]['mobile']}
+        sendsmscommon(smsdata)
         return JsonResponse(orderdata.data,safe=False)
 
 

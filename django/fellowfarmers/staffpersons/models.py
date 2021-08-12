@@ -13,6 +13,8 @@ class StaffPerson(models.Model):
     code=models.IntegerField()
     name=models.CharField(max_length=200)
     email=models.CharField(max_length=200)
+    username=models.CharField(max_length=200,default='')
+    password=models.CharField(max_length=200,default='')
     mobile=models.CharField(max_length=15,null=True)
     address=models.TextField()
     designation=models.CharField(choices=DESIGNATIONS_CHOICES,max_length=20)
