@@ -1,18 +1,18 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/deliveryguy/deliverypage.dart';
 import 'package:fellowfarmer/pages/forget_password.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
-import 'customer_register.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class DeliveryGuyLogin extends StatefulWidget {
+  DeliveryGuyLogin({Key? key}) : super(key: key);
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _DeliveryGuyLoginState createState() => _DeliveryGuyLoginState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -74,10 +74,10 @@ class _LoginPageState extends State<LoginPage> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ForgetPassword()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => ForgetPassword()));
                   },
                   child: Text(
                     'Forgot Password',
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         var obj = new Api();
                         obj
-                            .login(
+                            .stafflogin(
                                 mobile: nameController.text,
                                 password: passwordController.text)
                             .then((value) {
@@ -101,8 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyHomePage(title: 'FellowFarmer')));
+                                    builder: (context) => DeliveryPage()));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -124,10 +123,10 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CustomerRegister()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => CustomerRegister()));
                       },
                     )
                   ],

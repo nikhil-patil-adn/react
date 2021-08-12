@@ -326,6 +326,37 @@ class Api {
     return custdata;
   }
 
+  updatedeliverystatus(orderid, status) async {
+    print(orderid);
+    List orders = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host +
+        "/api/orders/updatestatus/" +
+        orderid.toString() +
+        "/" +
+        status.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    orders = json.decode(response.body);
+    return orders;
+  }
+
+  checkstafflogin() async {
+    var ismobile = "";
+    var staffname = "";
+    List staffdata = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var islogin = prefs.getString('isstaffLogin');
+    if (islogin == '1') {
+      ismobile = prefs.getString('staffmobile')!;
+      staffname =
+          prefs.containsKey('staffname') ? prefs.getString('staffname')! : "";
+      staffdata = [ismobile, staffname];
+    }
+    return staffdata;
+  }
+
   insertorder(custdata) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var selectedproductcode = prefs.getInt('selectedproductcode');
@@ -389,6 +420,18 @@ class Api {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
     var url = host + "/api/orders/fetchbuynowbycustomer/" + custid.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    sub = json.decode(response.body);
+    return sub;
+  }
+
+  fetchstaffdelivery(custid) async {
+    print(custid);
+    List sub = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/orders/deliveryguyorders/" + custid.toString();
     var response = await http.get(Uri.parse(url),
         headers: <String, String>{'authorization': basicAuth});
     sub = json.decode(response.body);
@@ -469,6 +512,52 @@ class Api {
       prefs.setString('custname', customers[0]['name']);
     }
     return customers;
+  }
+
+  stafflogin({mobile, password}) async {
+    List staffs = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/staffpersons/checklogin/";
+    var response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{'authorization': basicAuth},
+      body: jsonEncode(<String, String>{
+        'password': password,
+        'mobile': mobile,
+      }),
+    );
+    staffs = json.decode(response.body);
+    if (staffs.length > 0) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('isstaffLogin', '1');
+      prefs.setString('staffmobile', staffs[0]['mobile']);
+      prefs.setString('staffname', staffs[0]['name']);
+    }
+    return staffs;
+  }
+
+  getLoggedinstaffdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var isstaffLogin = prefs.getString('isstaffLogin');
+    var staffmob = prefs.getString('staffmobile');
+
+    if (isstaffLogin == '1' && staffmob != "") {
+      String token = tokennew;
+      String basicAuth = 'Token ' + token;
+      var url = host + "/api/staffpersons/checkregister/" + staffmob.toString();
+      var response = await http.get(Uri.parse(url),
+          headers: <String, String>{'authorization': basicAuth});
+      var staff = json.decode(response.body);
+
+      if (staff.length > 0) {
+        return staff;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
   }
 
   getLoggedincustomerdata() async {
