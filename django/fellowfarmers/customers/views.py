@@ -54,32 +54,36 @@ class customerregisterwithuserpass(APIView):
     def post(self,request):
         customer_data = JSONParser().parse(request)
         if customer_data['update'] == '1':
-            sc=CityMaster(code=random.randint(1,1000),name=customer_data['city'])
-            sc.save()
-            cityobj=CityMaster.objects.latest('id')
-            ss=SocietyMaster(code=random.randint(1,1000),name=customer_data['society'])
-            ss.save()
-            socobj=SocietyMaster.objects.latest('id')
-            Customer.objects.filter(id__iexact=customer_data['id']).update(name=customer_data['name'],username=customer_data['username'],password=customer_data['password'],
+            # sc=CityMaster(code=random.randint(1,1000),name=customer_data['city'])
+            #sc.save()
+            cityobj=CityMaster.objects.get(name=customer_data['city'])
+            # ss=SocietyMaster(code=random.randint(1,1000),name=customer_data['society'])
+            # ss.save()
+            socobj=SocietyMaster.objects.get(name=customer_data['society'])
+            Customer.objects.filter(id__exact=customer_data['id']).update(name=customer_data['name'],username=customer_data['username'],password=customer_data['password'],
             mobile=customer_data['mobile'],
             email=customer_data['email'],
             address=customer_data['address'],
+            pincode=customer_data['pincode'],
             city=cityobj,
             society=socobj)
             queryset=Customer.objects.filter(id__iexact=customer_data['id'])
             cust=CustomerSerializer(queryset,context={'request':request},many=True)
             return JsonResponse(cust.data,safe=False)
         else:
-            sc=CityMaster(code=random.randint(1,1000),name=customer_data['city'])
-            sc.save()
-            cityobj=CityMaster.objects.latest('id')
-            ss=SocietyMaster(code=random.randint(1,1000),name=customer_data['society'])
-            ss.save()
-            socobj=SocietyMaster.objects.latest('id')
-            sv=Customer(name=customer_data['name'],username=customer_data['username'],password=customer_data['password'],
+            # sc=CityMaster(code=random.randint(1,1000),name=customer_data['city'])
+            # sc.save()
+            cityobj=CityMaster.objects.get(name=customer_data['city'])
+            # ss=SocietyMaster(code=random.randint(1,1000),name=customer_data['society'])
+            # ss.save()
+            socobj=SocietyMaster.objects.get(name=customer_data['society'])
+            sv=Customer(name=customer_data['name'],
+            username=customer_data['username'],
+            password=customer_data['password'],
             mobile=customer_data['mobile'],
             email=customer_data['email'],
             address=customer_data['address'],
+            pincode=customer_data['pincode'],
             city=cityobj,
             society=socobj)
             sv.save()

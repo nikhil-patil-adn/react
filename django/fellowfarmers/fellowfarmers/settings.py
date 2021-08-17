@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'othermasters',
     'subscriptions','orders','products','societymasters','coupons','deliverystaffroster',
     'feedbacks','notifications','commissions','banners',
-    'category','frequencymasters','myholidays','sendsmsemails',
+    'category','frequencymasters','myholidays','sendsmsemails','paymentlogs',
 ]
 
 MIDDLEWARE = [

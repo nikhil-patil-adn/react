@@ -1,3 +1,4 @@
+from paymentlogs.models import Paymentlog
 from customers.serializers import CustomerSerializer
 from staffpersons.models import StaffPerson
 from django.db.models.query import QuerySet
@@ -110,10 +111,20 @@ class insertorder(APIView):
                 delivery_address=deliveryaddress,
                 product=prd,
                 quantity=customer_data['quantity'],
+                price=customer_data['prize'],
                 subscription_type=customer_data['subscriptionpaymenttype'],
                 frequency_type=customer_data['subscriptiontype']
             )
             ss.save()
+            subid=Subscription.objects.latest('id')
+            pp=Paymentlog(
+                order_type=customer_data['btntype'],
+                order_id=subid,
+                price=customer_data['prize'],
+                transaction_id=customer_data['transactionid'],
+                customerid=cust
+            )
+            pp.save()
             for x in range(1,daysrange,diffday):
                 shipday=x-1
                 newshipdate=datetime.datetime.strptime(selecteddate,'%Y-%m-%d %H:%M:%S')+datetime.timedelta(days=shipday)
@@ -159,6 +170,16 @@ class insertorder(APIView):
             schedule_delivery_date=customer_data['selecteddate'])
             sv.save()
             orderdata = Order.objects.values().latest('id')
+            print(orderdata)
+            subid=Order.objects.latest('id')
+            pp=Paymentlog(
+                order_type=customer_data['btntype'],
+                order_id=subid,
+                price=customer_data['prize'],
+                transaction_id=customer_data['transactionid'],
+                customerid=cust
+            )
+            pp.save()
             msg="Congratulation your order is confirm."\
                 +"product name : {}".format(prd)\
                 +"quantity : {}".format(customer_data['quantity'])

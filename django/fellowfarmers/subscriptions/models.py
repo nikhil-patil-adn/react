@@ -19,6 +19,7 @@ class Subscription(models.Model):
     delivery_address=models.TextField()
     product=models.ForeignKey(Product,on_delete=models.CASCADE,default=1,related_name='prd')
     quantity=models.IntegerField()
+    price=models.DecimalField(max_digits=6,decimal_places=2,default='00.00')
     subscription_type=models.CharField(choices=sub_choices,max_length=200,default='prepaid')
     frequency_type=models.CharField(max_length=200,default='1')
     sales_person=models.CharField(choices=sales,max_length=200,null=True,blank=True)

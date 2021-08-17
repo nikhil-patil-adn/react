@@ -30,3 +30,18 @@ class checklogin(APIView):
         print(queryset)
         cust=StaffPersonSerializer(queryset,context={'request':request},many=True)
         return JsonResponse(cust.data,safe=False)
+
+class updatepassword(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]  
+    def post(self,request):
+        customer_data=JSONParser().parse(request)
+        print(customer_data)
+        StaffPerson.objects.filter(mobile=customer_data['mobile']).update(password=customer_data['password'])
+        queryset=StaffPerson.objects.filter(mobile=customer_data['mobile'])
+        print(queryset)
+        cust=StaffPersonSerializer(queryset,context={'request':request},many=True)
+        print(cust)
+        return JsonResponse(cust.data,safe=False)
+
+

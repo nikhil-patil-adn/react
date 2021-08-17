@@ -22,6 +22,15 @@ def testorder(request):
     return HttpResponse("hi")
 
 
+class fetchsubscriptionbyid(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
+
+    def get(self,request,subid):
+        QuerySet=Subscription.objects.filter(id=subid)
+        orderdata=SubscriptionSerializer(QuerySet,context={'request':request},many=True)
+        return JsonResponse(orderdata.data,safe=False)
+
 class fetchsubscriptionbycustomer(APIView):
     permission_classes=[IsAuthenticated,]
     authentication_classes=[TokenAuthentication,]
