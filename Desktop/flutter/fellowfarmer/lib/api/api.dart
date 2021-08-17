@@ -4,8 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  var host = "http://192.168.2.107:8000";
+  var host = "http://192.168.2.103:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
+
+  fetchbannerlist() async {
+    var url = host + "/api/banners/fetch_banners/";
+    var response = await http.get(Uri.parse(url));
+    var datas = json.decode(response.body);
+    return datas;
+  }
 
   sendotp(cust) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,12 +55,21 @@ class Api {
     }
   }
 
-  updatepasswordcustomer(mobile, password) async {
+  updatepasswordcustomer(mobile, password, isStaff) async {
     print(mobile);
     print(password);
+    print(isStaff);
     String token = tokennew;
     String basicAuth = 'Token ' + token;
-    var url = host + "/api/customers/updatepassword/";
+    var url = "";
+
+    if (isStaff == '1') {
+      print("staff inside wwwwwwwwwwww");
+      url = host + "/api/staffpersons/updatepasswordstaff/";
+    } else {
+      url = host + "/api/customers/updatepassword/";
+    }
+    print(url);
     var response = await http.post(
       Uri.parse(url),
       headers: <String, String>{'authorization': basicAuth},
@@ -61,6 +77,7 @@ class Api {
           jsonEncode(<String, String>{'mobile': mobile, 'password': password}),
     );
     List customers = json.decode(response.body);
+    print(customers);
 
     return customers;
   }
@@ -155,6 +172,16 @@ class Api {
     return holidays;
   }
 
+  fetchPaymentStatementByCustomer(String id) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/paymentlogs/fetchlogsbycustomer/" + id.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var logs = json.decode(response.body);
+    return logs;
+  }
+
   registercustomer(List custdata) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -170,9 +197,10 @@ class Api {
         'mobile': custdata[0]['mobile'],
         'city': custdata[0]['city'],
         'society': custdata[0]['society'],
+        'pincode': custdata[0]['pincode'],
         'address': custdata[0]['address'],
         'update': custdata[0]['update'] == '1' ? custdata[0]['update'] : '0',
-        'id': custdata[0]['id'].toString() != '' ? custdata[0]['id'] : '0',
+        'id': custdata[0]['id'] != null ? custdata[0]['id'] : '0',
       }),
     );
     var cust = json.decode(response.body);
@@ -211,7 +239,6 @@ class Api {
   }
 
   checkmobile(mob) {
-    bool ischeckmobile = false;
     checklogin().then((val) {
       print("check login");
       print(val);
@@ -376,6 +403,7 @@ class Api {
         'quantity': custdata[0]['quantity'],
         'address': custdata[0]['address'],
         'pincode': custdata[0]['pincode'],
+        'transactionid': custdata[0]['transactionid'],
         'fetchorder': '1',
         'btntype': custdata[0]['btntype'],
         'selecteddate': custdata[0]['selecteddate'].toString(),
@@ -409,6 +437,18 @@ class Api {
     var url = host +
         "/api/subscriptions/fetchsubscriptionbycustomer/" +
         custid.toString();
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    sub = json.decode(response.body);
+    return sub;
+  }
+
+  fetchsubscriptionbyid(subid) async {
+    List sub = [];
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url =
+        host + "/api/subscriptions/fetchsubscriptionbyid/" + subid.toString();
     var response = await http.get(Uri.parse(url),
         headers: <String, String>{'authorization': basicAuth});
     sub = json.decode(response.body);
@@ -453,7 +493,7 @@ class Api {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
     var url = host + "/api/myholidays/insertholidays/";
-    var response = await http.post(
+    await http.post(
       Uri.parse(url),
       headers: <String, String>{'authorization': basicAuth},
       body: jsonEncode(<String, String>{

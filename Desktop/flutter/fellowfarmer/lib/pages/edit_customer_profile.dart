@@ -1,4 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/api/cityclass.dart';
+import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/main.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,11 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
   final citycontroller = TextEditingController();
   final societycontroller = TextEditingController();
   final addresscontroller = TextEditingController();
+  final pincodecontroller = TextEditingController();
+  final _soctextEditingController = TextEditingController();
+  final _citytextEditingController = TextEditingController();
+  List<Location> _locationOptions = [];
+  List<City> _cityOptions = [];
   String socid = "";
   String cityid = "";
   int id = 0;
@@ -38,11 +45,15 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
             value[0]['email'] == null ? "" : value[0]['email'].toString();
         addresscontroller.text =
             value[0]['address'] == null ? "" : value[0]['address'].toString();
+        pincodecontroller.text =
+            value[0]['pincode'] == null ? "" : value[0]['pincode'].toString();
         id = value[0]['id'];
       });
 
       socid = value[0]['society'].toString();
+      print(socid);
       obj.fetchSocietyid(socid).then((value) {
+        print(value);
         setState(() {
           societycontroller.text = value;
         });
@@ -54,6 +65,23 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
           citycontroller.text = value;
         });
       });
+    });
+
+    obj.fetchAllSociety().then((val) {
+      print(val);
+      for (int i = 0; i < val.length; i++) {
+        setState(() {
+          _locationOptions.add(Location(name: val[i]['name']));
+        });
+      }
+    });
+
+    obj.fetchAllCity().then((val) {
+      for (int i = 0; i < val.length; i++) {
+        setState(() {
+          _cityOptions.add(City(name: val[i]['name']));
+        });
+      }
     });
   }
 
@@ -69,6 +97,7 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
         'city': citycontroller.text,
         'society': societycontroller.text,
         'address': addresscontroller.text,
+        'pincode': pincodecontroller.text,
         'update': '1',
         'id': id.toString(),
       }
@@ -84,6 +113,117 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
           MaterialPageRoute(
               builder: (context) => MyHomePage(title: 'FellowFarmer')));
     });
+  }
+
+  static String _displayStringForOptioncity(City option) => option.name;
+  static String _displayStringForOption(Location option) => option.name;
+
+  Widget cityField() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10.0,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          // ),
+          child: Text(
+            "City",
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Autocomplete<City>(
+          displayStringForOption: _displayStringForOptioncity,
+          fieldViewBuilder: (BuildContext context, _citytextEditingController,
+              FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) {
+            //textEditingController.text = locationController.text.toString();
+
+            return TextFormField(
+              decoration: InputDecoration(hintText: citycontroller.text),
+              validator: (value) {
+                if (citycontroller.text == "") {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter city';
+                  }
+                  return null;
+                }
+              },
+              focusNode: fieldFocusNode,
+              controller: _citytextEditingController,
+            );
+          },
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.toString() == '') {
+              return const Iterable<City>.empty();
+            }
+            return _cityOptions.where((City option) {
+              return option
+                  .toString()
+                  .contains(textEditingValue.text.toLowerCase());
+            });
+          },
+          onSelected: (City selection) {
+            citycontroller.text = selection.toString();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget societyField() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10.0,
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 1.0,
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          // ),
+          child: Text(
+            "Society",
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Autocomplete<Location>(
+          displayStringForOption: _displayStringForOption,
+          fieldViewBuilder: (BuildContext context, _soctextEditingController,
+              FocusNode fieldFocusNode, VoidCallback onFieldSubmitted) {
+            //textEditingController.text = locationController.text.toString();
+
+            return TextFormField(
+              decoration: InputDecoration(hintText: societycontroller.text),
+              validator: (value) {
+                if (societycontroller.text == "") {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter Society';
+                  }
+                  return null;
+                }
+              },
+              focusNode: fieldFocusNode,
+              controller: _soctextEditingController,
+            );
+          },
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.toString() == '') {
+              return const Iterable<Location>.empty();
+            }
+            return _locationOptions.where((Location option) {
+              return option
+                  .toString()
+                  .contains(textEditingValue.text.toLowerCase());
+            });
+          },
+          onSelected: (Location selection) {
+            societycontroller.text = selection.toString();
+          },
+        ),
+      ],
+    );
   }
 
   Widget usernameField() {
@@ -157,33 +297,33 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
     );
   }
 
-  Widget cityField() {
-    return TextFormField(
-      autofocus: false,
-      decoration: InputDecoration(labelText: "City"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter City';
-        }
-        return null;
-      },
-      controller: citycontroller,
-    );
-  }
+  // Widget cityField() {
+  //   return TextFormField(
+  //     autofocus: false,
+  //     decoration: InputDecoration(labelText: "City"),
+  //     validator: (value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter City';
+  //       }
+  //       return null;
+  //     },
+  //     controller: citycontroller,
+  //   );
+  // }
 
-  Widget societyField() {
-    return TextFormField(
-      autofocus: false,
-      decoration: InputDecoration(labelText: "Society"),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter Society';
-        }
-        return null;
-      },
-      controller: societycontroller,
-    );
-  }
+  // Widget societyField() {
+  //   return TextFormField(
+  //     autofocus: false,
+  //     decoration: InputDecoration(labelText: "Society"),
+  //     validator: (value) {
+  //       if (value == null || value.isEmpty) {
+  //         return 'Please enter Society';
+  //       }
+  //       return null;
+  //     },
+  //     controller: societycontroller,
+  //   );
+  // }
 
   Widget addressField() {
     return TextFormField(
@@ -196,6 +336,23 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
         return null;
       },
       controller: addresscontroller,
+    );
+  }
+
+  Widget pincodeField() {
+    return TextFormField(
+      autofocus: false,
+      decoration: InputDecoration(labelText: "Pincode"),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter pincode';
+        }
+        if (value.length != 6) {
+          return 'Please Enter 6 digit pincode ';
+        }
+        return null;
+      },
+      controller: pincodecontroller,
     );
   }
 
@@ -244,6 +401,10 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                       height: 20,
                     ),
                     addressField(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    pincodeField(),
                     SizedBox(
                       height: 20,
                     ),

@@ -1,15 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/deliverypage.dart';
-import 'package:fellowfarmer/deliveryguy/loginpage.dart';
 import 'package:fellowfarmer/main.dart';
-import 'package:fellowfarmer/pages/buynowlist.dart';
-import 'package:fellowfarmer/pages/delivery_calender.dart';
-import 'package:fellowfarmer/pages/edit_customer_profile.dart';
-import 'package:fellowfarmer/pages/feedback_list.dart';
-import 'package:fellowfarmer/pages/feedback_page.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
-import 'package:fellowfarmer/pages/myholidays.dart';
-import 'package:fellowfarmer/pages/subscriptionlist.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

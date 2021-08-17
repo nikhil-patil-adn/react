@@ -148,15 +148,16 @@ class _CartPageState extends State<CartPage> {
         ),
         Autocomplete<City>(
           displayStringForOption: _displayStringForOptioncity,
-          // fieldViewBuilder:
-          //     (context, textEditingController, focusNode, onFieldSubmitted) {
-          //   //textEditingController.text = cityController.text.toString();
+          fieldViewBuilder: (context, _citytextEditingController, focusNode,
+              onFieldSubmitted) {
+            //textEditingController.text = cityController.text.toString();
 
-          //   return TextFormField(
-          //     focusNode: focusNode,
-          //     controller: _citytextEditingController,
-          //   );
-          // },
+            return TextFormField(
+              decoration: InputDecoration(hintText: cityController.text),
+              focusNode: focusNode,
+              controller: _citytextEditingController,
+            );
+          },
           optionsBuilder: (TextEditingValue textEditingValue) {
             cityController.text = textEditingValue.text.toString();
             if (textEditingValue.text.toString() == '') {
@@ -199,6 +200,7 @@ class _CartPageState extends State<CartPage> {
             //textEditingController.text = locationController.text.toString();
 
             return TextFormField(
+              decoration: InputDecoration(hintText: locationController.text),
               focusNode: fieldFocusNode,
               controller: _soctextEditingController,
             );

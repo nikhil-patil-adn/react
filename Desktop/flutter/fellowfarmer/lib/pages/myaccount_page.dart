@@ -8,6 +8,7 @@ import 'package:fellowfarmer/pages/feedback_list.dart';
 import 'package:fellowfarmer/pages/feedback_page.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myholidays.dart';
+import 'package:fellowfarmer/pages/statementpage.dart';
 import 'package:fellowfarmer/pages/subscriptionlist.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -163,6 +164,14 @@ class _MyaccountPageState extends State<MyaccountPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => RegularOrderList()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("Statement"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => StatementPage()));
               },
             ),
         ],

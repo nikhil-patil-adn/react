@@ -54,6 +54,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             var custdata = [];
                             var custdatalist = {
                               'mobile': mobilecontroller.text,
+                              'staff': 0
                             };
                             custdata.add(custdatalist);
                             showDialog(

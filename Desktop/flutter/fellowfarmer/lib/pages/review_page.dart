@@ -1,4 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'order_page.dart';
@@ -11,6 +13,8 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
+  List custdata = [];
+  late Razorpay _razorpay;
   final _couponformKey = GlobalKey<FormState>();
   final coupontextcontroller = TextEditingController();
   final addresscontroller = TextEditingController();
@@ -29,6 +33,7 @@ class _ReviewPageState extends State<ReviewPage> {
   bool _showprepaid = false;
   bool _prepaidPressed = false;
   bool _postpaidPressed = false;
+  String transactionid = "";
   String _pressval = "";
   ButtonStyle _postpaidbtnstyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -47,6 +52,15 @@ class _ReviewPageState extends State<ReviewPage> {
 
   void initState() {
     super.initState();
+
+    setState(() {
+      custdata = widget.customerdata;
+    });
+
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     focusNode.addListener(() {
       print(focusNode.hasFocus);
     });
@@ -74,6 +88,68 @@ class _ReviewPageState extends State<ReviewPage> {
         }
       });
     });
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    print(response);
+
+    Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId!, toastLength: Toast.LENGTH_LONG);
+    setState(() {
+      transactionid = response.paymentId.toString();
+    });
+    custdata[0]['transactionid'] = transactionid;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderPage(customerdata: custdata),
+        ));
+
+    //var responsedata = jsonDecode(response)['events'];
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
+        toastLength: Toast.LENGTH_SHORT);
+    setState(() {
+      transactionid = "";
+    });
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    print(response);
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName!,
+        toastLength: Toast.LENGTH_SHORT);
+    setState(() {
+      transactionid = "";
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  openCheckout() {
+    var options = {
+      'key': 'rzp_test_gqIXbVvdcyfrlx',
+      'amount': num.parse(payamount) * 100,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
   }
 
   _checkcoupon() {
@@ -313,30 +389,39 @@ class _ReviewPageState extends State<ReviewPage> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                // Container(
+                //   child: RazorPayPage(),
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_couponformKey.currentState!.validate()) {
-                        List custdata = widget.customerdata;
-                        custdata[0]['prize'] = payamount;
-                        custdata[0]['address'] = addresscontroller.text;
-                        custdata[0]['subscriptionpaymenttype'] = _pressval;
-                        if (btntype == 'subscription' &&
-                            _pressval == 'prepaid') {
-                          custdata[0]['prepaidoption'] = _prepaidvalue;
-                        } else {
-                          custdata[0]['prepaidoption'] = '0';
-                        }
                         print("review");
                         print(custdata);
+                        setState(() {
+                          custdata[0]['prize'] = payamount;
+                          custdata[0]['address'] = addresscontroller.text;
+                          custdata[0]['subscriptionpaymenttype'] = _pressval;
+                          if (btntype == 'subscription' &&
+                              _pressval == 'prepaid') {
+                            custdata[0]['prepaidoption'] = _prepaidvalue;
+                          } else {
+                            custdata[0]['prepaidoption'] = '0';
+                          }
+                        });
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  OrderPage(customerdata: custdata),
-                            ));
+                        openCheckout();
+
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           OrderPage(customerdata: custdata),
+                        //     ));
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),

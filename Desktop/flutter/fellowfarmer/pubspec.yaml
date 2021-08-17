@@ -37,6 +37,9 @@ dependencies:
   shared_preferences: ^2.0.6
   date_field: ^2.0.1
   syncfusion_flutter_calendar: ^19.2.51
+  razorpay_flutter: ^1.2.7
+  fluttertoast: ^8.0.8
+  flutter_typeahead: ^3.2.0
 
 dev_dependencies:
   flutter_test:

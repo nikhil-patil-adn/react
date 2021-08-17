@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/deliveryguy/loginpage.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -78,19 +79,27 @@ class _ChangePasswordState extends State<ChangePassword> {
       );
       confirmpasswordcontroller.text = "";
     } else {
+      print("staffff");
+      print(widget.customerdata[0]['staff']);
       var obj = new Api();
       obj
-          .updatepasswordcustomer(
-              widget.customerdata[0]['mobile'], confirmpasswordcontroller.text)
+          .updatepasswordcustomer(widget.customerdata[0]['mobile'],
+              confirmpasswordcontroller.text, widget.customerdata[0]['staff'])
           .then((value) {
+        print(value);
         if (value.length > 0) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('Password updated !!!'),
             ),
           );
+
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => widget.customerdata[0]['staff'] == '1'
+                      ? DeliveryGuyLogin()
+                      : LoginPage()));
         }
       });
     }

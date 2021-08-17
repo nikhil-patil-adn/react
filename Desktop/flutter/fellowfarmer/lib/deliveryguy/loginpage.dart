@@ -1,10 +1,8 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/deliverypage.dart';
-import 'package:fellowfarmer/pages/forget_password.dart';
+import 'package:fellowfarmer/deliveryguy/forgetpassword_d.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
-
-import '../main.dart';
 
 class DeliveryGuyLogin extends StatefulWidget {
   DeliveryGuyLogin({Key? key}) : super(key: key);
@@ -24,7 +22,7 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Login Page'),
+          title: Text(' Satff Login Page'),
         ),
         endDrawer: MyaccountPage(),
         body: Padding(
@@ -74,10 +72,10 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
                     primary: Colors.white,
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ForgetPassword()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgetPasswordStaff()));
                   },
                   child: Text(
                     'Forgot Password',
@@ -113,25 +111,25 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
                         });
                       },
                     )),
-                Container(
-                    child: Row(
-                  children: <Widget>[
-                    Text('Does not have account?'),
-                    ElevatedButton(
-                      child: Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => CustomerRegister()));
-                      },
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ))
+                // Container(
+                //     child: Row(
+                //   children: <Widget>[
+                //     Text('Does not have account?'),
+                //     ElevatedButton(
+                //       child: Text(
+                //         'Sign up',
+                //         style: TextStyle(fontSize: 20),
+                //       ),
+                //       onPressed: () {
+                //         // Navigator.push(
+                //         //     context,
+                //         //     MaterialPageRoute(
+                //         //         builder: (context) => CustomerRegister()));
+                //       },
+                //     )
+                //   ],
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                // ))
               ],
             )));
   }

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/razorpay/razorpay.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
@@ -107,7 +109,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var host = "http://192.168.2.107:8000";
+  var host = "http://192.168.2.103:8000";
   var product = [];
   bool isLogin = false;
   var name = "";
@@ -198,12 +200,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: '@mipmap/ic_launcher')));
   }
 
-  fetchBanner() async {
-    var url = host + "/api/banners/fetch_banners/";
-    var response = await http.get(Uri.parse(url));
-    var datas = json.decode(response.body);
-    setState(() {
-      banners = datas;
+  fetchBanner() {
+    var obj = new Api();
+    obj.fetchbannerlist().then((datas) {
+      if (datas.length > 0) {
+        setState(() {
+          banners = datas;
+        });
+      }
     });
   }
 
@@ -248,7 +252,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   showNotification();
                 },
-                child: Text("Show notification"))
+                child: Text("Show notification")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RazorPayPage()));
+                },
+                child: Text("razor pay"))
           ],
         ));
   }
