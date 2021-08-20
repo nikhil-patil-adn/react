@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -447,6 +448,7 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
         title: Text("Review Order"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       endDrawer: MyaccountPage(),
       body: Container(
         child: SingleChildScrollView(

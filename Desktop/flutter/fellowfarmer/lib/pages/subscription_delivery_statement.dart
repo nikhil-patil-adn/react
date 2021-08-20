@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/pages/view_delivery_statement.dart';
 import 'package:flutter/material.dart';
@@ -254,6 +255,7 @@ class _SubDeliveryStatementState extends State<SubDeliveryStatement> {
           //       fit: BoxFit.fill,
           //     )),
         ),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
         body: subscriptionlength > 0
             ? _subDeliveryStatement()

@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FeedbackList extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _FeedbackListState extends State<FeedbackList> {
   String id = '0';
   int _initialval = 0;
   String feedbackdata = "";
+  String displaydateformat = "MMMM d, y";
   String question = "";
   String details = "";
   String status = "";
@@ -36,6 +38,11 @@ class _FeedbackListState extends State<FeedbackList> {
           datalength = value.length - 1;
           data = value;
           feedbackdata = value[_initialval]['feedback_date'].toString();
+          if (feedbackdata != "") {
+            feedbackdata = DateFormat(displaydateformat)
+                .format(DateTime.parse(feedbackdata))
+                .toString();
+          }
           question = value[_initialval]['type'].toString();
           details = value[_initialval]['details'].toString();
           status = value[_initialval]['status'].toString();
@@ -48,6 +55,11 @@ class _FeedbackListState extends State<FeedbackList> {
     setState(() {
       _initialval = _initialval + 1;
       feedbackdata = data[_initialval]['feedback_date'].toString();
+      if (feedbackdata != "") {
+        feedbackdata = DateFormat(displaydateformat)
+            .format(DateTime.parse(feedbackdata))
+            .toString();
+      }
       question = data[_initialval]['type'].toString();
       details = data[_initialval]['details'].toString();
       status = data[_initialval]['status'].toString();
@@ -58,6 +70,11 @@ class _FeedbackListState extends State<FeedbackList> {
     setState(() {
       _initialval = _initialval - 1;
       feedbackdata = data[_initialval]['feedback_date'].toString();
+      if (feedbackdata != "") {
+        feedbackdata = DateFormat(displaydateformat)
+            .format(DateTime.parse(feedbackdata))
+            .toString();
+      }
       question = data[_initialval]['type'].toString();
       details = data[_initialval]['details'].toString();
       status = data[_initialval]['status'].toString();

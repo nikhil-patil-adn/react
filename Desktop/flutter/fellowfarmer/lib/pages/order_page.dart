@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,7 @@ class _OrderPageState extends State<OrderPage> {
                       child: Text("Order Status :", style: statusheaderstyle),
                     ),
                     Container(
-                      child: Text('',
+                      child: Text(orderstatus,
                           style: TextStyle(
                             fontSize: 20.0,
                             color: successcolor,
@@ -99,7 +100,7 @@ class _OrderPageState extends State<OrderPage> {
                       child: Text("Payment Status :", style: statusheaderstyle),
                     ),
                     Container(
-                      child: Text('',
+                      child: Text(paymentstatus,
                           style: TextStyle(
                             fontSize: 20.0,
                             color: successcolor,
@@ -273,6 +274,7 @@ class _OrderPageState extends State<OrderPage> {
         title: Text("Order Confirmation"),
       ),
       endDrawer: MyaccountPage(),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       body: Container(
         child: SingleChildScrollView(
           child: Column(

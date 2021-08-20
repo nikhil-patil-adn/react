@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
+import 'package:fellowfarmer/pages/home_feedbacklist.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/razorpay/razorpay.dart';
@@ -109,7 +111,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var host = "http://192.168.2.103:8000";
+  var host = "http://192.168.2.200:8000";
   var product = [];
   bool isLogin = false;
   var name = "";
@@ -218,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         endDrawer: MyaccountPage(),
+        bottomNavigationBar: FooterPage(pageindex: 0),
         body: Column(
           children: [
             CarouselSlider(
@@ -248,17 +251,23 @@ class _MyHomePageState extends State<MyHomePage> {
               }).toList(),
             ),
             ShowProductBanner(),
-            ElevatedButton(
-                onPressed: () {
-                  showNotification();
-                },
-                child: Text("Show notification")),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RazorPayPage()));
-                },
-                child: Text("razor pay"))
+            SizedBox(
+              height: 30,
+            ),
+
+            HomeFeedback(),
+
+            // ElevatedButton(
+            //     onPressed: () {
+            //       showNotification();
+            //     },
+            //     child: Text("Show notification")),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.push(context,
+            //           MaterialPageRoute(builder: (context) => RazorPayPage()));
+            //     },
+            //     child: Text("razor pay"))
           ],
         ));
   }

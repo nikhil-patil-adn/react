@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/staff_myaccount.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -398,6 +399,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
           //     )),
         ),
         endDrawer: StaffMyaccount(),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         body: subscriptionlength > 0 ? _deliveryPage() : _noresultfound());
   }
 }

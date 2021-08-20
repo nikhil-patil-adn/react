@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
@@ -515,6 +516,7 @@ class _CartPageState extends State<CartPage> {
         centerTitle: true,
         title: Text("Cart Page"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       endDrawer: MyaccountPage(),
       body: SingleChildScrollView(
         child: Container(

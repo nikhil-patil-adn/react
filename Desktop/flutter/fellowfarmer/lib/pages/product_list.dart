@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
@@ -221,21 +222,8 @@ class _ProductListState extends State<ProductList> {
       appBar: AppBar(
         title: Text("Product List"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       endDrawer: MyaccountPage(),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: new Icon(Icons.home),
-      //       title: new Text('Home'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: new Icon(Icons.mail),
-      //       title: new Text('Messages'),
-      //     ),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.person), title: Text('Profile'))
-      //   ],
-      // ),
       body: products.length > 0 ? _displaylist() : HomeLoader(),
     );
   }

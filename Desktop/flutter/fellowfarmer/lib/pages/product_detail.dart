@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:readmore/readmore.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,7 @@ class _ProductDetailState extends State<ProductDetail> {
           automaticallyImplyLeading: true,
           centerTitle: true,
         ),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
         body: Builder(builder: (BuildContext context) {
           return SingleChildScrollView(

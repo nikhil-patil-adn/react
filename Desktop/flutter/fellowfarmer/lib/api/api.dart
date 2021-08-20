@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  var host = "http://192.168.2.103:8000";
+  var host = "http://192.168.2.200:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
 
   fetchbannerlist() async {
@@ -162,6 +162,16 @@ class Api {
     return feedbacks;
   }
 
+  fetchallfeedback() async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/feedbacks/fetchallfeedback/";
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var feedbacks = json.decode(response.body);
+    return feedbacks;
+  }
+
   fetchholidaybycustomer(String id) async {
     String token = tokennew;
     String basicAuth = 'Token ' + token;
@@ -170,6 +180,16 @@ class Api {
         headers: <String, String>{'authorization': basicAuth});
     var holidays = json.decode(response.body);
     return holidays;
+  }
+
+  getfeedbackquestion() async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host + "/api/feedbacks/fetchquestions/";
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    var feedbacks = json.decode(response.body);
+    return feedbacks;
   }
 
   fetchPaymentStatementByCustomer(String id) async {

@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/deliverypage.dart';
 import 'package:fellowfarmer/deliveryguy/forgetpassword_d.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
           title: Text(' Satff Login Page'),
         ),
         endDrawer: MyaccountPage(),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         body: Padding(
             padding: EdgeInsets.all(10),
             child: ListView(

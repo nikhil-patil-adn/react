@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/pages/myholidaylist_page.dart';
@@ -105,6 +106,7 @@ class _MyHolidayState extends State<MyHoliday> {
           title: Text("My plan"),
         ),
         endDrawer: MyaccountPage(),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(40.0),

@@ -1,3 +1,5 @@
+import 'package:fellowfarmer/deliveryguy/staff_myaccount.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/otppop.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,8 @@ class _ForgetPasswordStaffState extends State<ForgetPasswordStaff> {
       appBar: AppBar(
         title: Text("Forget password"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
+      endDrawer: StaffMyaccount(),
       body: Container(
         padding: EdgeInsets.all(40.0),
         child: Column(

@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -260,6 +261,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
           //     )),
         ),
         endDrawer: MyaccountPage(),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         body: subscriptionlength > 0 ? _subscriptionlist() : _noresultfound());
   }
 }

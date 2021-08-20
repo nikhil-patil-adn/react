@@ -76,7 +76,6 @@ class _MyaccountPageState extends State<MyaccountPage> {
                   ));
             },
           ),
-
           if (!isLogin)
             ListTile(
               title: const Text('Login'),
@@ -114,22 +113,22 @@ class _MyaccountPageState extends State<MyaccountPage> {
                         builder: (context) => CustomerEditProfile()));
               },
             ),
-          // if (isLogin)
-          //   ListTile(
-          //     title: const Text('Add feedback'),
-          //     onTap: () {
-          //       Navigator.push(context,
-          //           MaterialPageRoute(builder: (context) => AddFeedback()));
-          //     },
-          //   ),
-          // if (isLogin)
-          //   ListTile(
-          //     title: const Text("My Feedback"),
-          //     onTap: () {
-          //       Navigator.push(context,
-          //           MaterialPageRoute(builder: (context) => FeedbackList()));
-          //     },
-          //   ),
+          if (isLogin)
+            ListTile(
+              title: const Text('Add feedback'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddFeedback()));
+              },
+            ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My Feedback"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FeedbackList()));
+              },
+            ),
           if (isLogin)
             ListTile(
               title: const Text("My Calender"),
@@ -138,14 +137,14 @@ class _MyaccountPageState extends State<MyaccountPage> {
                     MaterialPageRoute(builder: (context) => CalenderPage()));
               },
             ),
-          // if (isLogin)
-          //   ListTile(
-          //     title: const Text("My Plan"),
-          //     onTap: () {
-          //       Navigator.push(context,
-          //           MaterialPageRoute(builder: (context) => MyHoliday()));
-          //     },
-          //   ),
+          if (isLogin)
+            ListTile(
+              title: const Text("My Plan"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyHoliday()));
+              },
+            ),
           if (isLogin)
             ListTile(
               title: const Text("My Subscription"),

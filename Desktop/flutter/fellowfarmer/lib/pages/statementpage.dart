@@ -1,3 +1,5 @@
+import 'package:fellowfarmer/pages/footer.dart';
+import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/pages/paymentstatement.dart';
 import 'package:fellowfarmer/pages/subscription_delivery_statement.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ class StatementPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Statement"),
       ),
+      endDrawer: MyaccountPage(),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       body: Container(
         child: Column(
           children: [

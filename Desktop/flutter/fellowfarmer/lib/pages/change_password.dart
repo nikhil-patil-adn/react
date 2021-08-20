@@ -1,5 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/loginpage.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -111,6 +112,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       appBar: AppBar(
         title: Text("Change password"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       body: Container(
         padding: EdgeInsets.all(40.0),
         child: Form(

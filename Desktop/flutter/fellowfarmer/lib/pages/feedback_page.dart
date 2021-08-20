@@ -15,22 +15,28 @@ class _AddFeedbackState extends State<AddFeedback> {
   final mobilecontroller = TextEditingController();
   final commentcontroller = TextEditingController();
   String _myActivity = "";
-  List _question = [
-    "list1",
-    "list2",
-    "list3",
-    "list4",
-  ];
+  List _question = [];
 
   void initState() {
     super.initState();
     var obj = new Api();
     obj.getLoggedincustomerdata().then((value) {
       setState(() {
-        print(value);
         mobilecontroller.text = value[0]['mobile'];
         emailcontroller.text =
             value[0]['email'] == null ? "" : value[0]['email'].toString();
+      });
+
+      obj.getfeedbackquestion().then((val) {
+        print(val);
+        if (val.length > 0) {
+          for (int i = 0; i < val.length; i++) {
+            _question.add(val[i]['question']);
+          }
+          setState(() {
+            _question = _question;
+          });
+        }
       });
     });
   }
