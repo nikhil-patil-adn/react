@@ -51,7 +51,7 @@ class getordersbycust(APIView):
     authentication_classes=[TokenAuthentication,]
 
     def get(self,request,custid):
-        QuerySet=Order.objects.filter(customer=custid)
+        QuerySet=Order.objects.filter(customer=custid).exclude(order_status='cancel')
         orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)   
         return JsonResponse(orderdata.data,safe=False)
 

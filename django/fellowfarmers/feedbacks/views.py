@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser 
 from customers.models import Customer
-from .models import Feedback
-from .serializers import FeedbackSerializer
+from .models import Feedback, FeedbackQuestion
+from .serializers import FeedbackSerializer,FeedbackQuestionSerializer
 from rest_framework.views import APIView
 import json
 import requests
@@ -43,3 +43,24 @@ class fetchfeedbackbycustomer(APIView):
         queryset=Feedback.objects.filter(customer=id)    
         feedbackdata=FeedbackSerializer(queryset,context={'request':request},many=True)
         return JsonResponse(feedbackdata.data,safe=False)
+
+
+class fetchallfeedback(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,] 
+
+    def get(self,request):
+        queryset=Feedback.objects.all()    
+        feedbackdata=FeedbackSerializer(queryset,context={'request':request},many=True)
+        return JsonResponse(feedbackdata.data,safe=False)
+
+
+class fetchquestions(APIView):
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,] 
+
+    def get(self,request):
+        queryset=FeedbackQuestion.objects.all()    
+        feedbackdata=FeedbackQuestionSerializer(queryset,context={'request':request},many=True)
+        return JsonResponse(feedbackdata.data,safe=False)        
+

@@ -8,7 +8,9 @@ class Order(models.Model):
     sales=[(i.name,i.name) for i in StaffPerson.objects.filter(designation='sales_person')]
     deliveryguy=[(i.name,i.name) for i in StaffPerson.objects.filter(designation='delivery_guy')]
     ordertypes=[('buynow','Regular'),('subscription','Subscription')]
-    status_choices=(('delivery_received','Delivery Received'),('delivery_scheduled','Delivery Scheduled'),('out_for_elivery','Out for Delivery'),('delivered','Delivered'))
+    status_choices=(('delivery_received','Delivery Received'),('delivery_scheduled','Delivery Scheduled'),
+    ('out_for_elivery','Out for Delivery'),('delivered','Delivered'),
+    ('cancel','Cancel'))
     order_date=models.DateTimeField(default=datetime.now)
     schedule_delivery_date=models.DateTimeField(default=datetime.now)
     shipping_date=models.DateTimeField(default=datetime.now)

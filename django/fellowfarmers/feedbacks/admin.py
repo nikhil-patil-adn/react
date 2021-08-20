@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Feedback
+from .models import Feedback, FeedbackQuestion
 from django.utils.safestring import mark_safe  
 # Register your models here.
 @admin.register(Feedback)
@@ -12,4 +12,9 @@ class FeedbackAdmin(admin.ModelAdmin):
         return mark_safe('<a href="{}">Update Status</a> | <a href="{}">Assign Staff</a>'.format(updatestatus,assignstaff))
         
 
-    
+@admin.register(FeedbackQuestion)
+class FeedbackQuestionAdmin(admin.ModelAdmin):
+    list_display=['question',]    
+
+
+  

@@ -1,6 +1,7 @@
 from django.db import models
 from othermasters.models import CityMaster
 from societymasters.models import SocietyMaster
+from products.models import Product
 from django.utils.html import mark_safe
 
 
@@ -26,3 +27,9 @@ class Customer(models.Model):
 
     def pencil(self):
         return "/images/pencil.png"
+
+class Favourite(models.Model):
+    customer=models.OneToOneField(Customer,on_delete=models.DO_NOTHING)
+    product=models.OneToOneField(Product,on_delete=models.DO_NOTHING)
+    created=models.DateTimeField(auto_now_add=True,blank=True)
+    updated=models.DateTimeField(auto_now=True,blank=True)

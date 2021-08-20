@@ -3,16 +3,15 @@ from django.contrib.admin.decorators import register
 from django.utils.safestring import mark_safe  
 from django.contrib.auth.models import Group,User
 from admin_interface.models import Theme
-from .models import Customer
+from .models import Customer, Favourite
 # Register your models here.
 
-admin.site.unregister(Group)
+#admin.site.unregister(Group)
 #admin.site.unregister(User)
 admin.site.unregister(Theme)
 
 def apply_active(modeladmin, request, queryset):
     for obj in queryset:
-        print(obj.active)
         if obj.active == True:
             newactive=False
         else:
@@ -60,5 +59,10 @@ class CustomerAdmin(admin.ModelAdmin):
         print(img)
 
         return  mark_safe('{}'.format(img))  
+
+
+@admin.register(Favourite)
+class FavouriteAdmin(admin.ModelAdmin):
+    list_display=['customer','product',]        
 
        

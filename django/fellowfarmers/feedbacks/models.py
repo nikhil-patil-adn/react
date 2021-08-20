@@ -13,3 +13,13 @@ class Feedback(models.Model):
     expected_to_resolved_by=models.ForeignKey(StaffPerson,on_delete=models.CASCADE,null=True)#never put on delete
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
+
+
+class FeedbackQuestion(models.Model):
+    question=models.CharField(max_length=200)
+    created=models.DateTimeField(auto_now_add=True)
+    updated=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.question
+

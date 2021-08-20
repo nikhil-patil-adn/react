@@ -9,4 +9,5 @@ urlpatterns = [
     path('customerregisterwithuserpass/',customerregisterwithuserpass.as_view()),
     path('updatepassword/',updatepassword.as_view()),
     path('checkmobile/<str:mob>',checkmobile.as_view()),
+    path('addfavourite/',addfavourite.as_view()),
 ]

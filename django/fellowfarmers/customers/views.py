@@ -7,7 +7,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import JSONParser 
 from societymasters.models import SocietyMaster
 from othermasters.models import CityMaster
-from .models import Customer
+from .models import Customer, Favourite
 from .serializers import CustomerSerializer
 from rest_framework.views import APIView
 import random
@@ -108,7 +108,6 @@ class customerregister(APIView):
     def post(self,request):
         customer_data = JSONParser().parse(request)
         custobj=Customer.objects.filter(mobile=customer_data['mobile'])
-        print(custobj)
         if custobj:
             print("mobile present")
             return JsonResponse(customer_data,safe=False)
@@ -125,3 +124,19 @@ class customerregister(APIView):
             pincode=customer_data['pincode'])
             sv.save()
             return JsonResponse(customer_data,safe=False)
+
+class addfavourite(APIView):
+    permission_class=[IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+    def post(self,request):
+        customer_data = JSONParser().parse(request)
+        print(customer_data)
+        custobj=Customer.objects.filter(mobile=customer_data['mobile'])
+        sv=Favourite(
+            customer=custobj,
+            product=customer_data['productid']
+        )
+        sv.save()
+        return JsonResponse(customer_data,safe=False)
+
