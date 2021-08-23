@@ -34,11 +34,69 @@ class fetchholidaybycustomer(APIView):
         return JsonResponse(holidays.data,safe=False)
 
 
-class updateordershedule(APIView):
-    # permission_classes=[IsAuthenticated,]
-    # authentication_classes=[TokenAuthentication,]
+# class updateordershedule(APIView):
+#     # permission_classes=[IsAuthenticated,]
+#     # authentication_classes=[TokenAuthentication,]
 
-    def get(self,request,id):
+#     def get(self,request,id):
+#         queryset=MyHoliday.objects.filter(customer=id).order_by('-id')
+       
+#         for i in queryset:
+#             date_format = '%Y-%m-%d'
+            
+#             a = datetime.datetime.strptime(str(i.startdate), date_format)
+#             b = datetime.datetime.strptime(str(i.enddate), date_format)
+#             delta = b - a
+#             daysdiff=delta.days
+#             startdate = str(i.startdate).split(" ")
+#             startdate = startdate[0]+" 00:00:00"
+#             startdate=datetime.datetime.strptime(startdate,'%Y-%m-%d %H:%M:%S')
+#             enddate = str(i.enddate).split(" ")
+#             enddate = enddate[0]+" 23:23:23"
+#             enddate=datetime.datetime.strptime(enddate,'%Y-%m-%d %H:%M:%S')
+            
+#             orderqry=Order.objects.filter(customer=id,schedule_delivery_date__gte=startdate,
+#             schedule_delivery_date__lte=enddate).exclude(order_status='cancel')
+#             print("noooooooooooooooooooooo")
+#             if orderqry:
+#                 print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")    
+#                 subquery= Subscription.objects.filter(customer=id).order_by('-id')[:1]
+#                 for i in subquery:
+#                     new=str(i.subscription_end).split("+")
+#                 orderqrylast=Order.objects.order_by('-id')[:1]
+#                 for i in orderqrylast:
+#                     lastid=i.id
+#                 print(lastid)    
+#                 print(len(orderqry))
+#                 cnt=1
+#                 for i in orderqry:
+#                     print(i.id)
+#                     if i.subscription_payment_type == 'prepaid' and i.subscription_type == 'alternate':
+#                         adddays=2
+#                     else:
+#                         adddays=1    
+#                     newshedule=datetime.datetime.strptime(str(new[0]),'%Y-%m-%d %H:%M:%S')+datetime.timedelta(days=2)
+#                     i.schedule_delivery_date=newshedule
+#                     i.id=lastid+cnt
+#                     cnt=cnt+1
+#                     i.order_status='delivery_scheduled'
+#                     i.save()
+#                     new[0]=newshedule
+#                     print(new[0])
+#                 print(newshedule)  
+#                 Subscription.objects.filter(id=subquery).update(subscription_end=newshedule)  
+                
+                
+#             Order.objects.filter(customer=id,schedule_delivery_date__gte=startdate,
+#             schedule_delivery_date__lte=enddate).update(order_status='cancel')        
+ 
+#         holidays=MyHolidaySerializer(queryset,context={'request':request},many=True)        
+#         return JsonResponse(holidays.data,safe=False)
+
+
+
+def updateordershedule(request):
+        id=request['id']
         queryset=MyHoliday.objects.filter(customer=id).order_by('-id')
        
         for i in queryset:
@@ -83,16 +141,20 @@ class updateordershedule(APIView):
                     i.save()
                     new[0]=newshedule
                     print(new[0])
+                print(newshedule)  
+                Subscription.objects.filter(id=subquery).update(subscription_end=newshedule)  
+                
+                
             Order.objects.filter(customer=id,schedule_delivery_date__gte=startdate,
             schedule_delivery_date__lte=enddate).update(order_status='cancel')        
  
-        holidays=MyHolidaySerializer(queryset,context={'request':request},many=True)        
-        return JsonResponse(holidays.data,safe=False)
+              
+        return True
 
 
 
 
-
+    
 class insertholiday(APIView):
     permission_classes=[IsAuthenticated,]
     authentication_classes=[TokenAuthentication,]
@@ -115,6 +177,8 @@ class insertholiday(APIView):
             enddate=enddate
         )
         sv.save()
+        sheduledata={'id':holiday_data['custid']}
+        updateordershedule(sheduledata)
         return JsonResponse(holiday_data,safe=False)
 
 

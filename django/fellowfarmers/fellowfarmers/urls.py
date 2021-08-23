@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/staffpersons/',include('staffpersons.urls')),
     path('api/paymentlogs/',include('paymentlogs.urls')),
     path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
+    path('commission_pay/', include('commissions.urls')),
 ]
 
 if settings.DEBUG:

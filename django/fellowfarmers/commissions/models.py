@@ -1,5 +1,6 @@
 from django.db import models
 from staffpersons.models import StaffPerson
+from orders.models import Order
 
 # Create your models here.
 
@@ -14,3 +15,15 @@ class SalePersonCommission(models.Model):
 
     def __str__(self):
         return self.sale_person
+
+class CommissionLog(models.Model):
+    # sales_person = models.CharField(max_length=200)
+    # order_date = models.DateTimeField()
+    # commission_amt = models.PositiveIntegerField(default=0)
+    # commission_percentage = models.IntegerField()
+    sales_person = models.ForeignKey(Order, on_delete=models.CASCADE)
+    commission_percentage = models.ForeignKey(SalePersonCommission, on_delete=models.CASCADE)
+    commission_amt = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.sales_person)        

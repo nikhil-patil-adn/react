@@ -33,6 +33,6 @@ class fetchfrquencybyproduct(APIView):
     authentication_classes=[TokenAuthentication,] 
 
     def get(self,request,id):
-        queryset=FrequencyMaster.objects.filter(product=id)    
+        queryset=FrequencyMaster.objects.filter(product__in=id,is_active=True)    
         fdata=FrequencyMasterSerializer(queryset,context={'request':request},many=True)
         return JsonResponse(fdata.data,safe=False)        
