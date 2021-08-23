@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  var host = "http://192.168.2.200:8000";
+  var host = "http://192.168.2.103:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
 
   fetchbannerlist() async {

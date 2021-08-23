@@ -21,6 +21,7 @@ class _ReviewPageState extends State<ReviewPage> {
   final addresscontroller = TextEditingController();
   final prepaidamtController = TextEditingController();
   String payamount = "00.00";
+  String delivery = '0';
   var focusNode = FocusNode();
   final List customerdata = [];
   List product = [];
@@ -50,12 +51,16 @@ class _ReviewPageState extends State<ReviewPage> {
   String _prepaidvalue = '1';
   String id = '0';
   List freq = [];
+  String subscriptiontype = "";
+  List amt = [];
 
   void initState() {
     super.initState();
 
     setState(() {
       custdata = widget.customerdata;
+      subscriptiontype = custdata[0]['subscriptiontype'];
+      print(subscriptiontype);
     });
 
     _razorpay = Razorpay();
@@ -82,6 +87,7 @@ class _ReviewPageState extends State<ReviewPage> {
       });
 
       obj.frequencyprepaidbyproduct(id).then((val) {
+        print(val);
         if (val.length > 0) {
           setState(() {
             prepaidoption = val;
@@ -153,7 +159,7 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
-  _checkcoupon() {
+  _checkcoupon(btn) {
     var obj = new Api();
     if (coupontextcontroller.text == "") {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -168,14 +174,25 @@ class _ReviewPageState extends State<ReviewPage> {
           double sum = double.parse(finalamount) - decimalval;
           setState(() {
             payamount = sum.toStringAsFixed(2);
+            print("showprepaid");
+            print(_showprepaid);
+            if (_showprepaid) {
+              amt = [];
+              print("inside");
+              _prepaidform();
+            }
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Coupon Accepted!!!')),
-          );
+          if (btn == 'applybtn') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Coupon Accepted!!!')),
+            );
+          }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Coupon not accepted!!!')),
-          );
+          if (btn == 'applybtn') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Coupon not accepted!!!')),
+            );
+          }
         }
       });
     }
@@ -246,26 +263,58 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
+  Widget _displaylable(days, lable, discountper, index) {
+    double tempval = 0.0;
+
+    if (days == '30' && subscriptiontype == 'alternate') {
+      delivery = '15';
+    } else if (days == '60' && subscriptiontype == 'alternate') {
+      delivery = '30';
+    } else if (days == '90' && subscriptiontype == 'alternate') {
+      delivery = '45';
+    } else {
+      delivery = days;
+    }
+    print("payamount");
+    print(payamount);
+    tempval = double.parse(payamount) * double.parse(delivery);
+    print("tempval");
+    print(tempval);
+
+    setState(() {
+      amt.add(tempval.toStringAsFixed(2));
+      print(amt);
+    });
+
+    return Text(
+      lable +
+          ' (' +
+          days +
+          ' days and delivery will be ' +
+          delivery +
+          ') ' +
+          amt[index],
+    );
+  }
+
   Widget _prepaidform() {
     return Container(
       child: Column(
         children: [
           for (int i = 0; i < prepaidoption.length; i++)
             ListTile(
-              title: Text(
-                prepaidoption[i]['label_name'] +
-                    ' (' +
-                    prepaidoption[i]['number_of_days'] +
-                    ' days) ',
-              ),
+              title: _displaylable(
+                  prepaidoption[i]['number_of_days'],
+                  prepaidoption[i]['label_name'],
+                  prepaidoption[i]['discount_per'],
+                  i),
               leading: Radio(
-                  value: prepaidoption[i]['number_of_days'].toString(),
+                  value: amt[i].toString(),
                   groupValue: _prepaidvalue.toString(),
                   onChanged: (value) {
                     setState(() {
                       _prepaidvalue = value.toString();
-                      double tempval =
-                          double.parse(payamount) * double.parse(_prepaidvalue);
+                      double tempval = double.parse(_prepaidvalue);
                       payamount = tempval.toStringAsFixed(2);
                     });
                   }),
@@ -292,19 +341,19 @@ class _ReviewPageState extends State<ReviewPage> {
                             style: TextButton.styleFrom(
                               primary: Colors.pink,
                             ),
-                            onPressed: _checkcoupon,
+                            onPressed: () => {_checkcoupon('applybtn')},
                             child: Text(
                               "Apply Coupon",
                               style: TextStyle(fontSize: 15.0),
                             )),
                         border: UnderlineInputBorder(),
                         labelText: "Add Coupon"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter coupon code';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter coupon code';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                 ),
                 Container(
@@ -354,6 +403,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           child: new Text('Postpaid',
                               style: TextStyle(color: Colors.black)),
                           onPressed: () => {
+                            _checkcoupon('postpaid'),
                             setState(() {
                               _postpaidPressed = !_postpaidPressed;
                               _prepaidPressed = false;
