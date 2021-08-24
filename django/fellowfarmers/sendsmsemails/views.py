@@ -35,10 +35,10 @@ class sendsmsapi(APIView):
 
 
 def sendsmscommon(request):
-    body=request['body']
-    to='+91'+request['to']
-    fromsend=settings.TWILIO_NUMBER
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-    message = client.messages.create(to=to, from_=fromsend,body=body)
-    print(message.sid)
+    # body=request['body']
+    # to='+91'+request['to']
+    # fromsend=settings.TWILIO_NUMBER
+    # client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    # message = client.messages.create(to=to, from_=fromsend,body=body)
+    # print(message.sid)
     return True
