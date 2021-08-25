@@ -1,14 +1,54 @@
 from django.contrib import admin
 from .models import Order
+from django import forms
+from django.db import models
 from django.utils.safestring import mark_safe 
 from datetime import timedelta,datetime
 from rangefilter.filters import DateRangeFilter
+from staffpersons.models import StaffPerson
+from .forms import StaffForm
 # Register your models here.
+
+# for i in StaffPerson.objects.filter(designation='delivery_guy'):
+#     print(i)
+#     @admin.action(description=i.name)
+#     def allocate_staff(modeladmin,request,queryset):
+#         for obj in queryset:
+#             queryset.update(delivery_staff=i.name)
+   
+
+# def admin_actions(context):
+#     context['action_index'] = context.get('action_index', -1) + 1
+#     return context            
+
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display=['id','order_number','order_date','customer','schedule_shipping_date','order_type','order_amount','sales_person','delivery_guy','order_status','payment_status'] 
     list_filter=['delivery_staff','schedule_delivery_date','customer',('schedule_delivery_date',DateRangeFilter),]
+    
+    #actions=[allocate_staff]
+    _update_fields = [(i.name,i.name,i.name) for i in StaffPerson.objects.filter(designation='delivery_guy')]
+
+    def get_actions(self, request):
+        def func_maker(value):
+            def update_func(self, request, queryset):
+                queryset.update(delivery_staff=value)
+            return update_func
+
+        actions = super().get_actions(request)
+
+        for description, function_name, value in self._update_fields:
+            func = func_maker(value)
+            name = 'update_{}'.format(function_name)
+            actions['update_{}'.format(function_name)] = (func, name, 'Assign {}'.format(description))
+
+        return actions
+
+   
+
+
 
     def order_number(self,obj):
         return obj.id
@@ -24,7 +64,17 @@ class OrderAdmin(admin.ModelAdmin):
             url="/admin/orders/order/{}/change/".format(obj.id)
             return mark_safe('<a href="{}">Allocate</a>'.format(url))
         else:
-            return obj.delivery_staff       
+            return obj.delivery_staff   
+
+    # def get_actions(self, request):
+    #     actions = super().get_actions(request)
+    #     if 'delete_selected' in actions:
+    #         del actions['delete_selected']
+    #     return actions    
+    def has_delete_permission(self, request, obj = None):
+        return False     
+    def has_add_permission(self, request):
+        return False           
 
 
 class DeliveryMaster(Order):

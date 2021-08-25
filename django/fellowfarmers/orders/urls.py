@@ -7,6 +7,7 @@ urlpatterns = [
     path('fetchbuynowbycustomer/<int:custid>',fetchbuynowbycustomer.as_view()),
     path('deliveryguyorders/<int:custid>',deliveryguyorders.as_view()),
     path('updatestatus/<int:orderid>/<str:status>',updatestatus.as_view()),
+    path('get_staff/',get_staff),
 
     path('test/',testorder),
 ]

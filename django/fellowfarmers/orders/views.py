@@ -72,6 +72,14 @@ class updatestatus(APIView):
 
 
 
+def get_staff(request):
+    phases = {}
+    prophases = StaffPerson.objects.all().phase
+    phases = {pp.phase.name:pp.pk for pp in prophases}
+    return JsonResponse(data=phases, safe=False)
+
+
+
 
 
 class insertorder(APIView):
