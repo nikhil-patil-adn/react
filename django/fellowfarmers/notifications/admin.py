@@ -8,3 +8,6 @@ class NotificationAdmin(admin.ModelAdmin):
 
     def number_of_days_in_advance(self,obj):
         return obj.number_of_advance_days_allow
+
+    def has_delete_permission(self, request, obj = None):
+        return False     

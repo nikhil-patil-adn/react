@@ -18,6 +18,9 @@ class StaffPersonAdmin(admin.ModelAdmin):
     actions = [apply_attendance, ]  
     list_filter=['designation',]
 
+    def has_delete_permission(self, request, obj = None):
+        return False 
+
     def map_society(self,obj):
         url="/admin/societymasters/societymaster/?assign_sale_person__exact={}".format(obj.name)
         return mark_safe('<a href="{}">map society</a>'.format(url))    

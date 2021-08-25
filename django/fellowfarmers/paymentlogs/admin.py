@@ -4,3 +4,6 @@ from .models import Paymentlog
 @admin.register(Paymentlog)
 class PaymentlogAdmin(admin.ModelAdmin):
     list_display=['transaction_id','price','paymentdate','customerid',]
+
+    def has_delete_permission(self, request, obj = None):
+        return False 

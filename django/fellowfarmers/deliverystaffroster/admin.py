@@ -29,6 +29,9 @@ class DeliveryStaffRosterAdmin(admin.ModelAdmin):
     list_filter=[staff_name,('date_of_attendance',DateRangeFilter)]
     date_hierarchy ='date_of_attendance'
 
+    def has_delete_permission(self, request, obj = None):
+        return False  
+
     # def get_queryset(self, request):
     #     todaytime = datetime.now()
     #     end_date = datetime.datetime(todaytime.year, todaytime.month, todaytime.day)

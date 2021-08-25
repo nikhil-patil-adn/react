@@ -8,6 +8,8 @@ from django.utils.safestring import mark_safe
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display=['id','subscription_start','subscription_end','customer','subscription_type','frequency_type','sales_person','delivery_guy'] 
 
+    def has_delete_permission(self, request, obj = None):
+        return False 
 
     def delivery_guy(self,obj):
         if obj.delivery_staff == None:
@@ -21,6 +23,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
 class PostpaidAdmin(admin.ModelAdmin):
     list_display=['number_of_days_advance_notification','negative_balance_allow_for_number_of_day']
 
+    def has_delete_permission(self, request, obj = None):
+        return False 
+
     def number_of_days_advance_notification(self,obj):
         return obj.number_of_advance_days_allow
 
@@ -31,6 +36,9 @@ class PostpaidAdmin(admin.ModelAdmin):
 @admin.register(Prepaid)
 class PrepaidAdmin(admin.ModelAdmin):
     list_display=['number_of_days_advance_notification','negative_balance_allow_for_number_of_day']
+
+    def has_delete_permission(self, request, obj = None):
+        return False 
 
     def number_of_days_advance_notification(self,obj):
         return obj.number_of_advance_days_allow

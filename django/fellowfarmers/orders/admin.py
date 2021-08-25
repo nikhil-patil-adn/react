@@ -1,12 +1,9 @@
 from django.contrib import admin
 from .models import Order
-from django import forms
-from django.db import models
 from django.utils.safestring import mark_safe 
 from datetime import timedelta,datetime
 from rangefilter.filters import DateRangeFilter
 from staffpersons.models import StaffPerson
-from .forms import StaffForm
 # Register your models here.
 
 # for i in StaffPerson.objects.filter(designation='delivery_guy'):

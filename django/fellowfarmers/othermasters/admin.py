@@ -19,6 +19,9 @@ apply_active.short_description = 'Active/Deactive'
 class CityMasterAdmin(admin.ModelAdmin):
     list_display=['code','name','active']
     actions=[apply_active,]
+
+    def has_delete_permission(self, request, obj = None):
+        return False 
     
 
 

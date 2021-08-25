@@ -1,6 +1,5 @@
 from staffpersons.models import StaffPerson
 from django.db import models
-from staffpersons.models import StaffPerson
 # Create your models here.
 
 

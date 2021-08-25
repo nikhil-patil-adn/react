@@ -10,6 +10,9 @@ from django.urls import reverse
 class SalePersonCommissionAdmin(admin.ModelAdmin):
     list_display=['sale_person','commission_percentage','status']
 
+    def has_delete_permission(self, request, obj = None):
+        return False  
+
 @admin.register(CommissionLog)
 class CommissionLogAdmin(admin.ModelAdmin):
     list_display=['sales_person', 'order_date', 'order_amount','commission_amt', 'commission_percentage', 'payment']
@@ -21,6 +24,9 @@ class CommissionLogAdmin(admin.ModelAdmin):
     @admin.display()
     def order_amount(self, obj):
         return (obj.sales_person.order_amount)
+
+    def has_delete_permission(self, request, obj = None):
+        return False      
 
 
     @admin.display()

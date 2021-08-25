@@ -5,3 +5,6 @@ from .models import MyHoliday
 @admin.register(MyHoliday)
 class MyHolidayAdmin(admin.ModelAdmin):
     list_display=['id','customer','startdate','enddate',]
+
+    def has_delete_permission(self, request, obj = None):
+        return False 

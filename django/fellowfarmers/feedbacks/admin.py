@@ -6,6 +6,9 @@ from django.utils.safestring import mark_safe
 class FeedbackAdmin(admin.ModelAdmin):
     list_display=['customer','feedback_date','type','details','status','expected_to_resolved_by','action']
 
+    def has_delete_permission(self, request, obj = None):
+        return False 
+
     def action(self,obj):
         updatestatus="/admin/feedbacks/feedback/{}/change/".format(obj.id)
         assignstaff="/admin/feedbacks/feedback/{}/change/".format(obj.id)
@@ -15,6 +18,9 @@ class FeedbackAdmin(admin.ModelAdmin):
 @admin.register(FeedbackQuestion)
 class FeedbackQuestionAdmin(admin.ModelAdmin):
     list_display=['question',]    
+
+    def has_delete_permission(self, request, obj = None):
+        return False 
 
 
   

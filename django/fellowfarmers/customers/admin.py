@@ -32,7 +32,8 @@ class CustomerAdmin(admin.ModelAdmin):
         editurl="/admin/customers/customer/{}/change/".format(obj.id)
         return mark_safe('<a href="{}">view Subscription | </a> <a href="{}">view order | </a> <a class="changelink" href="{}"></a>'.format(viewsuburl,vieworderurl,editurl))
         
-
+    def has_delete_permission(self, request, obj = None):
+        return False  
 
     def view_subscription(self,obj):
         url="/admin/subscriptions/subscription/?id={}".format(obj.id)
@@ -63,6 +64,9 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Favourite)
 class FavouriteAdmin(admin.ModelAdmin):
-    list_display=['customer','product',]        
+    list_display=['customer','product',]   
+    
+    def has_delete_permission(self, request, obj = None):
+        return False       
 
        
