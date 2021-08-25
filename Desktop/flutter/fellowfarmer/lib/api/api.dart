@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  var host = "http://192.168.2.103:8000";
-  var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
+  var host = "http://fellowfarmer.pythonanywhere.com";
+  var tokennew = "a69eb53cb825906b7fdf5cccaeef6d0a58e377f0";
 
   fetchbannerlist() async {
     var url = host + "/api/banners/fetch_banners/";

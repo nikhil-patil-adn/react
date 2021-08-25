@@ -169,37 +169,37 @@ class _ProductDetailState extends State<ProductDetail> {
                           image,
                           fit: BoxFit.fill,
                         )),
-                        Container(
-                          width: 200,
-                          child: Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(right: 40, top: 30),
-                                width: 40,
-                                height: 40,
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Image.asset(
-                                    'assets/images/add_to_fav.jpg',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 10, top: 30),
-                                width: 40,
-                                height: 40,
-                                child: InkWell(
-                                  onTap: () {},
-                                  child: Image.asset(
-                                    'assets/images/add_to_fav.jpg',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
+                        // Container(
+                        //   width: 200,
+                        //   child: Row(
+                        //     children: [
+                        //       Container(
+                        //         margin: EdgeInsets.only(right: 40, top: 30),
+                        //         width: 40,
+                        //         height: 40,
+                        //         child: InkWell(
+                        //           onTap: () {},
+                        //           child: Image.asset(
+                        //             'assets/images/add_to_fav.jpg',
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         margin: EdgeInsets.only(right: 10, top: 30),
+                        //         width: 40,
+                        //         height: 40,
+                        //         child: InkWell(
+                        //           onTap: () {},
+                        //           child: Image.asset(
+                        //             'assets/images/add_to_fav.jpg',
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -259,6 +259,10 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     if (issubscribed)
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(0xffed1c22), // background
+                            onPrimary: Colors.white, // foreground
+                          ),
                           onPressed: () {
                             if (int.parse(qtyController.text) > 0) {
                               Navigator.push(
@@ -280,6 +284,10 @@ class _ProductDetailState extends State<ProductDetail> {
                       width: 80,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           if (int.parse(qtyController.text) > 0) {
                             Navigator.push(
