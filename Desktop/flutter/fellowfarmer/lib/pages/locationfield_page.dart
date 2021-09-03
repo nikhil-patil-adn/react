@@ -1,3 +1,4 @@
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class AutocompleteExampleApp extends StatelessWidget {
@@ -8,6 +9,7 @@ class AutocompleteExampleApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: const Text('Autocomplete Basic User'),
         ),
         body: const Center(

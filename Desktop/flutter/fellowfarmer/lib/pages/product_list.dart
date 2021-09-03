@@ -2,6 +2,7 @@ import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'product_detail.dart';
@@ -160,6 +161,10 @@ class _ProductListState extends State<ProductList> {
               // border: Border.all(),
               // ),
               child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xffed1c22), // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -220,6 +225,7 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: lineargradientbg(),
         title: Text("Product List"),
       ),
       bottomNavigationBar: FooterPage(pageindex: 1),

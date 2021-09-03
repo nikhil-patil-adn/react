@@ -6,7 +6,8 @@ import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/home_feedbacklist.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
-import 'package:fellowfarmer/razorpay/razorpay.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
+//import 'package:fellowfarmer/razorpay/razorpay.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
@@ -92,23 +93,22 @@ class _FellowFarmerState extends State<FellowFarmer> {
   @override
   Widget build(BuildContext context) {
     Map<int, Color> color = {
-      50: Color.fromRGBO(136, 14, 79, .1),
-      100: Color.fromRGBO(136, 14, 79, .2),
-      200: Color.fromRGBO(136, 14, 79, .3),
-      300: Color.fromRGBO(136, 14, 79, .4),
-      400: Color.fromRGBO(136, 14, 79, .5),
-      500: Color.fromRGBO(136, 14, 79, .6),
-      600: Color.fromRGBO(136, 14, 79, .7),
-      700: Color.fromRGBO(136, 14, 79, .8),
-      800: Color.fromRGBO(136, 14, 79, .9),
-      900: Color.fromRGBO(136, 14, 79, 1),
+      50: Color.fromRGBO(255, 92, 87, .1),
+      100: Color.fromRGBO(255, 92, 87, .2),
+      200: Color.fromRGBO(255, 92, 87, .3),
+      300: Color.fromRGBO(255, 92, 87, .4),
+      400: Color.fromRGBO(255, 92, 87, .5),
+      500: Color.fromRGBO(255, 92, 87, .6),
+      600: Color.fromRGBO(255, 92, 87, .7),
+      700: Color.fromRGBO(255, 92, 87, .8),
+      800: Color.fromRGBO(255, 92, 87, .9),
+      900: Color.fromRGBO(255, 92, 87, 1),
     };
     MaterialColor colorCustom = MaterialColor(0xFFcea335, color);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'FellowFarmer',
-      theme: ThemeData(
-        primarySwatch: colorCustom,
-      ),
+      theme: ThemeData(primarySwatch: colorCustom),
       home: loading == true ? HomeLoader() : MyHomePage(title: "Fellow Farmer"),
     );
   }
@@ -230,6 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text(widget.title),
         ),
         endDrawer: MyaccountPage(),

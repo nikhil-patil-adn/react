@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -197,6 +198,7 @@ class _ViewDeliveryStatementState extends State<ViewDeliveryStatement> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("delivery statement "),
           // leading: IconButton(
           //     onPressed: () {},

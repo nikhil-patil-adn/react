@@ -3,6 +3,7 @@ import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/pages/myholidaylist_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
@@ -101,8 +102,9 @@ class _MyHolidayState extends State<MyHoliday> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.cyan.shade50,
+        //backgroundColor: Colors.cyan.shade50,
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("My plan"),
         ),
         endDrawer: MyaccountPage(),
@@ -124,6 +126,10 @@ class _MyHolidayState extends State<MyHoliday> {
                       height: 20.0,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             print(startdate);
@@ -133,6 +139,10 @@ class _MyHolidayState extends State<MyHoliday> {
                         },
                         child: Text("Submit")),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           Navigator.push(
                               context,

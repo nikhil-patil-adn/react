@@ -3,6 +3,7 @@ import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'review_page.dart';
@@ -432,6 +433,10 @@ class _CartPageState extends State<CartPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xffed1c22), // background
+                onPrimary: Colors.white, // foreground
+              ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   var obj = new Api();
@@ -508,6 +513,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: lineargradientbg(),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),

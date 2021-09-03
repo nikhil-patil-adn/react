@@ -3,6 +3,7 @@ import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/main.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class CustomerEditProfile extends StatefulWidget {
@@ -361,6 +362,7 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("Edit Profile"),
         ),
         endDrawer: MyaccountPage(),
@@ -409,6 +411,10 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
                       height: 20,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             doregister();

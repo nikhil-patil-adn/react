@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/deliveryguy/staff_myaccount.dart';
 import 'package:fellowfarmer/pages/footer.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -336,6 +337,10 @@ class _DeliveryPageState extends State<DeliveryPage> {
             Container(
               width: MediaQuery.of(context).size.width * 0.2,
               child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xffed1c22), // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     var obj = new Api();
                     obj.updatedeliverystatus(orderid, 'delivered').then((res) {
@@ -362,6 +367,10 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(0xffed1c22), // background
+                            onPrimary: Colors.white, // foreground
+                          ),
                           onPressed: () {
                             _previousfeedback();
                           },
@@ -372,6 +381,10 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: const Color(0xffed1c22), // background
+                            onPrimary: Colors.white, // foreground
+                          ),
                           onPressed: () {
                             _nextfeedback();
                           },
@@ -390,6 +403,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("My Deliveries"),
           // leading: IconButton(
           //     onPressed: () {},

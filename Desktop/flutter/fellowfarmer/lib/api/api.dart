@@ -4,9 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  var host = "http://fellowfarmer.pythonanywhere.com";
-  var tokennew = "a69eb53cb825906b7fdf5cccaeef6d0a58e377f0";
+  //var host ="http://fellowfarmer.pythonanywhere.com";
+  //var tokennew = "a69eb53cb825906b7fdf5cccaeef6d0a58e377f0";
+  var host = "http://192.168.2.200:8000";
 
+  //var host = "http://192.168.0.145:8000";
+  var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   fetchbannerlist() async {
     var url = host + "/api/banners/fetch_banners/";
     var response = await http.get(Uri.parse(url));
@@ -106,6 +109,21 @@ class Api {
     List product = json.decode(response.body);
 
     return product;
+  }
+
+  stopResumeSubscription(String code, String status) async {
+    String token = tokennew;
+    String basicAuth = 'Token ' + token;
+    var url = host +
+        "/api/subscriptions/stopsubscription/" +
+        code.toString() +
+        "/" +
+        status;
+    var response = await http.get(Uri.parse(url),
+        headers: <String, String>{'authorization': basicAuth});
+    List subscriptiondata = json.decode(response.body);
+
+    return subscriptiondata;
   }
 
   fetchSociety(String location) async {

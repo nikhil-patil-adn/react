@@ -3,6 +3,7 @@ import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class CustomerRegister extends StatefulWidget {
@@ -318,6 +319,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("Register"),
         ),
         endDrawer: MyaccountPage(),
@@ -366,6 +368,10 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                       height: 20,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             doregister();

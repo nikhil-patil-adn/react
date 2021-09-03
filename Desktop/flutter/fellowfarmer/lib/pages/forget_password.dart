@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/pages/otppop.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -27,6 +28,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: lineargradientbg(),
         title: Text("Forget password"),
       ),
       body: Container(
@@ -49,6 +51,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       height: 20,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             var custdata = [];

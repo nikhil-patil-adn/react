@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:readmore/readmore.dart';
 import 'package:flutter/material.dart';
 
@@ -132,6 +133,7 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("Product Detail"),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),

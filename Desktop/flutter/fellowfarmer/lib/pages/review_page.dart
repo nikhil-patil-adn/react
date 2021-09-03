@@ -1,5 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/footer.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
@@ -449,6 +450,10 @@ class _ReviewPageState extends State<ReviewPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xffed1c22), // background
+                      onPrimary: Colors.white, // foreground
+                    ),
                     onPressed: () {
                       if (_couponformKey.currentState!.validate()) {
                         print("review");
@@ -492,6 +497,7 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: lineargradientbg(),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),

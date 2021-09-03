@@ -3,6 +3,7 @@ import 'package:fellowfarmer/deliveryguy/deliverypage.dart';
 import 'package:fellowfarmer/deliveryguy/forgetpassword_d.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryGuyLogin extends StatefulWidget {
@@ -23,6 +24,7 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text(' Satff Login Page'),
         ),
         endDrawer: MyaccountPage(),
@@ -88,6 +90,10 @@ class _DeliveryGuyLoginState extends State<DeliveryGuyLogin> {
                     height: 50,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xffed1c22), // background
+                        onPrimary: Colors.white, // foreground
+                      ),
                       child: Text('Login'),
                       onPressed: () {
                         var obj = new Api();

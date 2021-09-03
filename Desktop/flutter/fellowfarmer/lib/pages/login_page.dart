@@ -2,6 +2,7 @@ import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/forget_password.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text('Login Page'),
         ),
         bottomNavigationBar: FooterPage(pageindex: 1),
@@ -90,6 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                     height: 50,
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xffed1c22), // background
+                        onPrimary: Colors.white, // foreground
+                      ),
                       child: Text('Login'),
                       onPressed: () {
                         var obj = new Api();
@@ -121,6 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     Text('Does not have account?'),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xffed1c22), // background
+                        onPrimary: Colors.white, // foreground
+                      ),
                       child: Text(
                         'Sign up',
                         style: TextStyle(fontSize: 20),

@@ -2,6 +2,7 @@ import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/pages/paymentstatement.dart';
 import 'package:fellowfarmer/pages/subscription_delivery_statement.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class StatementPage extends StatelessWidget {
@@ -9,6 +10,7 @@ class StatementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: lineargradientbg(),
         title: Text("Statement"),
       ),
       endDrawer: MyaccountPage(),
@@ -17,6 +19,10 @@ class StatementPage extends StatelessWidget {
         child: Column(
           children: [
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xffed1c22), // background
+                  onPrimary: Colors.white, // foreground
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -25,6 +31,10 @@ class StatementPage extends StatelessWidget {
                 },
                 child: Text("Payment Statement")),
             ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color(0xffed1c22), // background
+                  onPrimary: Colors.white, // foreground
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,

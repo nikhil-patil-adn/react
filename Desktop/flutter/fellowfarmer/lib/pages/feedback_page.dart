@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/main.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
 
 class AddFeedback extends StatefulWidget {
@@ -111,6 +112,7 @@ class _AddFeedbackState extends State<AddFeedback> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
           title: Text("Add Feedback"),
         ),
         endDrawer: MyaccountPage(),
@@ -153,6 +155,10 @@ class _AddFeedbackState extends State<AddFeedback> {
                       height: 20,
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: const Color(0xffed1c22), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           print(_myActivity);
                           if (formKey.currentState!.validate()) {
