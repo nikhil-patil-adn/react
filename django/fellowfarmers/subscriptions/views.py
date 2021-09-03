@@ -1,3 +1,4 @@
+from orders.models import Order
 from django.db.models.query import QuerySet
 from django.http.response import JsonResponse,HttpResponse
 import datetime
@@ -30,6 +31,35 @@ class fetchsubscriptionbyid(APIView):
         QuerySet=Subscription.objects.filter(id=subid)
         orderdata=SubscriptionSerializer(QuerySet,context={'request':request},many=True)
         return JsonResponse(orderdata.data,safe=False)
+
+class stopsubscription(APIView):
+    #permission_classes=[IsAuthenticated,]
+    # authentication_classes=[TokenAuthentication,]
+
+    def get(self,request,subid,substatus):
+        subdata=Subscription.objects.filter(id=subid).values('subscription_end','customer')
+        print(subdata)
+        if substatus == 'resume':
+            substatus='active'
+        
+
+        Subscription.objects.filter(id=subid).update(status=substatus)
+        todaydate=datetime.datetime.today().strftime('%Y-%m-%d')
+        todaydate="{} 00:00:00".format(todaydate)
+        enddate=str(subdata[0]['subscription_end']).split('+')
+        enddate=enddate[0]
+        if substatus == 'active':
+            orderstatus='delivery_scheduled'
+        else:
+            orderstatus='cancel'    
+
+        orderdata=Order.objects.filter(schedule_delivery_date__gte=todaydate,
+        schedule_delivery_date__lte=enddate,
+        customer=subdata[0]['customer']).update(order_status=orderstatus)
+        QuerySet=Subscription.objects.filter(id=subid)
+        subdata=SubscriptionSerializer(QuerySet,context={'request':request},many=True)
+        
+        return JsonResponse(subdata.data,safe=False)
 
 class fetchsubscriptionbycustomer(APIView):
     permission_classes=[IsAuthenticated,]

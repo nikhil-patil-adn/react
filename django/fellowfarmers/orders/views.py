@@ -1,3 +1,4 @@
+from othermasters.models import CityMaster
 from paymentlogs.models import Paymentlog
 from customers.serializers import CustomerSerializer
 from staffpersons.models import StaffPerson
@@ -90,6 +91,9 @@ class insertorder(APIView):
         print(customer_data)
         cust=Customer.objects.get(mobile=customer_data['mobile'])
         prd=Product.objects.get(id=customer_data['selectedproductcode'])
+        cityobj=CityMaster.objects.get(name=customer_data['city'])
+        salespersonid=StaffPerson.objects.filter(city=cityobj,designation='sales_person').values('pk')
+        salesperson=StaffPerson.objects.get(id=salespersonid[0]['pk'])
         deliveryaddress=customer_data['address']+","+customer_data['society']+","+customer_data['city']+","+customer_data['pincode']
         if customer_data['btntype'] == 'subscription':
             diffday=1 
@@ -118,6 +122,7 @@ class insertorder(APIView):
                 customer=cust,
                 delivery_address=deliveryaddress,
                 product=prd,
+                status='active',
                 quantity=customer_data['quantity'],
                 price=customer_data['prize'],
                 subscription_type=customer_data['subscriptionpaymenttype'],
@@ -144,8 +149,9 @@ class insertorder(APIView):
                 quantity=customer_data['quantity'],
                 order_type=customer_data['btntype'],
                 order_amount=customer_data['prize'],
-                order_status='delivery scheduled',
-                payment_status='Paid',
+                order_status='delivery_scheduled',
+                payment_status='paid',
+                sales_person=salesperson,
                 subscription_type=customer_data['subscriptiontype'],
                 subscription_payment_type=customer_data['subscriptionpaymenttype'],
                 prepaid_option=customer_data['prepaidoption'],
@@ -170,8 +176,9 @@ class insertorder(APIView):
             quantity=customer_data['quantity'],
             order_type=customer_data['btntype'],
             order_amount=customer_data['prize'],
-            order_status='delivery scheduled',
-            payment_status='Paid',
+            order_status='delivery_scheduled',
+            payment_status='paid',
+            sales_person=salesperson,
             subscription_type=customer_data['subscriptiontype'],
             subscription_payment_type=customer_data['subscriptionpaymenttype'],
             prepaid_option=customer_data['prepaidoption'],

@@ -3,5 +3,6 @@ from .views import *
 
 urlpatterns = [
     path('sendsmsapi/',sendsmsapi.as_view()),
+    path('testsms',sendsmscommon),
    
 ]

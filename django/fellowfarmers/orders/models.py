@@ -25,7 +25,7 @@ class Order(models.Model):
     order_amount=models.DecimalField(max_digits=6,decimal_places=2,default='00.00')
     sales_person=models.CharField(choices=sales,null=True,max_length=200)
     delivery_staff=models.CharField(choices=deliveryguy,null=True,max_length=200,blank=True)
-    tracking_number=models.CharField(max_length=200)
+    tracking_number=models.CharField(max_length=200,default="",null=True,blank=True)
     order_status=models.CharField(choices=status_choices,max_length=200)
     payment_status=models.CharField(max_length=200)
     created=models.DateTimeField(auto_now_add=True)
