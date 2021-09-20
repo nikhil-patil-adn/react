@@ -1,3 +1,4 @@
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/otppop.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         flexibleSpace: lineargradientbg(),
         title: Text("Forget password"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       body: Container(
         padding: EdgeInsets.all(40.0),
         child: Column(

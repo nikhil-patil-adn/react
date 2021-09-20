@@ -238,7 +238,7 @@ class _CartPageState extends State<CartPage> {
             ),
             child: TextFormField(
               controller: nameController,
-              maxLength: 10,
+              //maxLength: 10,
               decoration: InputDecoration(
                   labelText: "Coustomer Name",
                   border: InputBorder.none,
@@ -434,6 +434,11 @@ class _CartPageState extends State<CartPage> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                    side: BorderSide(color: Color(0xFFed1c22))),
+                // primary: Colors.transparent,
                 primary: const Color(0xffed1c22), // background
                 onPrimary: Colors.white, // foreground
               ),
@@ -496,9 +501,11 @@ class _CartPageState extends State<CartPage> {
                       }
                     });
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                  ImageDialog();
+
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(content: Text('Processing Data')),
+                  // );
                 }
               },
               child: const Text('Submit'),
@@ -539,7 +546,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      child: Text(name, style: datatxtstyle),
+                      child: Text(capitalize(name), style: datatxtstyle),
                     )
                   ],
                 ),

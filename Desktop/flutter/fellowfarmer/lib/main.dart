@@ -6,6 +6,7 @@ import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/home_feedbacklist.dart';
 import 'package:fellowfarmer/pages/home_loader.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
+import 'package:fellowfarmer/pages/product_detail.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
 //import 'package:fellowfarmer/razorpay/razorpay.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'pages/product_list.dart';
-import 'pages/show_product_banners.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -130,7 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
   var name = "";
   var image = "";
   var desciption = "";
+  var displaydata = '0';
   var banners = [];
+  var products = [];
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   void initState() {
     super.initState();
@@ -224,6 +226,99 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     });
+
+    obj.fetchProductList().then((value) {
+      setState(() {
+        displaydata = '1';
+        products = value;
+      });
+    });
+  }
+
+  Widget displayproduct() {
+    return Container(
+      child: CarouselSlider(
+        options: CarouselOptions(
+          height: 100.0,
+          autoPlay: true,
+          viewportFraction: 0.9,
+        ),
+        items: products.map((i) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  //decoration: BoxDecoration(color: Colors.amber),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductDetail(
+                                  code: i['code'], quantity: '0')),
+                        );
+                      },
+                      child: Image.network(
+                        i['image'],
+                        fit: BoxFit.fill,
+                      )));
+            },
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget displayhomedata() {
+    return Column(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 200.0,
+            autoPlay: true,
+            viewportFraction: 0.9,
+          ),
+          items: banners.map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProductList()),
+                    );
+                  },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      //decoration: BoxDecoration(color: Colors.amber),
+                      child: Image.network(i['banner'], fit: BoxFit.fill)),
+                );
+              },
+            );
+          }).toList(),
+        ),
+        displayproduct(),
+        SizedBox(
+          height: 30,
+        ),
+
+        HomeFeedback(),
+
+        // ElevatedButton(
+        //     onPressed: () {
+        //       showNotification();
+        //     },
+        //     child: Text("Show notification")),
+        // ElevatedButton(
+        //     onPressed: () {
+        //       Navigator.push(context,
+        //           MaterialPageRoute(builder: (context) => RazorPayPage()));
+        //     },
+        //     child: Text("razor pay"))
+      ],
+    );
   }
 
   @override
@@ -235,54 +330,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         endDrawer: MyaccountPage(),
         bottomNavigationBar: FooterPage(pageindex: 0),
-        body: Column(
-          children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200.0,
-                autoPlay: true,
-                viewportFraction: 0.9,
-              ),
-              items: banners.map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductList()),
-                        );
-                      },
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          //decoration: BoxDecoration(color: Colors.amber),
-                          child: Image.network(i['banner'], fit: BoxFit.fill)),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            ShowProductBanner(),
-            SizedBox(
-              height: 30,
-            ),
-
-            HomeFeedback(),
-
-            // ElevatedButton(
-            //     onPressed: () {
-            //       showNotification();
-            //     },
-            //     child: Text("Show notification")),
-            // ElevatedButton(
-            //     onPressed: () {
-            //       Navigator.push(context,
-            //           MaterialPageRoute(builder: (context) => RazorPayPage()));
-            //     },
-            //     child: Text("razor pay"))
-          ],
-        ));
+        body: displaydata == '1' ? displayhomedata() : ImageDialog());
   }
 }

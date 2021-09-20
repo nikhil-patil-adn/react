@@ -2,6 +2,7 @@ import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
 import 'package:fellowfarmer/main.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
@@ -365,6 +366,7 @@ class _CustomerEditProfileState extends State<CustomerEditProfile> {
           flexibleSpace: lineargradientbg(),
           title: Text("Edit Profile"),
         ),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
         body: SingleChildScrollView(
           child: Container(

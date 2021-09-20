@@ -13,12 +13,14 @@ class ShowProductBanner extends StatefulWidget {
 
 class _ShowProductBannerState extends State<ShowProductBanner> {
   var products = [];
+  var displaydata = '0';
   void initState() {
     super.initState();
     print("fetch product list");
     var obj = new Api();
     obj.fetchProductList().then((value) {
       setState(() {
+        displaydata = '1';
         products = value;
       });
     });

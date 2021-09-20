@@ -4,11 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 
 class Api {
-  //var host ="http://fellowfarmer.pythonanywhere.com";
+  //var host = "http://fellowfarmer.pythonanywhere.com";
   //var tokennew = "a69eb53cb825906b7fdf5cccaeef6d0a58e377f0";
-  var host = "http://192.168.2.200:8000";
+  //var host = "http://192.168.2.104:8000";
 
-  //var host = "http://192.168.0.145:8000";
+  var host = "http://192.168.2.107:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   fetchbannerlist() async {
     var url = host + "/api/banners/fetch_banners/";
@@ -182,6 +182,8 @@ class Api {
 
   fetchallfeedback() async {
     String token = tokennew;
+    //token =
+    //    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjMxMDkwNDY3LCJqdGkiOiJjN2YwNDZkY2RlNzY0OTk0YTJiNDA0YzM1MDNmNWFkZiIsInVzZXJfaWQiOjF9.7Pv8pce3Z_562Qo8Co-wM35ADSJ3jl2oRZ9HAaNpj5s";
     String basicAuth = 'Token ' + token;
     var url = host + "/api/feedbacks/fetchallfeedback/";
     var response = await http.get(Uri.parse(url),

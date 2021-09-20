@@ -31,24 +31,28 @@ class _OrderPageState extends State<OrderPage> {
   var custname = "";
   var custaddress = "";
   var custmobile = "";
+  var bookingdata = '0';
   void initState() {
     print("instde order");
     super.initState();
     var obj = new Api();
     print(widget.customerdata);
     obj.insertorder(widget.customerdata).then((value) {
-      setState(() {
-        orderstatus = capitalize(value['order_status'].replaceAll('_', " "));
-        paymentstatus =
-            capitalize(value['payment_status'].replaceAll('_', " "));
-        productname = capitalize(value['product']);
-        qty = value['quantity'].toString();
-        orderamount = value['order_amount'];
-        custname = widget.customerdata[0]['name'];
-        custaddress = value['delivery_address'];
-        custmobile = widget.customerdata[0]['mobile'];
-      });
-      print(value);
+      if (value.length > 0) {
+        setState(() {
+          bookingdata = '1';
+          orderstatus = capitalize(value['order_status'].replaceAll('_', " "));
+          paymentstatus =
+              capitalize(value['payment_status'].replaceAll('_', " "));
+          productname = capitalize(value['product']);
+          qty = value['quantity'].toString();
+          orderamount = value['order_amount'];
+          custname = widget.customerdata[0]['name'];
+          custaddress = value['delivery_address'];
+          custmobile = widget.customerdata[0]['mobile'];
+        });
+        print(value);
+      }
     });
 
     // obj.fetchProduct().then((value) {
@@ -68,7 +72,7 @@ class _OrderPageState extends State<OrderPage> {
         child: Container(
           width: MediaQuery.of(context).size.width * 1.0,
           decoration: BoxDecoration(
-            border: Border.all(),
+            border: Border.all(color: Color(0xFFed1c22)),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -120,7 +124,7 @@ class _OrderPageState extends State<OrderPage> {
     return Container(
         width: MediaQuery.of(context).size.width * 1.0,
         decoration: BoxDecoration(
-          border: Border.all(),
+          border: Border.all(color: Color(0xFFed1c22)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -196,7 +200,7 @@ class _OrderPageState extends State<OrderPage> {
     return Container(
         width: MediaQuery.of(context).size.width * 1.0,
         decoration: BoxDecoration(
-          border: Border.all(),
+          border: Border.all(color: Color(0xFFed1c22)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
@@ -268,28 +272,35 @@ class _OrderPageState extends State<OrderPage> {
         ));
   }
 
+  Widget loaderdisplay() {
+    return Container(
+      child: Text("Loading..."),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: lineargradientbg(),
-        title: Text("Order Confirmation"),
-      ),
-      endDrawer: MyaccountPage(),
-      bottomNavigationBar: FooterPage(pageindex: 1),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _statusbox(),
-              SizedBox(height: 10),
-              _productbox(),
-              SizedBox(height: 10),
-              _customerbox(),
-            ],
-          ),
+        appBar: AppBar(
+          flexibleSpace: lineargradientbg(),
+          title: Text("Order Confirmation"),
         ),
-      ),
-    );
+        endDrawer: MyaccountPage(),
+        bottomNavigationBar: FooterPage(pageindex: 1),
+        body: bookingdata == '1'
+            ? Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _statusbox(),
+                      SizedBox(height: 10),
+                      _productbox(),
+                      SizedBox(height: 10),
+                      _customerbox(),
+                    ],
+                  ),
+                ),
+              )
+            : ImageDialog());
   }
 }

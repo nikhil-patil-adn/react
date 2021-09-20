@@ -69,19 +69,19 @@ class _FooterPageState extends State<FooterPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: 'Business',
+            label: 'Products',
             backgroundColor: Colors.transparent,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-            backgroundColor: Colors.transparent,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: Colors.transparent,
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.school),
+          //   label: 'School',
+          //   backgroundColor: Colors.transparent,
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: 'Settings',
+          //   backgroundColor: Colors.transparent,
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,

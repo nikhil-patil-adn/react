@@ -23,6 +23,7 @@ class _ProductDetailState extends State<ProductDetail> {
   var name = "";
   var image = "";
   var desciption = "";
+  var price = "";
   bool issubscribed = true;
   TextEditingController qtyController = TextEditingController();
 
@@ -38,6 +39,7 @@ class _ProductDetailState extends State<ProductDetail> {
       setState(() {
         name = val[0]['name'];
         image = val[0]['image'];
+        price = val[0]['price'];
         desciption = val[0]['desciption'];
         issubscribed = val[0]['issubscribed'];
       });
@@ -152,25 +154,27 @@ class _ProductDetailState extends State<ProductDetail> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(bottom: 70.0, top: 30.0),
-                    height: 300.0,
+                    margin: const EdgeInsets.only(bottom: 10.0, top: 30.0),
+                    height: 120.0,
                     //decoration: BoxDecoration(border: Border.all()),
-                    width: 150.0,
+                    width: MediaQuery.of(context).size.width * 1.0,
                     child: Column(
                       children: [
                         Container(
-                            // decoration: BoxDecoration(
-                            //   boxShadow: [
-                            //     BoxShadow(
-                            //         blurRadius: 30,
-                            //         color: Colors.grey,
-                            //         offset: Offset(1, 1))
-                            //   ],
-                            // ),
+                            height: 120.0,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 30,
+                                    color: Colors.grey,
+                                    offset: Offset(1, 1))
+                              ],
+                            ),
                             child: Image.network(
-                          image,
-                          fit: BoxFit.fill,
-                        )),
+                              image,
+                              fit: BoxFit.fill,
+                            )),
                         // Container(
                         //   width: 200,
                         //   child: Row(
@@ -205,32 +209,64 @@ class _ProductDetailState extends State<ProductDetail> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: 20.0,
-                  ),
-                  SingleChildScrollView(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 50.0, top: 10.0),
-                      height: 300.0,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      //decoration: BoxDecoration(border: Border.all()),
-                      child: Column(
-                        children: [
-                          Text(
-                            name,
-                            style: TextStyle(fontSize: 30.0),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: buildText(desciption),
+                  // SizedBox(
+                  //   width: 20.0,
+                  // ),
+                ],
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    SingleChildScrollView(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 10.0, top: 10.0),
+
+                        padding: const EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width * 1.0,
+                        //decoration: BoxDecoration(border: Border.all()),
+                        child: Column(
+                          children: [
+                            Text(
+                              name.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 30.0,
+                              ),
                             ),
-                          ),
-                        ],
+                            Text(desciption),
+                            // Expanded(
+                            //   child: SingleChildScrollView(
+                            //     scrollDirection: Axis.vertical,
+                            //     child: buildText(desciption),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              Container(
+                // decoration: BoxDecoration(
+                //   border: Border.all(),
+                // ),
+                width: MediaQuery.of(context).size.width * 1.0,
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      "Price : ",
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      price,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    )
+                  ],
+                ),
               ),
               Center(
                 child: Row(
@@ -247,7 +283,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 20,
               ),
               Container(
                 height: 50,
@@ -262,6 +298,11 @@ class _ProductDetailState extends State<ProductDetail> {
                     if (issubscribed)
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(color: Color(0xFFcea335))),
+                            // primary: Colors.transparent,
                             primary: const Color(0xffed1c22), // background
                             onPrimary: Colors.white, // foreground
                           ),
@@ -287,6 +328,11 @@ class _ProductDetailState extends State<ProductDetail> {
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFcea335))),
+                          // primary: Colors.transparent,
                           primary: const Color(0xffed1c22), // background
                           onPrimary: Colors.white, // foreground
                         ),

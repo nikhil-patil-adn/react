@@ -1,6 +1,7 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/api/cityclass.dart';
 import 'package:fellowfarmer/api/locationclass.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/login_page.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
@@ -322,6 +323,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           flexibleSpace: lineargradientbg(),
           title: Text("Register"),
         ),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
         body: SingleChildScrollView(
           child: Container(

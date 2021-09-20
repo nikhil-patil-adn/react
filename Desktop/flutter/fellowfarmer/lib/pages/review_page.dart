@@ -16,6 +16,7 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   List custdata = [];
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
   late Razorpay _razorpay;
   final _couponformKey = GlobalKey<FormState>();
   final coupontextcontroller = TextEditingController();
@@ -216,7 +217,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                   Container(
                       child: Text(
-                    name,
+                    capitalize(name),
                     style: conatentstyle,
                   )),
                 ],
@@ -451,6 +452,11 @@ class _ReviewPageState extends State<ReviewPage> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: BorderSide(color: Color(0xFFed1c22))),
+                      // primary: Colors.transparent,
                       primary: const Color(0xffed1c22), // background
                       onPrimary: Colors.white, // foreground
                     ),

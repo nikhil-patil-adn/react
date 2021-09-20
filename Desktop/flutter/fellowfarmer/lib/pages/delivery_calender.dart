@@ -1,4 +1,5 @@
 import 'package:fellowfarmer/api/api.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class _CalenderPageState extends State<CalenderPage> {
         flexibleSpace: lineargradientbg(),
         title: Text("Delivery Calender"),
       ),
+      bottomNavigationBar: FooterPage(pageindex: 1),
       endDrawer: MyaccountPage(),
       body: SfCalendar(
         view: CalendarView.month,

@@ -1,5 +1,6 @@
 import 'package:fellowfarmer/api/api.dart';
 import 'package:fellowfarmer/main.dart';
+import 'package:fellowfarmer/pages/footer.dart';
 import 'package:fellowfarmer/pages/myaccount_page.dart';
 import 'package:fellowfarmer/widgets/customwidget.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,7 @@ class _AddFeedbackState extends State<AddFeedback> {
           flexibleSpace: lineargradientbg(),
           title: Text("Add Feedback"),
         ),
+        bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
         body: SingleChildScrollView(
           child: Container(

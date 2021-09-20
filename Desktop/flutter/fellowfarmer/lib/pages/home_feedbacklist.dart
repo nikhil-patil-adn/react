@@ -42,17 +42,36 @@ class _HomeFeedbackState extends State<HomeFeedback> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: feedbacks.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(DateFormat(displaydateformat)
-                  .format(DateTime.parse(feedbacks[index]['feedback_date']))
-                  .toString()),
-              subtitle: Text(feedbacks[index]['details']),
-            );
-          }),
+    // return Expanded(
+    //   child: ListView.builder(
+    //       itemCount: feedbacks.length,
+    //       itemBuilder: (BuildContext context, int index) {
+    //         return ListTile(
+    //           title: Text(DateFormat(displaydateformat)
+    //               .format(DateTime.parse(feedbacks[index]['feedback_date']))
+    //               .toString()),
+    //           subtitle: Text(feedbacks[index]['details']),
+    //         );
+    //       }),
+    // );
+    return CarouselSlider(
+      options: CarouselOptions(height: 200.0),
+      items: feedbacks.map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                //decoration: BoxDecoration(color: Colors.amber),
+                child: ListTile(
+                  title: Text(DateFormat(displaydateformat)
+                      .format(DateTime.parse(i['feedback_date']))
+                      .toString()),
+                  subtitle: Text(i['details']),
+                ));
+          },
+        );
+      }).toList(),
     );
   }
 }

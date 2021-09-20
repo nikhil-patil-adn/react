@@ -102,11 +102,11 @@ class _ProductListState extends State<ProductList> {
   }
 
   Widget buildText(String text, int index, int code, String amt) {
-    final styleButton =
-        TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold);
+    final styleButton = TextStyle(
+        fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold);
 
     return Container(
-      height: 200,
+      height: 120,
       child: Column(
         children: [
           Expanded(
@@ -115,12 +115,10 @@ class _ProductListState extends State<ProductList> {
               child: ReadMoreText(
                 text,
                 trimMode: TrimMode.Length,
-                trimLength: 60,
+                trimLength: 40,
                 trimCollapsedText: 'Read more',
                 trimExpandedText: 'Read less',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.black),
                 lessStyle: styleButton,
                 moreStyle: styleButton,
               ),
@@ -156,12 +154,20 @@ class _ProductListState extends State<ProductList> {
             ),
           ),
           Container(
-              width: MediaQuery.of(context).size.width * 0.5,
-              //decoration: BoxDecoration(
-              // border: Border.all(),
-              // ),
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 30,
+              // decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //         begin: Alignment.topLeft,
+              //         end: Alignment.bottomRight,
+              //         colors: [Color(0xFFcea335), Color(0xFFed1c22)])),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: BorderSide(color: Color(0xFFed1c22))),
+                    // primary: Colors.transparent,
                     primary: const Color(0xffed1c22), // background
                     onPrimary: Colors.white, // foreground
                   ),
@@ -181,25 +187,39 @@ class _ProductListState extends State<ProductList> {
 
   Widget _displaylist() {
     return ListView.builder(
+        scrollDirection: Axis.vertical,
         itemCount: products.length,
         itemBuilder: (context, index) {
           final items = products[index];
-          return ListTile(
-              title: Text(
-                items['name'],
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              subtitle: buildText(
-                  items['desciption'], index, items['code'], items['price']),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProductDetail(
-                            code: items['code'],
-                            quantity: myController[index].text)));
-              },
-              leading: InkWell(
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 0.2),
+            padding: EdgeInsets.only(bottom: 2.0),
+            decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //     begin: Alignment.topLeft,
+                //     end: Alignment.bottomRight,
+                //     colors: [Color(0xFFcea335), Color(0xFFed1c22)]),
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(color: Color(0xFFe8451f), spreadRadius: 1),
+                ],
+                border: Border.all(color: Colors.white)
+                // border: Border(
+
+                //   bottom: BorderSide(width: 5.0, color: Colors.grey.shade200),
+                // ),
+                ),
+            child: ListTile(
+                title: Text(
+                  items['name'].toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                subtitle: buildText(
+                    items['desciption'], index, items['code'], items['price']),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -208,22 +228,37 @@ class _ProductListState extends State<ProductList> {
                               code: items['code'],
                               quantity: myController[index].text)));
                 },
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: 100,
-                    minHeight: 100,
-                    maxWidth: 100,
-                    maxHeight: 100,
+                leading: CircleAvatar(
+                  radius: 50,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductDetail(
+                                  code: items['code'],
+                                  quantity: myController[index].text)));
+                    },
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: 100,
+                        minHeight: 100,
+                        maxWidth: 100,
+                        maxHeight: 100,
+                      ),
+                      child:
+                          Image.network(items['image_url'], fit: BoxFit.fill),
+                    ),
                   ),
-                  child: Image.network(items['image_url'], fit: BoxFit.fill),
-                ),
-              ));
+                )),
+          );
         });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.red,
       appBar: AppBar(
         flexibleSpace: lineargradientbg(),
         title: Text("Product List"),
