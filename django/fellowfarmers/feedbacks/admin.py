@@ -19,8 +19,8 @@ class FeedbackAdmin(admin.ModelAdmin):
 class FeedbackQuestionAdmin(admin.ModelAdmin):
     list_display=['question',]    
 
-    def has_delete_permission(self, request, obj = None):
-        return False 
+    # def has_delete_permission(self, request, obj = None):
+    #     return False 
 
 
   

@@ -16,6 +16,7 @@ class Product(models.Model):
     city=models.ForeignKey(CityMaster,on_delete=models.CASCADE)
     society=models.ForeignKey(SocietyMaster,on_delete=models.CASCADE,null=True)
     price=models.DecimalField(max_digits=5, decimal_places=2)
+    unit=models.CharField(max_length=200,null=True,blank=True)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
 

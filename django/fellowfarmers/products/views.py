@@ -33,7 +33,7 @@ class fetchProduct(viewsets.ModelViewSet):
 
 def getproductdatatest(request):
     #url = 'http://127.0.0.1:8000/api/products/details/2'
-    url='http://192.168.2.107:8000/api/location/getsociety'
+    url='http://192.168.2.101:8000/api/location/getsociety'
     headers = {'Authorization': 'Token 8334d1d63c97cc583ac50fc034afaf5f57833251'}
     r = requests.get(url, headers=headers)
     return HttpResponse("hi")

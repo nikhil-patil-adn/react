@@ -33,7 +33,7 @@ class fetchbuynowbycustomer(APIView):
     authentication_classes=[TokenAuthentication,]
 
     def get(self,request,custid):
-        QuerySet=Order.objects.filter(customer=custid,order_type='buynow')
+        QuerySet=Order.objects.filter(customer=custid,order_type='buynow').order_by('-id')
         orderdata=OrderSerializer(QuerySet,context={'request':request},many=True)
         return JsonResponse(orderdata.data,safe=False)  
 
@@ -88,7 +88,6 @@ class insertorder(APIView):
     authentication_classes=[TokenAuthentication,]
     def post(self,request):
         customer_data = JSONParser().parse(request)
-        print(customer_data)
         cust=Customer.objects.get(mobile=customer_data['mobile'])
         prd=Product.objects.get(id=customer_data['selectedproductcode'])
         cityobj=CityMaster.objects.get(name=customer_data['city'])
@@ -169,6 +168,11 @@ class insertorder(APIView):
             sendsmscommon(data)
             return JsonResponse(orderdata,safe=False)
         else:
+            selecteddate=customer_data['selecteddate']
+            selecteddate = selecteddate.split(" ")
+            selecteddate[-1] = selecteddate[-1][:8]
+            selecteddate = " ".join(selecteddate)
+            enddate=datetime.datetime.strptime(selecteddate,'%Y-%m-%d %H:%M:%S')+datetime.timedelta(days=1)
             sv=Order(
             customer=Customer.objects.get(mobile=customer_data['mobile']),
             delivery_address=customer_data['address']+","+customer_data['society']+","+customer_data['city']+","+customer_data['pincode'],
@@ -182,7 +186,8 @@ class insertorder(APIView):
             subscription_type=customer_data['subscriptiontype'],
             subscription_payment_type=customer_data['subscriptionpaymenttype'],
             prepaid_option=customer_data['prepaidoption'],
-            schedule_delivery_date=customer_data['selecteddate'])
+            schedule_delivery_date=enddate)
+           
             sv.save()
             orderdata = Order.objects.values().latest('id')
             print(orderdata)

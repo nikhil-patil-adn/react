@@ -19,6 +19,11 @@ from django.conf import settings
 from rest_framework.authtoken.views import obtain_auth_token 
 admin.site.site_header = 'FellowFarmers'
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/banners/', include('banners.urls')),
@@ -35,7 +40,9 @@ urlpatterns = [
     path('api/sendsmsemails/',include('sendsmsemails.urls')),
     path('api/staffpersons/',include('staffpersons.urls')),
     path('api/paymentlogs/',include('paymentlogs.urls')),
-    path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
+    #path('api-token-auth', obtain_auth_token, name='api_token_auth'), 
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('commission_pay/', include('commissions.urls')),
 ]
 

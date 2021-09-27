@@ -1,6 +1,7 @@
 from django.http.response import JsonResponse,HttpResponse
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import JSONParser 
 from customers.models import Customer
 from .models import Feedback, FeedbackQuestion
@@ -13,7 +14,7 @@ import requests
 
 def getfeedbackdatatest(request):
     #url = 'http://127.0.0.1:8000/api/products/details/2'
-    url='http://192.168.2.107:8000/api/feedbacks/fetchfeedbackbycustomer/3'
+    url='http://192.168.2.101:8000/api/feedbacks/fetchallfeedback/'
     headers = {'Authorization': 'Token 8334d1d63c97cc583ac50fc034afaf5f57833251'}
     r = requests.get(url, headers=headers)
     print(r)

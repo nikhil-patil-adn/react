@@ -57,3 +57,55 @@ def sendsmscommon(request):
     fr = f.read()
     print(fr)
     return True    
+
+def testmsg(request):
+    message="test body"#request['body']
+    numbers='919870888649'#'+91'+request['to']
+    sender='fellowfarmer'
+    apikey=settings.MSG91_AUTHKEY
+    flow_id='test'
+    import http.client
+
+    conn = http.client.HTTPSConnection("api.msg91.com")
+
+    # payload = {"flow_id":"test",
+    # "sender":"fellowfarmwers",
+    # "mobiles": "919870888649",
+    # "VAR1": "VALUE 1",
+    # "VAR2":"VALUE 2"}
+
+    payload = "{\n  \"flow_id\": \"test\",\n  \"sender\": \"fellowfarmwers\",\n  \"mobiles\": \"9870888649\",\n  \"VAR1\": \"VALUE 1\",\n  \"VAR2\": \"VALUE 2\"\n}"
+
+    headers = {
+    'authkey': "366337ATEy7MjDzn612751eeP1",
+    'content-type': "application/JSON"
+    }
+
+    conn.request("POST", "/api/v5/flow/", payload, headers)
+
+    res = conn.getresponse()
+    data = res.read()
+    print("nikhil")
+    print(data.decode("utf-8"))
+    return data.decode("utf-8")
+
+
+def testlocalsms(request):
+    import urllib.request
+    import urllib.parse
+ 
+    apikey="NjMzNjYxNDY1NzZmNjk0YzM5NTY3OTRkNGQ0YzZjNmY="
+    numbers='9870888649'
+    message="your booking is confirmed"
+    sender='fellofaarmer'
+    data =  urllib.parse.urlencode({'apikey': apikey, 'numbers': numbers,
+        'message' : message, 'sender': sender})
+    data = data.encode('utf-8')
+    request = urllib.request.Request("https://api.textlocal.in/send/?")
+    f = urllib.request.urlopen(request, data)
+    fr = f.read()
+    print(fr)
+    return(fr)
+ 
+
+    

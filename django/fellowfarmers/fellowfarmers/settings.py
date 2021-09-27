@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +34,7 @@ ALLOWED_HOSTS = ['*',]
 INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'staffpersons',
     'admin_interface',
     'colorfield',
@@ -63,9 +65,19 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    # ],
+     'DEFAULT_AUTHENTICATION_CLASSES': (
+         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+JWT_AUTH={
+    'JWT_EXPIRATION_DELTA':datetime.timedelta(days=1),
+    'JWT_ALLOW_REFRESH':True,
+    'JWT_REFRESH_EXPIRATION_DELTA':datetime.timedelta(days=7)
+
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -157,4 +169,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'fellowfarmerindia@gmail.com'
 EMAIL_HOST_PASSWORD = 'fellowfarmer12'
 
+TEXTLOCAL_API="NGU0NTMzN2EzOTY1NTY1NDMyNDk0ZjM5NzE0ODRiNTU="
+
 #SMS Configuration for Twilio
+
+MSG91_AUTHKEY='366337ATEy7MjDzn612751eeP1'

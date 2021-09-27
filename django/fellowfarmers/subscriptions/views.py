@@ -33,12 +33,11 @@ class fetchsubscriptionbyid(APIView):
         return JsonResponse(orderdata.data,safe=False)
 
 class stopsubscription(APIView):
-    #permission_classes=[IsAuthenticated,]
-    # authentication_classes=[TokenAuthentication,]
+    permission_classes=[IsAuthenticated,]
+    authentication_classes=[TokenAuthentication,]
 
     def get(self,request,subid,substatus):
         subdata=Subscription.objects.filter(id=subid).values('subscription_end','customer')
-        print(subdata)
         if substatus == 'resume':
             substatus='active'
         
