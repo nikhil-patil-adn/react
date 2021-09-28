@@ -8,7 +8,7 @@ class Api {
   //var tokennew = "a69eb53cb825906b7fdf5cccaeef6d0a58e377f0";
   //var host = "http://192.168.2.104:8000";
 
-  var host = "http://192.168.2.107:8000";
+  var host = "http://192.168.2.200:8000";
   var tokennew = "8334d1d63c97cc583ac50fc034afaf5f57833251";
   fetchbannerlist() async {
     var url = host + "/api/banners/fetch_banners/";

@@ -179,6 +179,11 @@ class _ViewDeliveryStatementState extends State<ViewDeliveryStatement> {
                     style: headerstyle,
                   ),
                 ),
+                Image.asset(
+                  'assets/images/rupee.png',
+                  fit: BoxFit.fill,
+                  width: 20,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Text(

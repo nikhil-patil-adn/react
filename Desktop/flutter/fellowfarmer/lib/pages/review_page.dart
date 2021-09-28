@@ -31,6 +31,7 @@ class _ReviewPageState extends State<ReviewPage> {
   var image = "";
   var desciption = "";
   var qty = "";
+  var unit = "";
   int discountval = 0;
   String finalamount = "00.00";
   var btntype = "";
@@ -84,6 +85,8 @@ class _ReviewPageState extends State<ReviewPage> {
         id = value[0]['id'].toString();
         image = value[0]['image'];
         desciption = value[0]['desciption'];
+        unit = value[0]['unit'];
+        //customerdata[0]['unit'] = unit;
         finalamount = value[0]['price'].toString();
         payamount = finalamount;
       });
@@ -109,6 +112,7 @@ class _ReviewPageState extends State<ReviewPage> {
       transactionid = response.paymentId.toString();
     });
     custdata[0]['transactionid'] = transactionid;
+    custdata[0]['unit'] = unit;
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -238,6 +242,11 @@ class _ReviewPageState extends State<ReviewPage> {
                     qty,
                     style: conatentstyle,
                   )),
+                  Container(
+                      child: Text(
+                    unit,
+                    style: conatentstyle,
+                  )),
                 ],
               ),
             ),
@@ -250,6 +259,11 @@ class _ReviewPageState extends State<ReviewPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: Text("Price:", style: headerstyle),
+                  ),
+                  Image.asset(
+                    'assets/images/rupee.png',
+                    fit: BoxFit.fill,
+                    width: 22,
                   ),
                   Container(
                       child: Text(
@@ -429,8 +443,13 @@ class _ReviewPageState extends State<ReviewPage> {
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
+                      Image.asset(
+                        'assets/images/rupee.png',
+                        fit: BoxFit.fill,
+                        width: 22,
+                      ),
                       Container(
-                        padding: const EdgeInsets.only(left: 20),
+                        //padding: const EdgeInsets.only(left: 20),
                         child: Text(
                           payamount,
                           style: TextStyle(
@@ -457,7 +476,7 @@ class _ReviewPageState extends State<ReviewPage> {
                           borderRadius: BorderRadius.circular(20.0),
                           side: BorderSide(color: Color(0xFFed1c22))),
                       // primary: Colors.transparent,
-                      primary: const Color(0xffed1c22), // background
+                      primary: const Color(0xFF4a1821), // background
                       onPrimary: Colors.white, // foreground
                     ),
                     onPressed: () {

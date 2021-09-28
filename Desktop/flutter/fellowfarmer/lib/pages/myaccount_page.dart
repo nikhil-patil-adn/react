@@ -56,13 +56,13 @@ class _MyaccountPageState extends State<MyaccountPage> {
         padding: EdgeInsets.zero,
         children: [
           Container(
-              height: 100,
+              height: 120,
               child: DrawerHeader(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Color(0xFFcea335), Color(0xFFed1c22)])),
+                        colors: [Color(0xFFecaa17), Color(0xFFbb9238)])),
                 child: Text('Welcome ' + customername,
                     style: TextStyle(
                       fontSize: 20.0,

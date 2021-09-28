@@ -237,18 +237,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget displayproduct() {
     return Container(
+      //margin: const EdgeInsets.only(top: 20),
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            offset: Offset(0.0, 1.0), //(x,y)
+            blurRadius: 5.0,
+          ),
+        ],
+      ),
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 100.0,
+          height: 150.0,
           autoPlay: true,
           viewportFraction: 0.9,
+          enlargeCenterPage: true,
         ),
         items: products.map((i) {
           return Builder(
             builder: (BuildContext context) {
               return Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  //margin: EdgeInsets.symmetric(horizontal: 5.0),
                   //decoration: BoxDecoration(color: Colors.amber),
                   child: InkWell(
                       onTap: () {
@@ -278,6 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 200.0,
             autoPlay: true,
             viewportFraction: 0.9,
+            enlargeCenterPage: true,
           ),
           items: banners.map((i) {
             return Builder(
@@ -290,18 +305,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      //decoration: BoxDecoration(color: Colors.amber),
-                      child: Image.network(i['banner'], fit: BoxFit.fill)),
+                    width: 1000.0,
+                    // decoration: BoxDecoration(border: Border.all()),
+                    margin: EdgeInsets.only(top: 5),
+                    // borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    child: Image.network(
+                      i['banner'],
+                      fit: BoxFit.fill,
+                      width: 1000.0,
+                    ),
+                  ),
                 );
               },
             );
           }).toList(),
         ),
+        SizedBox(
+          height: 10,
+        ),
         displayproduct(),
         SizedBox(
-          height: 30,
+          height: 10,
         ),
 
         HomeFeedback(),

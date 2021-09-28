@@ -52,25 +52,25 @@ class _FooterPageState extends State<FooterPage> {
   };
 
   Widget footer() {
-    MaterialColor colorCustom = MaterialColor(0xFFcea335, color);
+    MaterialColor colorCustom = MaterialColor(0xFFbb9238, color);
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFFcea335), Color(0xFFed1c22)])),
+              colors: [Color(0xFFecaa17), Color(0xFFbb9238)])),
       child: BottomNavigationBar(
         backgroundColor: Colors.transparent,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.transparent,
+            //backgroundColor: Colors.transparent,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
             label: 'Products',
-            backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.transparent,
           ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.school),
@@ -84,7 +84,7 @@ class _FooterPageState extends State<FooterPage> {
           // ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
     );

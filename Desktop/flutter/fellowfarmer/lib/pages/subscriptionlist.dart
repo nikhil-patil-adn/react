@@ -46,7 +46,8 @@ class _SubscriptionListState extends State<SubscriptionList> {
             datalength = value.length - 1;
             data = value;
 
-            product = value[_initialval]['product']['name'].toString();
+            product = _capitalstring(
+                value[_initialval]['product']['name'].toString());
             startdate = value[_initialval]['subscription_start'].toString();
             subid = value[_initialval]['id'].toString();
             if (startdate != "") {
@@ -61,11 +62,14 @@ class _SubscriptionListState extends State<SubscriptionList> {
                   .toString();
             }
 
-            subscriptiontype =
-                value[_initialval]['subscription_type'].toString();
-            frequencytype = value[_initialval]['frequency_type'].toString();
-            substatus = value[_initialval]['status'].toString();
+            subscriptiontype = _capitalstring(
+                value[_initialval]['subscription_type'].toString());
+            frequencytype =
+                _capitalstring(value[_initialval]['frequency_type'].toString());
+            substatus = _capitalstring(value[_initialval]['status'].toString());
           });
+        } else {
+          _noresultfound();
         }
       });
     });
@@ -74,7 +78,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
   _nextfeedback() {
     setState(() {
       _initialval = _initialval + 1;
-      product = data[_initialval]['product']['name'].toString();
+      product = _capitalstring(data[_initialval]['product']['name'].toString());
       subid = data[_initialval]['id'].toString();
       startdate = data[_initialval]['subscription_start'].toString();
       startdate =
@@ -83,16 +87,18 @@ class _SubscriptionListState extends State<SubscriptionList> {
       enddate = DateFormat(displaydateformat)
           .format(DateTime.parse(enddate))
           .toString();
-      subscriptiontype = data[_initialval]['subscription_type'].toString();
-      frequencytype = data[_initialval]['frequency_type'].toString();
-      substatus = data[_initialval]['status'].toString();
+      subscriptiontype =
+          _capitalstring(data[_initialval]['subscription_type'].toString());
+      frequencytype =
+          _capitalstring(data[_initialval]['frequency_type'].toString());
+      substatus = _capitalstring(data[_initialval]['status'].toString());
     });
   }
 
   _previousfeedback() {
     setState(() {
       _initialval = _initialval - 1;
-      product = data[_initialval]['product']['name'].toString();
+      product = _capitalstring(data[_initialval]['product']['name'].toString());
       subid = data[_initialval]['id'].toString();
       startdate = data[_initialval]['subscription_start'].toString();
       startdate =
@@ -101,9 +107,11 @@ class _SubscriptionListState extends State<SubscriptionList> {
       enddate = DateFormat(displaydateformat)
           .format(DateTime.parse(enddate))
           .toString();
-      subscriptiontype = data[_initialval]['subscription_type'].toString();
-      frequencytype = data[_initialval]['frequency_type'].toString();
-      substatus = data[_initialval]['status'].toString();
+      subscriptiontype =
+          _capitalstring(data[_initialval]['subscription_type'].toString());
+      frequencytype =
+          _capitalstring(data[_initialval]['frequency_type'].toString());
+      substatus = _capitalstring(data[_initialval]['status'].toString());
     });
   }
 
@@ -121,6 +129,10 @@ class _SubscriptionListState extends State<SubscriptionList> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => SubscriptionList()));
     });
+  }
+
+  _capitalstring(data) {
+    return data[0].toUpperCase() + data.substring(1);
   }
 
   Widget _noresultfound() {
@@ -213,7 +225,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Text(
-                    subscriptiontype,
+                    frequencytype,
                     style: datastyle,
                   ),
                 )
@@ -234,7 +246,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Text(
-                    frequencytype,
+                    subscriptiontype,
                     style: datastyle,
                   ),
                 )
@@ -267,12 +279,17 @@ class _SubscriptionListState extends State<SubscriptionList> {
             padding: const EdgeInsets.all(30.0),
             child: Row(
               children: [
-                if (substatus == 'active')
+                if (substatus.toLowerCase() == 'active')
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -281,12 +298,17 @@ class _SubscriptionListState extends State<SubscriptionList> {
                         child: Text("Stop")),
                   ),
                 SizedBox(width: 20),
-                if (substatus == 'stop')
+                if (substatus.toLowerCase() == 'stop')
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -307,7 +329,12 @@ class _SubscriptionListState extends State<SubscriptionList> {
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -321,7 +348,12 @@ class _SubscriptionListState extends State<SubscriptionList> {
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -352,6 +384,6 @@ class _SubscriptionListState extends State<SubscriptionList> {
         ),
         endDrawer: MyaccountPage(),
         bottomNavigationBar: FooterPage(pageindex: 1),
-        body: subscriptionlength > 0 ? _subscriptionlist() : _noresultfound());
+        body: subscriptionlength > 0 ? _subscriptionlist() : ImageDialog());
   }
 }

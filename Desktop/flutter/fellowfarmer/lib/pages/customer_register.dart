@@ -371,7 +371,11 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {

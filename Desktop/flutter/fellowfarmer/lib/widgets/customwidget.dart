@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 Widget lineargradientbg() {
   return Container(
     decoration: BoxDecoration(
+        // color: Color(0xFFbb9238),
         gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFcea335), Color(0xFFed1c22)])),
+            colors: [Color(0xFFecaa17), Color(0xFFbb9238)])),
   );
 }
 
@@ -15,9 +16,9 @@ _elevatedBtnStyle() {
     padding: EdgeInsets.symmetric(horizontal: 16),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
-        side: BorderSide(color: Color(0xFFed1c22))),
+        side: BorderSide(color: Color(0xFF4a1821))),
     // primary: Colors.transparent,
-    primary: const Color(0xffed1c22), // background
+    primary: const Color(0xFF4a1821), // background
     onPrimary: Colors.black, // foreground
   );
 }

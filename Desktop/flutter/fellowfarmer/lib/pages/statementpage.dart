@@ -15,12 +15,20 @@ class StatementPage extends StatelessWidget {
       ),
       endDrawer: MyaccountPage(),
       bottomNavigationBar: FooterPage(pageindex: 1),
-      body: Container(
+      body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xffed1c22), // background
+                  padding: EdgeInsets.symmetric(horizontal: 51),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      side: BorderSide(color: Color(0xFFed1c22))),
+                  // primary: Colors.transparent,
+                  primary: const Color(0xFF4a1821), // background
                   onPrimary: Colors.white, // foreground
                 ),
                 onPressed: () {
@@ -32,7 +40,12 @@ class StatementPage extends StatelessWidget {
                 child: Text("Payment Statement")),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xffed1c22), // background
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      side: BorderSide(color: Color(0xFFed1c22))),
+                  // primary: Colors.transparent,
+                  primary: const Color(0xFF4a1821), // background
                   onPrimary: Colors.white, // foreground
                 ),
                 onPressed: () {

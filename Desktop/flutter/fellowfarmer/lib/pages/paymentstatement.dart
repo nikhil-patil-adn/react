@@ -152,6 +152,11 @@ class _PaymentStatementState extends State<PaymentStatement> {
                     style: headerstyle,
                   ),
                 ),
+                Image.asset(
+                  'assets/images/rupee.png',
+                  fit: BoxFit.fill,
+                  width: 20,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Text(
@@ -171,6 +176,15 @@ class _PaymentStatementState extends State<PaymentStatement> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           _previousfeedback();
                         },
@@ -181,6 +195,15 @@ class _PaymentStatementState extends State<PaymentStatement> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
+                          onPrimary: Colors.white, // foreground
+                        ),
                         onPressed: () {
                           _nextfeedback();
                         },

@@ -259,6 +259,11 @@ class _ProductDetailState extends State<ProductDetail> {
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
+                    Image.asset(
+                      'assets/images/rupee.png',
+                      fit: BoxFit.fill,
+                      width: 20,
+                    ),
                     Text(
                       price,
                       style: TextStyle(
@@ -291,19 +296,22 @@ class _ProductDetailState extends State<ProductDetail> {
                 //   border: Border.all(),
                 // ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 60,
-                    ),
+                    // SizedBox(
+                    //   width: 40,
+                    // ),
                     if (issubscribed)
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            padding: EdgeInsets.symmetric(horizontal: 27),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                                 side: BorderSide(color: Color(0xFFcea335))),
                             // primary: Colors.transparent,
-                            primary: const Color(0xffed1c22), // background
+                            primary: const Color(0xFF4a1821), // background
                             onPrimary: Colors.white, // foreground
                           ),
                           onPressed: () {
@@ -324,7 +332,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           },
                           child: Text("Buy Now")),
                     SizedBox(
-                      width: 80,
+                      width: 50,
                     ),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -333,7 +341,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               borderRadius: BorderRadius.circular(20.0),
                               side: BorderSide(color: Color(0xFFcea335))),
                           // primary: Colors.transparent,
-                          primary: const Color(0xffed1c22), // background
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -352,7 +360,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             );
                           }
                         },
-                        child: Text("SubScription")),
+                        child: Text("Subscription")),
                   ],
                 ),
               ),

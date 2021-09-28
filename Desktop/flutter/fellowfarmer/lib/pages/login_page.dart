@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xffed1c22), // background
+                        primary: const Color(0xFF4a1821), // background
                         onPrimary: Colors.white, // foreground
                       ),
                       child: Text('Login'),
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text('Does not have account?'),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: const Color(0xffed1c22), // background
+                        primary: const Color(0xFF4a1821), // background
                         onPrimary: Colors.white, // foreground
                       ),
                       child: Text(

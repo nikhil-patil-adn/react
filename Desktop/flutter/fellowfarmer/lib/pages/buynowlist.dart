@@ -19,7 +19,7 @@ class _RegularOrderListState extends State<RegularOrderList> {
     fontSize: 18,
   );
   String id = '0';
-  String orderstatus = "";
+  var orderstatus = "";
   String product = "";
   String paymentstatus = "";
   int _initialval = 0;
@@ -45,7 +45,7 @@ class _RegularOrderListState extends State<RegularOrderList> {
             datalength = value.length - 1;
             data = value;
 
-            product = value[_initialval]['product'].toString();
+            product = _capitalstring(value[_initialval]['product'].toString());
             orderdate = value[_initialval]['order_date'].toString();
             if (orderdate != "") {
               orderdate = DateFormat(displaydateformat)
@@ -60,19 +60,34 @@ class _RegularOrderListState extends State<RegularOrderList> {
                   .toString();
             }
 
-            orderstatus = value[_initialval]['order_status'].toString();
-            paymentstatus = value[_initialval]['payment_status'].toString();
+            orderstatus = properorderstatusstring(
+                value[_initialval]['order_status'].toString());
+
+            paymentstatus =
+                _capitalstring(value[_initialval]['payment_status'].toString());
             orderamount = value[_initialval]['order_amount'].toString();
           });
+        } else {
+          _noresultfound();
         }
       });
     });
   }
 
+  properorderstatusstring(data) {
+    data = _capitalstring(data);
+    data = data.replaceAll('_', ' ');
+    return data;
+  }
+
+  _capitalstring(data) {
+    return data[0].toUpperCase() + data.substring(1);
+  }
+
   _nextfeedback() {
     setState(() {
       _initialval = _initialval + 1;
-      product = data[_initialval]['product'].toString();
+      product = _capitalstring(data[_initialval]['product'].toString());
       orderdate = data[_initialval]['order_date'].toString();
       orderdate =
           DateFormat(displaydateformat).format(DateTime.parse(orderdate));
@@ -81,8 +96,10 @@ class _RegularOrderListState extends State<RegularOrderList> {
       sheduledeliverydate = DateFormat(displaydateformat)
           .format(DateTime.parse(sheduledeliverydate))
           .toString();
-      orderstatus = data[_initialval]['order_status'].toString();
-      paymentstatus = data[_initialval]['payment_status'].toString();
+      orderstatus =
+          properorderstatusstring(data[_initialval]['order_status'].toString());
+      paymentstatus =
+          _capitalstring(data[_initialval]['payment_status'].toString());
       orderamount = data[_initialval]['order_amount'].toString();
     });
   }
@@ -90,7 +107,7 @@ class _RegularOrderListState extends State<RegularOrderList> {
   _previousfeedback() {
     setState(() {
       _initialval = _initialval - 1;
-      product = data[_initialval]['product'].toString();
+      product = _capitalstring(data[_initialval]['product'].toString());
       orderdate = data[_initialval]['order_date'].toString();
       orderdate =
           DateFormat(displaydateformat).format(DateTime.parse(orderdate));
@@ -99,8 +116,10 @@ class _RegularOrderListState extends State<RegularOrderList> {
       sheduledeliverydate = DateFormat(displaydateformat)
           .format(DateTime.parse(sheduledeliverydate))
           .toString();
-      orderstatus = data[_initialval]['order_status'].toString();
-      paymentstatus = data[_initialval]['payment_status'].toString();
+      orderstatus =
+          properorderstatusstring(data[_initialval]['order_status'].toString());
+      paymentstatus =
+          _capitalstring(data[_initialval]['payment_status'].toString());
       orderamount = data[_initialval]['order_amount'].toString();
     });
   }
@@ -234,6 +253,11 @@ class _RegularOrderListState extends State<RegularOrderList> {
                     style: headerstyle,
                   ),
                 ),
+                Image.asset(
+                  'assets/images/rupee.png',
+                  fit: BoxFit.fill,
+                  width: 20,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Text(
@@ -254,7 +278,12 @@ class _RegularOrderListState extends State<RegularOrderList> {
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -268,7 +297,12 @@ class _RegularOrderListState extends State<RegularOrderList> {
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffed1c22), // background
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Color(0xFFed1c22))),
+                          // primary: Colors.transparent,
+                          primary: const Color(0xFF4a1821), // background
                           onPrimary: Colors.white, // foreground
                         ),
                         onPressed: () {
@@ -299,6 +333,6 @@ class _RegularOrderListState extends State<RegularOrderList> {
         ),
         bottomNavigationBar: FooterPage(pageindex: 1),
         endDrawer: MyaccountPage(),
-        body: subscriptionlength > 0 ? _regularOrderList() : _noresultfound());
+        body: subscriptionlength > 0 ? _regularOrderList() : ImageDialog());
   }
 }

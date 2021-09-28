@@ -32,6 +32,7 @@ class _CartPageState extends State<CartPage> {
   var image = "";
   var desciption = "";
   var qty = "";
+  var unit = "";
   var btntype = "";
   final locationController = TextEditingController();
   final mobileController = TextEditingController();
@@ -77,6 +78,7 @@ class _CartPageState extends State<CartPage> {
         image = value[0]['image'];
         desciption = value[0]['desciption'];
         price = value[0]['price'];
+        unit = value[0]['unit'];
       });
     });
 
@@ -439,7 +441,7 @@ class _CartPageState extends State<CartPage> {
                     borderRadius: BorderRadius.circular(20.0),
                     side: BorderSide(color: Color(0xFFed1c22))),
                 // primary: Colors.transparent,
-                primary: const Color(0xffed1c22), // background
+                primary: const Color(0xFF4a1821), // background
                 onPrimary: Colors.white, // foreground
               ),
               onPressed: () {
@@ -560,8 +562,12 @@ class _CartPageState extends State<CartPage> {
                       child: Text("Quantity:", style: keytxtstyle),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      //width: MediaQuery.of(context).size.width * 0.1,
                       child: Text(qty, style: datatxtstyle),
+                    ),
+                    Container(
+                      // width: MediaQuery.of(context).size.width * 0.3,
+                      child: Text(unit, style: datatxtstyle),
                     )
                   ],
                 ),
@@ -573,6 +579,11 @@ class _CartPageState extends State<CartPage> {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: Text("Price:", style: keytxtstyle),
+                    ),
+                    Image.asset(
+                      'assets/images/rupee.png',
+                      fit: BoxFit.fill,
+                      width: 22,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,

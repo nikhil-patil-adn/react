@@ -28,6 +28,7 @@ class _OrderPageState extends State<OrderPage> {
   var image = "";
   var desciption = "";
   var qty = "";
+  var orderid = "";
   var custname = "";
   var custaddress = "";
   var custmobile = "";
@@ -46,6 +47,7 @@ class _OrderPageState extends State<OrderPage> {
               capitalize(value['payment_status'].replaceAll('_', " "));
           productname = capitalize(value['product']);
           qty = value['quantity'].toString();
+          orderid = value['id'].toString();
           orderamount = value['order_amount'];
           custname = widget.customerdata[0]['name'];
           custaddress = value['delivery_address'];
@@ -136,6 +138,27 @@ class _OrderPageState extends State<OrderPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
+                      "Order id :",
+                      style: productheaderstyle,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text(
+                      orderid,
+                      style: productheaderstyle,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: Text(
                       "Product Name :",
                       style: productheaderstyle,
                     ),
@@ -162,9 +185,16 @@ class _OrderPageState extends State<OrderPage> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    //width: MediaQuery.of(context).size.width * 0.4,
                     child: Text(
                       qty,
+                      style: productheaderstyle,
+                    ),
+                  ),
+                  Container(
+                    //width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text(
+                      widget.customerdata[0]['unit'],
                       style: productheaderstyle,
                     ),
                   ),
@@ -178,12 +208,17 @@ class _OrderPageState extends State<OrderPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: Text(
-                      "Prize :",
+                      "Price :",
                       style: productheaderstyle,
                     ),
                   ),
+                  Image.asset(
+                    'assets/images/rupee.png',
+                    fit: BoxFit.fill,
+                    width: 20,
+                  ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.3,
                     child: Text(
                       orderamount,
                       style: productheaderstyle,

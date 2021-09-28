@@ -155,6 +155,7 @@ class _ProductListState extends State<ProductList> {
           ),
           Container(
               width: MediaQuery.of(context).size.width * 0.4,
+              margin: const EdgeInsets.only(right: 60),
               height: 30,
               // decoration: BoxDecoration(
               //     gradient: LinearGradient(
@@ -166,9 +167,9 @@ class _ProductListState extends State<ProductList> {
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: Color(0xFFed1c22))),
+                        side: BorderSide(color: Color(0xFF4a1821))),
                     // primary: Colors.transparent,
-                    primary: const Color(0xffed1c22), // background
+                    primary: const Color(0xFF4a1821), // background
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
@@ -202,7 +203,7 @@ class _ProductListState extends State<ProductList> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 boxShadow: [
-                  BoxShadow(color: Color(0xFFe8451f), spreadRadius: 1),
+                  BoxShadow(color: Color(0xFF4a1821), spreadRadius: 1),
                 ],
                 border: Border.all(color: Colors.white)
                 // border: Border(
@@ -258,10 +259,14 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Color(0xFF4a1821),
       appBar: AppBar(
         flexibleSpace: lineargradientbg(),
-        title: Text("Product List"),
+        // iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Product List",
+          //  style: TextStyle(color: Colors.white),
+        ),
       ),
       bottomNavigationBar: FooterPage(pageindex: 1),
       endDrawer: MyaccountPage(),

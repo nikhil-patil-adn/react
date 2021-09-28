@@ -55,20 +55,25 @@ class _HomeFeedbackState extends State<HomeFeedback> {
     //       }),
     // );
     return CarouselSlider(
-      options: CarouselOptions(height: 200.0),
+      options: CarouselOptions(
+        height: 200.0,
+        enlargeCenterPage: true,
+      ),
       items: feedbacks.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                //decoration: BoxDecoration(color: Colors.amber),
-                child: ListTile(
-                  title: Text(DateFormat(displaydateformat)
-                      .format(DateTime.parse(i['feedback_date']))
-                      .toString()),
-                  subtitle: Text(i['details']),
-                ));
+            return SingleChildScrollView(
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 1.0,
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  //decoration: BoxDecoration(color: Colors.amber),
+                  child: ListTile(
+                    title: Text(DateFormat(displaydateformat)
+                        .format(DateTime.parse(i['feedback_date']))
+                        .toString()),
+                    subtitle: Text(i['details']),
+                  )),
+            );
           },
         );
       }).toList(),
