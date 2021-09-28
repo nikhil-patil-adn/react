@@ -1,0 +1,9 @@
+.cst-detail-box{
+    padding: 20px;
+    box-shadow: 0 8px 8px -8px #888888;
+}
+
+.cst-frequency-btn:hover{
+    background-color: red;
+
+}

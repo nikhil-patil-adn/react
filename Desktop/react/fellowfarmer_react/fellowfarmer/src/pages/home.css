@@ -1,0 +1,19 @@
+.cst-spacebetween{
+    height:80px;
+}
+.cst-box{
+    height:410px;
+
+  padding: 10px;
+  box-shadow: 2px 2px 15px 2px rgb(230, 215, 215);
+}
+.cst-topspace{
+    margin-top: 20px;
+}
+
+.cst-txtbox{
+    height:auto;
+
+  padding: 10px;
+  box-shadow: 2px 2px 15px 2px rgb(230, 215, 215);
+}

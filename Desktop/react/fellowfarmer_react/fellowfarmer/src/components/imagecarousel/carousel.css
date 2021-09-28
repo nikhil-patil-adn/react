@@ -1,0 +1,14 @@
+.cst-img-carousel{
+    height: 400px;
+}
+
+
+.carousel-inner .carousel-item {
+    transition: -webkit-transform 0.6s ease;
+    transition: transform 0.6s ease;
+    transition: transform 0.6s ease, -webkit-transform 0.6s ease;
+  }
+
+.cst-textbox{
+    padding:100px;
+}  

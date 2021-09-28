@@ -1,0 +1,13 @@
+.cst-navbar{
+    background: linear-gradient(to right, #cea335 0%, #c4224a 100%);
+}
+.cst-linkstyle{
+    text-decoration: none;
+    color:black;
+}
+.cst-linkstyle:hover{
+    color:white;
+}
+.nav-link:hover{
+    border-bottom:red;
+}
