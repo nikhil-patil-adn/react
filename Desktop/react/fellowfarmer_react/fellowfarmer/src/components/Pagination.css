@@ -1,0 +1,20 @@
+.pagination-button{
+    background-color: #4a1821;
+    border-radius: 3px;
+    color: white;
+  }
+
+.pagination-button a{
+    color: white;
+  }
+
+.pagination-button a:hover{
+    background-color: #ec7717;
+    color:white;
+  }
+
+.pagination-button a:focus{
+    background-color: #ec7717;
+    color:white;
+    box-shadow: 0 0 0 0rem;
+  }

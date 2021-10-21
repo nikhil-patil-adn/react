@@ -1,9 +1,10 @@
 .cst-navbar{
-    background: linear-gradient(to right, #cea335 0%, #c4224a 100%);
+    background: linear-gradient(to right, #ecaa17 40%, #bb9238 60%);
+  
 }
 .cst-linkstyle{
     text-decoration: none;
-    color:black;
+    color:white;
 }
 .cst-linkstyle:hover{
     color:white;
@@ -11,3 +12,16 @@
 .nav-link:hover{
     border-bottom:red;
 }
+
+
+@media screen and (min-width: 992px) {
+    .myaccountdropdown {
+      display: none;
+    }
+  }
+
+@media screen and (max-width: 992px) {
+    .myaccountbutton {
+      display: none;
+    }
+  }

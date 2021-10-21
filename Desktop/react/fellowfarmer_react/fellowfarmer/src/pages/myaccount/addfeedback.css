@@ -1,0 +1,22 @@
+.addfeedbackform{
+    padding: 20px 0px 20px 0px;
+}
+
+.formfield{
+    font-size: 1.12em;
+    margin: 0px 0px 20px 0px;
+}
+
+.formfieldlabel{
+    padding: 7px 12px 7px 0px;
+}
+
+.formfield select:focus, .formfield input:focus, .formfield textarea:focus{
+    box-shadow: 0 0 0 0.1rem ;
+  }
+
+.submit-btn{
+    border-radius : 30px;
+    border: none;
+    box-shadow: 0 0 0 0rem;
+}

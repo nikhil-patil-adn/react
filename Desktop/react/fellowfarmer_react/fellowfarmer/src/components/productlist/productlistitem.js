@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import apihost,{token} from './../../constants'
+import Rupeeimg from './../Rupeeimg'
 import { useHistory } from "react-router-dom";
 import './productlist.css'; 
 
@@ -73,13 +74,19 @@ const addtocart=(id,e)=>{
                         
                             {item.desciption} 
                     </div>
-                    <h3 className="mb-0 font-weight-semibold">{item.price}</h3>
+                    <h3 className="mb-0 font-weight-semibold"><i class="fa fa-inr"></i>{item.price} </h3>
                     <div className="cst-qty-div">
-                    <button type="button" id={"dec_"+index} className="btn" onClick={decrementQty}  style={{width:"38px",margin:"10px",backgroundColor:'#ed1c22'}}><i className="fa fa-cart-plus mr-2"></i> -</button>
-                    <input type="number" id={"qty_"+index}  onChange={event =>Setqty(event.target.value)}  style={{width:"50px",textAlign:'center'}}/>
-                    <button type="button" id={"inc_"+index} className="btn "  onClick={incrementQty}  style={{margin:"10px",backgroundColor:'#ed1c22'}}><i className="fa fa-cart-plus mr-2"></i> +</button>
+                    <button type="button" id={"dec_"+index} className="btn" onClick={decrementQty} 
+                     style={{width:"38px",margin:"10px",color:"white",backgroundColor:'#4a1821'}}>
+                         -</button>
+                    <input type="number" id={"qty_"+index}  onChange={event =>Setqty(event.target.value)} 
+                     style={{width:"50px",textAlign:'center'}}/>
+                    <button type="button" id={"inc_"+index} className="btn "  onClick={incrementQty}
+                      style={{margin:"10px",color:"white",backgroundColor:'#4a1821'}}> +</button>
                        </div>
-                     <button type="button" className="btn " id={"addtocart_"+index}  onClick={(event)=>addtocart(item.id,event)} style={{backgroundColor:'#ed1c22'}}><i className="fa fa-cart-plus mr-2"></i> Add to cart</button>
+                     <button type="button" className="btn " id={"addtocart_"+index} 
+                      onClick={(event)=>addtocart(item.id,event)} style={{color:"white",backgroundColor:'#4a1821'}}>
+                           Add to cart</button>
                 </div>
             </div>
         </div>

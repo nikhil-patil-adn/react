@@ -1,0 +1,38 @@
+
+.Sidebar {
+    background: linear-gradient(to bottom right, #ecaa17 40%, #d89400 60%);
+}
+.side-container{
+    padding: 0px 10px 1px 10px;
+}
+.Sidebar p{
+    margin: 0px 0px 8px 0px;
+}
+
+.Sidebar-Head{
+    padding: 10px 20px 10px;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-bottom: 1px solid rgb(95, 95, 95);
+}
+
+.Sidebar a:link, a:visited {
+    color: white;
+    padding: 8px 0px 10px 15px;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+  }
+  
+.Sidebar a:hover{
+    background-color: white;
+    color: #ecaa17;
+    border-radius: 5px;
+  }
+
+.Sidebar a.active-class{
+    background-color: white;
+    color: #ecaa17;
+    border-radius: 5px;
+  }

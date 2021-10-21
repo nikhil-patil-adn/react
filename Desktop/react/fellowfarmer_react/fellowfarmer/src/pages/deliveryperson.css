@@ -1,0 +1,30 @@
+.deliverypersonform{
+    padding: 20px 20px 20px 20px;
+    border-radius : 8px;
+    border: 0.1em solid rgb(212, 212, 212);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.formfield{
+    font-size: 1.12em;
+    margin: 0px 0px 20px 0px;
+}
+
+.formfield select:focus, .formfield input:focus, .formfield textarea:focus{
+    box-shadow: 0 0 0 0.1rem ;
+  }
+
+.submit-btn{
+    border-radius : 5px;
+    width: 100%;
+    border: none;
+    box-shadow: 0 0 0 0rem;
+    margin-left: auto;
+    margin-top: 10px;
+}
+.forgotpass{
+    margin-top:15px;
+    float:right;
+    
+}

@@ -1,7 +1,7 @@
 import React, { useEffect ,useState} from 'react'
 import apihost,{token} from './../../constants'
 import { useHistory } from "react-router-dom";
-import ImageCarousel from "./../imagecarousel/ImageCaurosel";
+import MultiImageCarousel from "./../imagecarousel/muliimagecaurosel";
 
 const ProductBanner = () => {
     const history=useHistory();
@@ -29,7 +29,7 @@ const ProductBanner = () => {
     
     return (
         <>
-        <ImageCarousel images={banner}  redirect={redirecttodetail} />
+        <MultiImageCarousel images={banner}  redirect={redirecttodetail} />
 
         </>
     );
